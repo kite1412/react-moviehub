@@ -1,12 +1,17 @@
-import logo from './logo.svg';
+import { useState } from 'react';
+import Login from './pages/Login';
+import Home from './pages/Home';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  let page;
+  if (!isLoggedIn) page = <Login/>
+  else page = <Home/>
+
   return (
-    <>
-      <header>
-        <h1>Demo</h1>
-      </header>
-    </>
+    <div>
+      {page}
+    </div>
   );
 }
 
