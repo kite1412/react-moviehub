@@ -1,11 +1,30 @@
-export default function OutlinedTextField({label, input, onChange}) {
+import { ReactComponent as Eye } from "../assets/eye.svg";
+import { ReactComponent as EyeOff } from "../assets/eye-off.svg";
+import { useState } from "react";
+
+export default function OutlinedTextField({label, input, onChange, isSensitive = false}) {
   const handleChange = (event) => {
     onChange(event.target.value);
   }
+  const [visible, setVisible] = useState(false);
+  const toggleVisibility = () => {
+    setVisible(!visible);
+  };
+  const visibilityIconStyle = {
+    stroke: "white",
+    height: "24px",
+    width: "28px",
+    position: "absolute",
+    transform: "translate(-130%, 50%)"
+  };
   return (
     <div className="outlined-text-field">
       <label >{label}</label>
-      <input type='text' value={input} onChange={handleChange}/>
+      <input type={
+        isSensitive ? !visible ? "password" : "text" : "text"
+      } value={input} onChange={handleChange} />
+      {isSensitive ? visible ? <EyeOff style={visibilityIconStyle} onClick={toggleVisibility} /> 
+      : <Eye style={visibilityIconStyle} onClick={toggleVisibility} /> : <></>}
     </div>
   );
 }
