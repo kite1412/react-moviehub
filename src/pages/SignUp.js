@@ -4,12 +4,14 @@ import TitleLogo from "../components/TitleLogo";
 import { Button } from "../components/Buttons";
 import { AuthContext } from "../context/AuthContext";
 import { toastSuccess, toastError, Toast } from "../utils/toast";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const { registeredUser, addUser } = useContext(AuthContext);
+  const { registeredUser, addUser, setIsLoggedIn } = useContext(AuthContext);
+  const navigate = useNavigate();
   const signUp = () => {
     if (username == "" || password == "") {
       toastError("Field can't be empty!");
@@ -27,6 +29,10 @@ export default function SignUp() {
         username: username,
         password: password
       });
+      setTimeout(() => {
+        setIsLoggedIn();
+        navigate("/");
+      }, 2500);
     }
     else toastError("Password doesn't match!");
   };

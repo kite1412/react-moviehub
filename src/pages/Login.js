@@ -10,7 +10,7 @@ export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const { registeredUser, _ } = useContext(AuthContext);
+  const { registeredUser, setIsLoggedIn } = useContext(AuthContext);
   const toSignUp = () => {
     navigate("/signup")
   };
@@ -20,6 +20,7 @@ export default function Login() {
       if (user && user.username == username) {
         if (user.password == password) {
           toastSuccess("Logged in");
+          setTimeout(setIsLoggedIn, 2500);
           return;
         }
         toastError("Password does not match");
