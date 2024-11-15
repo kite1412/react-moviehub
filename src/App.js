@@ -4,9 +4,10 @@ import SignUp from './pages/SignUp';
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { useState } from 'react';
+import { MainProvider } from './context/MainContext';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   let page;
   if (!isLoggedIn) page = Login
   else page = Home
@@ -16,12 +17,14 @@ function App() {
   };
   return (
     <Router>
-      <AuthProvider children={
-        <Routes>
-          <Route path="/" Component={page} />
-          <Route path="/signup" Component={SignUp}/>
-        </Routes>
-      } setIsLoggedIn={login} />
+      <MainProvider children={
+        <AuthProvider children={
+          <Routes>
+            <Route path="/" Component={page} />
+            <Route path="/signup" Component={SignUp}/>
+          </Routes>
+        } setIsLoggedIn={login} />
+      } />
     </Router>
   );
 }
