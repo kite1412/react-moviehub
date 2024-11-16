@@ -1,5 +1,5 @@
 import MainLayout from "../layouts/MainLayout";
-import { discoverMovies, topRatedMovies } from "../api/tmdbService";
+import { discoverMovies, genres, topRatedMovies } from "../api/tmdbService";
 import { useEffect, useState } from "react";
 import LoadingIndicator from "../components/LoadingIndicator";
 import MovieCards from "../components/MovieCards";
@@ -7,7 +7,17 @@ import MovieCards from "../components/MovieCards";
 export default function Home() {
   const [popular, setPopular] = useState([]);
   const [topRated, setTopRated] = useState([]);
+  const [genreList, setGenres] = useState([]);
   useEffect(() => {
+    const fetchGenres = async (successCallback) => {
+      try {
+        const res = await genres();
+        setGenres(res.genres);
+        successCallback();
+      } catch (e) {
+        console.error("fail to fetch genres");
+      }
+    };
     const fetchPopular = async () => {
       try {
         const res = await discoverMovies(["sort_by=popularity.desc"]);
@@ -24,14 +34,17 @@ export default function Home() {
         // TODO handle
       }
     };
-    fetchPopular();
-    fetchTopRated();
+    fetchGenres(() => {
+      fetchPopular();
+      fetchTopRated();
+    });
   }, []);  
   return (
     <MainLayout children={
       <div className="main-content">
-        { popular.length != 0 ? <MovieCards session={"Popular"} movies={popular} /> : <></>}
-        { topRated.length != 0 ? <MovieCards session={"Top Rated"} movies={topRated} movieCardClass="movie-card-wider" /> : <></>}
+        { popular.length == 0 || topRated.length == 0 ? <LoadingIndicator /> : <></> }
+        { popular.length != 0 ? <MovieCards session={"Popular"} genres={genreList} movies={popular} /> : <></>}
+        { topRated.length != 0 ? <MovieCards session={"Top Rated"} genres={genreList} movies={topRated} movieCardClass="movie-card-wider" /> : <></>}
       </div> 
     } />
   );

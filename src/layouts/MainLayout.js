@@ -3,10 +3,10 @@ import { ReactComponent as Film } from "../assets/film.svg";
 import { ReactComponent as Heart } from "../assets/heart.svg";
 import { ReactComponent as TrendingUp } from "../assets/trending-up.svg";
 import { ReactComponent as Calendar } from "../assets/calendar.svg";
-import { ReactComponent as Search } from "../assets/search.svg";
 import profPic from "../assets/profPic.png";
 import { useContext } from "react";
 import { MainContext } from "../context/MainContext";
+import SearchBar from "../components/SearchBar";
 
 export default function MainLayout({ children }) {
   const { currentMenu, setCurrentMenu } = useContext(MainContext);
@@ -55,25 +55,26 @@ export default function MainLayout({ children }) {
           </button>
         </div>
       </div>
-      <div id="main-content">
-        <div id="header">
-          <div style={{
-            display: "flex",
-            gap: "32px"
-          }}>
-            <span>Movies</span>
-            <span>TVs</span>
-          </div>
-          <div style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "24px"
-          }}>
-            <Search />
-            <img src={profPic} alt="profile picture" />
-            Natha
-          </div>
+      <div id="header">
+        <div style={{
+          display: "flex",
+          gap: "32px",
+          alignItems: "center"
+        }}>
+          <span>Movies</span>
+          <span>TVs</span>
         </div>
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "24px"
+        }}>
+          <SearchBar />
+          <img src={profPic} alt="profile picture" />
+          Natha
+        </div>
+      </div>
+      <div id="main-content">
         {children}
       </div>
     </div>

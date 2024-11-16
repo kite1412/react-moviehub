@@ -76,6 +76,10 @@ body::-webkit-scrollbar {
   display: none;
 }
 
+input::placeholder {
+  color: white;
+}
+
 .title-logo {
   display: flex;
   align-items: center;
@@ -114,7 +118,8 @@ body::-webkit-scrollbar {
 }
 
 .main-layout #main-content {
-  padding-left: 18%;
+  margin-left: 18%;
+  margin-top: 65px;
   height: 100%;
   width: 100%;
 }
@@ -129,16 +134,18 @@ body::-webkit-scrollbar {
 
 .main-layout #header {
   width: 82%;
+  height: 65px;
   position: fixed;
   display: flex;
   color: white;
+  margin-left: 18%;
   padding-left: 32px;
   padding-right: 32px;
   padding-top: 16px;
   padding-bottom: 16px;
   z-index: 10;
   justify-content: space-between;
-  background-color: #21201E;
+  background-image: linear-gradient(140deg, rgb(53, 12, 94), rgb(162, 100, 223));
   box-sizing: border-box;
 }
 
@@ -146,7 +153,7 @@ body::-webkit-scrollbar {
   position: relative;
   border-radius: 10px;
   min-width: 15%;
-  height: 25%;
+  height: auto;
   overflow: hidden;
 }
 
@@ -164,6 +171,11 @@ body::-webkit-scrollbar {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+}
+
+.movie-card-default:hover #description {
+  background-image: linear-gradient(140deg, rgb(119, 50, 188), rgb(197, 141, 252));
+  color: white;
 }
 
 .movie-card-default img {
@@ -201,6 +213,11 @@ body::-webkit-scrollbar {
   width: 100%;
 }
 
+.movie-card-wider:hover #description {
+  background-image: linear-gradient(140deg, rgb(119, 50, 188), rgb(197, 141, 252));
+  color: white;
+}
+
 .movie-cards-parent {
   display: flex;
   flex-direction: column;
@@ -222,7 +239,6 @@ body::-webkit-scrollbar {
   padding-left: 32px;
   padding-right: 12px;
   padding-bottom: 32px;
-  padding-top: 120px;
   display: flex;
   flex-direction: column;
   gap: 40px;
@@ -230,4 +246,8 @@ body::-webkit-scrollbar {
   scrollbar-width: none;
   -ms-overflow-style: none;
   background-image: linear-gradient(135deg, #191817, #191817, #37312A);
+  height: 100vh;
+  width: auto;
+  justify-content: center;
+  align-items: center;
 }
