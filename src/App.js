@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { MainProvider } from './context/MainContext';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   let page;
   if (!isLoggedIn) page = Login
   else page = Home
