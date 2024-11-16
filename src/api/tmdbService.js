@@ -3,7 +3,10 @@ const DISCOVER_MOVIE_URL = BASE_URL + "/discover/movie";
 const MOVIE_URL = BASE_URL + "/movie";
 const TOP_RATED_URL = MOVIE_URL + "/top_rated"
 const GENRES = BASE_URL + "/genre/movie/list";
+const SEARCH_MOVIE_URL = BASE_URL + "/search/movie";
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/";
+
+const unincludeAdult = "include_adult=false";
 
 const generateUrl = (url, params = []) => {
   return `${url}?api_key=${process.env.REACT_APP_TMDB_API_KEY}&${params.join("&")}`;
@@ -27,14 +30,18 @@ async function get(url, params = []) {
   }
 }
 
-export async function discoverMovies(params = ["include_adult=false"]) {
+export async function discoverMovies(params = [unincludeAdult]) {
   return get(DISCOVER_MOVIE_URL, params);
 }
 
-export async function topRatedMovies(params = ["include_adult=false"]) {
+export async function topRatedMovies(params = [unincludeAdult]) {
   return get(TOP_RATED_URL, params);
 }
 
 export async function genres() {
   return get(GENRES, []);
+}
+
+export async function searchMovies(title) {
+  return get(SEARCH_MOVIE_URL, [unincludeAdult, `query=${title}`])
 }
