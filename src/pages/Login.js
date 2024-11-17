@@ -3,14 +3,14 @@ import OutlinedTextField from "../components/OutlinedTextField";
 import TitleLogo from "../components/TitleLogo";
 import { Button } from "../components/Buttons";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../contexts/AuthContext";
 import { toastError, toastSuccess, Toast } from "../utils/toast";
 
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const { registeredUser, setIsLoggedIn } = useContext(AuthContext);
+  const { registeredUser, setUser } = useContext(AuthContext);
   const toSignUp = () => {
     navigate("/signup")
   };
@@ -20,7 +20,9 @@ export default function Login() {
       if (user && user.username == username) {
         if (user.password == password) {
           toastSuccess("Logged in");
-          setTimeout(setIsLoggedIn, 2500);
+          setTimeout(() => {
+            setUser(username);
+          }, 2500);
           return;
         }
         toastError("Password does not match");

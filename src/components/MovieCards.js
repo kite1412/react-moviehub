@@ -1,4 +1,4 @@
-import MovieCard from "./MovieCard";
+import { toCards } from "./MovieCard";
 
 export default function MovieCards({ 
   session,
@@ -6,18 +6,7 @@ export default function MovieCards({
   genres = [],
   movieCardClass = "movie-card-default"
 }) {
-  const toCard = movies.map(e => {
-    let g = "";
-    if (e.genre_ids.length != 0) {
-      genres.forEach(genre => {
-        if (e.genre_ids[0] == genre.id) {
-          g = genre.name;
-          return;
-        }
-      });
-    }
-    return <MovieCard movie={e} genre={g} className={movieCardClass} />
-  });
+  const cards = toCards(movies, genres, movieCardClass);
   return (
     <div className="movie-cards-parent">
       <div style={{
@@ -25,7 +14,7 @@ export default function MovieCards({
         fontWeight: "500"
        }}>{session}</div>
       <div className="movie-cards" style={{ color: "black" }}>
-        {toCard}    
+        {cards}    
       </div>
     </ div>
   );

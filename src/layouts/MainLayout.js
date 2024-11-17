@@ -5,11 +5,13 @@ import { ReactComponent as TrendingUp } from "../assets/trending-up.svg";
 import { ReactComponent as Calendar } from "../assets/calendar.svg";
 import profPic from "../assets/profPic.png";
 import { useContext } from "react";
-import { MainContext } from "../context/MainContext";
+import { MainContext } from "../contexts/MainContext";
 import SearchBar from "../components/SearchBar";
+import { AuthContext } from "../contexts/AuthContext";
 
 export default function MainLayout({ children }) {
   const { currentMenu, setCurrentMenu } = useContext(MainContext);
+  const { currentUser } = useContext(AuthContext);
   const menuItemStyle = (menu) => {
     return {
       all: "unset",
@@ -71,7 +73,7 @@ export default function MainLayout({ children }) {
         }}>
           <SearchBar />
           <img src={profPic} alt="profile picture" />
-          Natha
+          {currentUser}
         </div>
       </div>
       <div id="main-content">

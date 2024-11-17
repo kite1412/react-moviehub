@@ -3,19 +3,18 @@ import { discoverMovies, genres, topRatedMovies } from "../api/tmdbService";
 import { useContext, useEffect, useState } from "react";
 import LoadingIndicator from "../components/LoadingIndicator";
 import MovieCards from "../components/MovieCards";
-import { MainContext } from "../context/MainContext";
+import { MainContext } from "../contexts/MainContext";
 import SearchResult from "./SearchResult";
 
 export default function Home() {
   const [popular, setPopular] = useState([]);
   const [topRated, setTopRated] = useState([]);
-  const [genreList, setGenres] = useState([]);
-  const { showSearch, search } = useContext(MainContext);
+  const { showSearch, genreList, setGenreList } = useContext(MainContext);
   useEffect(() => {
     const fetchGenres = async (successCallback) => {
       try {
         const res = await genres();
-        setGenres(res.genres);
+        setGenreList(res.genres);
         successCallback();
       } catch (e) {
         console.error("fail to fetch genres");

@@ -2,9 +2,9 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import SignUp from './pages/SignUp';
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider } from './contexts/AuthContext';
 import { useState } from 'react';
-import { MainProvider } from './context/MainContext';
+import { MainProvider } from './contexts/MainContext';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);

@@ -7,8 +7,18 @@ export function MainProvider({ children }) {
   const [currentMenu, setCurrentMenu] = useState(menu[0]);
   const [showSearch, setShowSearch] = useState(false);
   const [search, setSearch] = useState("");
+  const [genreList, setGenreList] = useState([]);
   return (
-    <MainContext.Provider value={{ currentMenu, setCurrentMenu, showSearch, setShowSearch, search, setSearch }}>
+    <MainContext.Provider value={{
+      currentMenu,
+      setCurrentMenu,
+      showSearch,
+      setShowSearch,
+      search,
+      setSearch,
+      genreList,
+      setGenreList
+    }}>
       {children}
     </MainContext.Provider>
   );

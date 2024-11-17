@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { ReactComponent as Search } from "../assets/search.svg";
-import { MainContext } from "../context/MainContext";
+import { MainContext } from "../contexts/MainContext";
 
 export default function SearchBar() {
   const [search, setS] = useState("");

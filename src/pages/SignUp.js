@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import OutlinedTextField from "../components/OutlinedTextField";
 import TitleLogo from "../components/TitleLogo";
 import { Button } from "../components/Buttons";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../contexts/AuthContext";
 import { toastSuccess, toastError, Toast } from "../utils/toast";
 import { useNavigate } from "react-router-dom";
 
@@ -10,7 +10,7 @@ export default function SignUp() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const { registeredUser, addUser, setIsLoggedIn } = useContext(AuthContext);
+  const { registeredUser, addUser, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const signUp = () => {
     if (username == "" || password == "") {
@@ -30,7 +30,7 @@ export default function SignUp() {
         password: password
       });
       setTimeout(() => {
-        setIsLoggedIn();
+        setUser(username);
         navigate("/");
       }, 2500);
     }

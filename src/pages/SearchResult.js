@@ -1,12 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import { searchMovies } from "../api/tmdbService";
-import { MainContext } from "../context/MainContext";
-import MovieCards from "../components/MovieCards";
+import { MainContext } from "../contexts/MainContext";
 import LoadingIndicator from "../components/LoadingIndicator";
+import MovieGrid from "../components/MovieGrid";
 
 export default function SearchResult() {
   const [result, setResult] = useState({data: [], status: 0});
-  const { search } = useContext(MainContext);
+  const { search, genreList } = useContext(MainContext);
   useEffect(() => {
     setResult({ status: 0 })
     const fetchResult = async () => {
@@ -25,6 +25,8 @@ export default function SearchResult() {
   }, [search]);
   return (
     result.status === 0 ? <LoadingIndicator /> : result.status === -1 ? <p>No results</p> :
-    <MovieCards session={`Results for "${result.title}"`} movies={result.data}/>
+    <div className="serach-result">
+      <MovieGrid session={`Results for "${result.title}"`} movies={result.data} genres={genreList} />
+    </div>
   );
 }
