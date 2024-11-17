@@ -4,14 +4,15 @@ import { ReactComponent as Heart } from "../assets/heart.svg";
 import { ReactComponent as TrendingUp } from "../assets/trending-up.svg";
 import { ReactComponent as Calendar } from "../assets/calendar.svg";
 import profPic from "../assets/profPic.png";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { MainContext } from "../contexts/MainContext";
 import SearchBar from "../components/SearchBar";
 import { AuthContext } from "../contexts/AuthContext";
 
 export default function MainLayout({ children }) {
-  const { currentMenu, setCurrentMenu } = useContext(MainContext);
+  const { currentMenu, setCurrentMenu, showMovie, setShowMovie } = useContext(MainContext);
   const { currentUser } = useContext(AuthContext);
+  const [selectedType, setSelectedType] = useState("movie");
   const menuItemStyle = (menu) => {
     return {
       all: "unset",
@@ -63,8 +64,24 @@ export default function MainLayout({ children }) {
           gap: "32px",
           alignItems: "center"
         }}>
-          <span>Movies</span>
-          <span>TVs</span>
+          <button 
+            className={`media-type ${selectedType == "movie" ? "type-selected" : "type-unselected"}`}
+            onClick={() => {
+              setSelectedType("movie") 
+              setShowMovie(true);
+            }}
+          >
+            Movies
+          </button>
+          <button 
+            className={`media-type ${selectedType == "tv" ? "type-selected" : "type-unselected"}`}
+            onClick={() => {
+              setSelectedType("tv")
+              setShowMovie(false);
+             }}
+          >
+            TVs
+          </button>
         </div>
         <div style={{
           display: "flex",

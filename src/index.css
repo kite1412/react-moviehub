@@ -270,3 +270,29 @@ input::placeholder {
   height: 100vh;
   width: auto;
 }
+
+.clear-search {
+  height: 36px;
+  width: 28px;
+}
+
+.clear-search:hover {
+  cursor: pointer;
+}
+
+.media-type {
+  all: unset;
+}
+
+.media-type:hover {
+  cursor: pointer;
+  opacity: 1;
+}
+
+.type-selected {
+  opacity: 1;
+}
+
+.type-unselected {
+  opacity: 0.7;
+}

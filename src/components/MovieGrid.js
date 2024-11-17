@@ -6,7 +6,9 @@ export default function MovieGrid({ session, movies, genres = [] }) {
     <div style={{
       display: "flex",
       flexDirection: "column",
-      gap: "12px"
+      gap: "12px",
+      height: "100%",
+      width: "100%",
     }}>
       <div style={{
         textShadow: "1px 1px 4px rgba(255, 255, 255, 0.7)",
