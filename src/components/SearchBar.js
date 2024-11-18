@@ -44,7 +44,7 @@ export default function SearchBar() {
         color: "white"
       }}>
         <input 
-          placeholder="Search movies"
+          placeholder="Search by titles"
           style={{ all: "unset" }}
           value={search} 
           onKeyDown={onKeyDown}

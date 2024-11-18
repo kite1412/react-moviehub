@@ -1,7 +1,7 @@
-import { toCards } from "./MovieCard";
+import { toCards } from "./TVCard";
 
-export default function MovieGrid({ session, movies = [], genres = [] }) {
-  const cards = toCards(movies, genres);
+export default function TVGrid({ session, tvs = [], genres = [] }) {
+  const cards = toCards(tvs, genres);
   return (
     <div style={{
       display: "flex",

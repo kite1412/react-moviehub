@@ -10,7 +10,7 @@ import SearchBar from "../components/SearchBar";
 import { AuthContext } from "../contexts/AuthContext";
 
 export default function MainLayout({ children }) {
-  const { currentMenu, setCurrentMenu, showMovie, setShowMovie } = useContext(MainContext);
+  const { currentMenu, setCurrentMenu, setShowMovie } = useContext(MainContext);
   const { currentUser } = useContext(AuthContext);
   const [selectedType, setSelectedType] = useState("movie");
   const menuItemStyle = (menu) => {

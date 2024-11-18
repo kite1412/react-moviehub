@@ -7,6 +7,7 @@ const TOP_RATED_TV_URL = TV_URL + "/top_rated"
 const MOVIE_GENRES = BASE_URL + "/genre/movie/list";
 const TV_GENRES = BASE_URL + "/genre/tv/list";
 const SEARCH_MOVIE_URL = BASE_URL + "/search/movie";
+const SEARCH_TV_URL = BASE_URL + "/search/tv";
 const POPULAR_MOVIE_URL = MOVIE_URL + "/popular";
 const POPULAR_TV_URL = TV_URL + "/popular";
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/";
@@ -65,4 +66,8 @@ export async function popoularTVs(params = [unincludeAdult]) {
 
 export async function topRatedTVs(params = [unincludeAdult]) {
   return get(TOP_RATED_TV_URL, params);
+}
+
+export async function searchTVs(title) {
+  return get(SEARCH_TV_URL, [unincludeAdult, `query=${title}`])
 }

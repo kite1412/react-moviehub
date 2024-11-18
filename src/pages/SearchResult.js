@@ -1,17 +1,28 @@
 import { useContext, useEffect, useState } from "react";
-import { searchMovies } from "../api/tmdbService";
+import { searchMovies, searchTVs, tvGenres } from "../api/tmdbService";
 import { MainContext } from "../contexts/MainContext";
 import LoadingIndicator from "../components/LoadingIndicator";
 import MovieGrid from "../components/MovieGrid";
+import TVGrid from "../components/TVGrid";
 
 export default function SearchResult() {
   const [result, setResult] = useState({data: [], status: 0});
-  const { search, genreList } = useContext(MainContext);
+  const { 
+    search,
+    movieGenreList,
+    tvGenreList,
+    setTVGenreList,
+    showMovie
+  } = useContext(MainContext);
   useEffect(() => {
     setResult({ status: 0 })
     const fetchResult = async () => {
       try {
-        const res = await searchMovies(search);
+        if (!showMovie) if (tvGenreList.length == 0) {
+          const res = await tvGenres();
+          setTVGenreList(res.genres); 
+        }
+        const res = showMovie ? await searchMovies(search) : await searchTVs(search);
         setResult({
           data: res.results,
           status: res.results.length != 0 ? 1 : -1,
@@ -22,11 +33,15 @@ export default function SearchResult() {
       }
     };
     fetchResult();
-  }, [search]);
+  }, [search, showMovie]);
   return (
     result.status === 0 ? <LoadingIndicator /> : result.status === -1 ? <p>No results</p> :
-    <div className="serach-result">
-      <MovieGrid session={`Results for "${result.title}"`} movies={result.data} genres={genreList} />
+    <div className="search-result">
+      {
+        showMovie ? <MovieGrid session={`Results for "${result.title}"`} movies={result.data} genres={movieGenreList} />
+        : tvGenreList.length !== 0 ? <TVGrid session={`Results for "${result.title}"`} tvs={result.data} genres={tvGenreList} />
+        : <LoadingIndicator />
+      }
     </div>
   );
 }

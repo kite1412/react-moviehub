@@ -1,6 +1,9 @@
 import { createContext, useState } from "react";
 
-export const MainContext = createContext();
+export const MainContext = createContext({
+  movieGenreList: [],
+  tvGenreList: []
+});
 
 export function MainProvider({ children }) {
   const menu = ["home", "favourites", "trending", "comingsoon"];

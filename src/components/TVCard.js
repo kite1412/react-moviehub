@@ -6,7 +6,7 @@ export default function TVCard({ tv, genre = "", className = "movie-card-default
       <div id="description">
         <p>{tv.name}</p>
         <p style={{ fontSize: "11px", fontWeight: "normal" }}>
-          {tv.first_air_date.slice(0, 4)} { genre !== ""  ? `| ${genre}` : ""}
+          {tv.first_air_date !== undefined ? tv.first_air_date.slice(0, 4) : ""} { genre !== ""  ? `| ${genre}` : ""}
         </p>
       </div>
       <img src={originalImageUrl(tv.poster_path)} alt="poster" />
@@ -14,7 +14,7 @@ export default function TVCard({ tv, genre = "", className = "movie-card-default
   );
 }
 
-export const toCards = (tvs, genres = [], tvCardClass = "movie-card-default") => tvs.map(e => {
+export const toCards = (tvs = [], genres = [], tvCardClass = "movie-card-default") => tvs.map(e => {
   let g = "";
   if (e.genre_ids.length != 0) {
     genres.forEach(genre => {
