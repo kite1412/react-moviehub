@@ -4,9 +4,10 @@ export default function MovieCards({
   session,
   movies = [], 
   genres = [],
-  movieCardClass = "movie-card-default"
+  movieCardClass = "movie-card-default",
+  showRating = false
 }) {
-  const cards = toCards(movies, genres, movieCardClass);
+  const cards = toCards(movies, genres, movieCardClass, showRating);
   return (
     <div className="movie-cards-parent">
       <div style={{

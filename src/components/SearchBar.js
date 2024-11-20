@@ -40,7 +40,6 @@ export default function SearchBar() {
         paddingLeft: "16px",
         paddingRight: "16px",
         borderRadius: "50px",
-        opacity: 0.8,
         color: "white"
       }}>
         <input 

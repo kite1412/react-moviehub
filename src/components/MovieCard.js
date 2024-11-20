@@ -1,6 +1,12 @@
 import { originalImageUrl } from "../api/tmdbService";
+import Score from "./Score";
 
-export default function MovieCard({ movie, genre = "", className = "movie-card-default"}) {
+export default function MovieCard({
+  movie,
+  genre = "", 
+  className = "movie-card-default",
+  showRating = false
+}) {
   return (
     <div className={className}>
       <div id="description">
@@ -10,11 +16,17 @@ export default function MovieCard({ movie, genre = "", className = "movie-card-d
         </p>
       </div>
       <img src={originalImageUrl(movie.poster_path)} alt="poster" />
+      { showRating ? <Score score={parseFloat(movie.vote_average.toFixed(2))} /> : <></> }
     </div>
   );
 }
 
-export const toCards = (movies = [], genres = [], movieCardClass = "movie-card-default") => movies.map(e => {
+export const toCards = (
+  movies = [], 
+  genres = [], 
+  movieCardClass = "movie-card-default",
+  showRating = false
+) => movies.map(e => {
   let g = "";
   if (e.genre_ids.length != 0) {
     genres.forEach(genre => {
@@ -24,5 +36,5 @@ export const toCards = (movies = [], genres = [], movieCardClass = "movie-card-d
       }
     });
   }
-  return <MovieCard movie={e} genre={g} className={movieCardClass} />
+  return <MovieCard movie={e} genre={g} className={movieCardClass} showRating={showRating} />
 });

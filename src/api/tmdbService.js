@@ -22,7 +22,7 @@ export const originalImageUrl = (filePath) => {
   return `${IMAGE_BASE_URL}/original/${filePath}`;
 }
 
-async function get(url, params = []) {
+async function get(url, params = [], onFail) {
   const u = generateUrl(url, params);
   try {
     const res = await fetch(u);
@@ -32,42 +32,42 @@ async function get(url, params = []) {
     return json;
   } catch (err) {
     console.error(`${err}: ${u}`);
-    throw err;
+    onFail(err);
   }
 }
 
-export async function discoverMovies(params = [unincludeAdult]) {
-  return get(DISCOVER_MOVIE_URL, params);
+export async function discoverMovies(params = [unincludeAdult], onFail = () => {}) {
+  return await get(DISCOVER_MOVIE_URL, params, onFail);
 }
 
-export async function topRatedMovies(params = [unincludeAdult]) {
-  return get(TOP_RATED_MOVIE_URL, params);
+export async function topRatedMovies(params = [unincludeAdult], onFail = () => {}) {
+  return await get(TOP_RATED_MOVIE_URL, params, onFail);
 }
 
-export async function movieGenres() {
-  return get(MOVIE_GENRES, []);
+export async function movieGenres(onFail = () => {}) {
+  return await get(MOVIE_GENRES, [], onFail);
 }
 
-export async function searchMovies(title) {
-  return get(SEARCH_MOVIE_URL, [unincludeAdult, `query=${title}`])
+export async function searchMovies(title, onFail = () => {}) {
+  return await get(SEARCH_MOVIE_URL, [unincludeAdult, `query=${title}`], onFail)
 }
 
-export async function popularMovies(params = [unincludeAdult]) {
-  return get(POPULAR_MOVIE_URL, params);
+export async function popularMovies(params = [unincludeAdult], onFail = () => {}) {
+  return await get(POPULAR_MOVIE_URL, params, onFail);
 }
 
-export async function tvGenres() {
-  return get(TV_GENRES, []);
+export async function tvGenres(onFail = () => {}) {
+  return await get(TV_GENRES, [], onFail);
 }
 
-export async function popoularTVs(params = [unincludeAdult]) {
-  return get(POPULAR_TV_URL, params);
+export async function popoularTVs(params = [unincludeAdult], onFail = () => {}) {
+  return await get(POPULAR_TV_URL, params, onFail);
 }
 
-export async function topRatedTVs(params = [unincludeAdult]) {
-  return get(TOP_RATED_TV_URL, params);
+export async function topRatedTVs(params = [unincludeAdult], onFail = () => {}) {
+  return await get(TOP_RATED_TV_URL, params, onFail);
 }
 
-export async function searchTVs(title) {
-  return get(SEARCH_TV_URL, [unincludeAdult, `query=${title}`])
+export async function searchTVs(title, onFail = () => {}) {
+  return await get(SEARCH_TV_URL, [unincludeAdult, `query=${title}`], onFail)
 }
