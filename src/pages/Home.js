@@ -13,12 +13,19 @@ import { MainContext } from "../contexts/MainContext";
 import SearchResult from "./SearchResult";
 import TVCards from "../components/TVCards";
 import PageLoading from "../components/PageLoading";
+import { HomeContext } from "../contexts/HomeContext";
 
 export default function Home() {
-  const [popularMovies, setPopularMovies] = useState([]);
-  const [topRatedMovies, setTopRatedMovies] = useState([]);
-  const [popularTVs, setPopularTVs] = useState([]);
-  const [topRatedTVs, setTopRatedTVs] = useState([]);
+  const {
+    popularMovies,
+    setPopularMovies,
+    topRatedMovies,
+    setTopRatedMovies,
+    popularTVs,
+    setPopularTVs,
+    topRatedTVs,
+    setTopRatedTVs
+  } = useContext(HomeContext);
   const {
     showSearch,
     movieGenreList, 
@@ -69,9 +76,20 @@ export default function Home() {
         {
           showSearch ? <SearchResult /> : showMovie ? <>
             { popularMovies.length == 0 && topRatedMovies.length == 0 ? <PageLoading /> : <></> }
-            { popularMovies.length != 0 ? <MovieCards session={"Popular"} genres={movieGenreList} movies={popularMovies} /> : <></>}
+            { popularMovies.length != 0 ? <MovieCards 
+                session={"Popular"} 
+                genres={movieGenreList} 
+                movies={popularMovies} 
+              /> : <></>
+            }
             { topRatedMovies.length != 0 ?
-              <MovieCards session={"Top Rated"} genres={movieGenreList} movies={topRatedMovies} movieCardClass="movie-card-wider" showRating={true} /> 
+              <MovieCards 
+                session={"Top Rated"}
+                genres={movieGenreList} 
+                movies={topRatedMovies} 
+                movieCardClass="movie-card-wider" 
+                showRating={true} 
+              /> 
               : <></>}
           </> : <>
             { popularTVs.length == 0 && topRatedTVs.length == 0 ? <PageLoading /> : <></> }

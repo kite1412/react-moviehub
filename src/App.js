@@ -5,6 +5,8 @@ import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { useState } from 'react';
 import { MainProvider } from './contexts/MainContext';
+import Detail from './pages/Detail';
+import { HomeProvider } from './contexts/HomeContext';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
@@ -13,16 +15,19 @@ function App() {
   else page = Home
   const login = () => {
     setIsLoggedIn(true);
-    page = Home;
+    page = <HomeProvider children={Home} />;
   };
   return (
     <Router>
       <MainProvider children={
         <AuthProvider children={
-          <Routes>
-            <Route path="/" Component={page} />
-            <Route path="/signup" Component={SignUp}/>
-          </Routes>
+          <HomeProvider children={
+            <Routes>
+              <Route path="/" Component={page} />
+              <Route path="/signup" Component={SignUp}/>
+              <Route path="/detail/:id" Component={Detail} />
+            </Routes>
+          } />
         } setIsLoggedIn={login} />
       } />
     </Router>

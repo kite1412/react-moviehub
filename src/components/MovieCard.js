@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { originalImageUrl } from "../api/tmdbService";
 import Score from "./Score";
 
@@ -7,8 +8,11 @@ export default function MovieCard({
   className = "movie-card-default",
   showRating = false
 }) {
+  const navigate = useNavigate();
   return (
-    <div className={className}>
+    <div className={className} onClick={() => {
+      navigate(`/detail/${movie.id}`, { state: { media: movie } });
+    }}>
       <div id="description">
         <p>{movie.title}</p>
         <p style={{ fontSize: "11px", fontWeight: "normal" }}>
@@ -36,5 +40,10 @@ export const toCards = (
       }
     });
   }
-  return <MovieCard movie={e} genre={g} className={movieCardClass} showRating={showRating} />
+  return <MovieCard 
+    movie={e} 
+    genre={g} 
+    className={movieCardClass} 
+    showRating={showRating} 
+  />
 });
