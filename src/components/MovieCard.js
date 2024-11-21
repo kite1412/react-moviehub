@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { originalImageUrl } from "../api/tmdbService";
 import Score from "./Score";
+import { detailPath } from "../utils/paths";
+import { fixedRating, getYear } from "../utils/functions";
 
 export default function MovieCard({
   movie,
@@ -11,16 +13,16 @@ export default function MovieCard({
   const navigate = useNavigate();
   return (
     <div className={className} onClick={() => {
-      navigate(`/detail/${movie.id}`, { state: { media: movie } });
+      navigate(detailPath(movie.id), { state: { media: movie, isMovie: true } });
     }}>
       <div id="description">
         <p>{movie.title}</p>
         <p style={{ fontSize: "11px", fontWeight: "normal" }}>
-          {movie.release_date !== undefined ? movie.release_date.slice(0, 4) : ""} { genre !== ""  ? `| ${genre}` : ""}
+          {movie.release_date !== undefined ? getYear(movie.release_date) : ""} { genre !== ""  ? `| ${genre}` : ""}
         </p>
       </div>
       <img src={originalImageUrl(movie.poster_path)} alt="poster" />
-      { showRating ? <Score score={parseFloat(movie.vote_average.toFixed(2))} /> : <></> }
+      { showRating ? <Score score={fixedRating(movie.vote_average)} /> : <></> }
     </div>
   );
 }

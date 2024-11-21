@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { MainProvider } from './contexts/MainContext';
 import Detail from './pages/Detail';
 import { HomeProvider } from './contexts/HomeContext';
+import { SIGNUP_PATH, detailPath } from "./utils/paths"
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
@@ -24,8 +25,8 @@ function App() {
           <HomeProvider children={
             <Routes>
               <Route path="/" Component={page} />
-              <Route path="/signup" Component={SignUp}/>
-              <Route path="/detail/:id" Component={Detail} />
+              <Route path={SIGNUP_PATH} Component={SignUp}/>
+              <Route path={detailPath()} Component={Detail} />
             </Routes>
           } />
         } setIsLoggedIn={login} />

@@ -307,3 +307,21 @@ input::placeholder {
   background-image: linear-gradient(135deg, #191817, #191817, #37312A);
   color: white;
 }
+
+.icon-button {
+  border-radius: 50px;
+  height: 40px;
+  width: auto;
+  min-width: 40px;
+  padding: 10px;
+  background-color: #6100C2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.icon-button:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}

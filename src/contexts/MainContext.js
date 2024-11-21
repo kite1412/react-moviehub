@@ -13,6 +13,7 @@ export function MainProvider({ children }) {
   const [movieGenreList, setMovieGenreList] = useState([]);
   const [tvGenreList, setTVGenreList] = useState([]);
   const [showMovie, setShowMovie] = useState(true);
+  const [selectedType, setSelectedType] = useState("movie");
   return (
     <MainContext.Provider value={{
       currentMenu,
@@ -26,7 +27,9 @@ export function MainProvider({ children }) {
       showMovie,
       setShowMovie,
       tvGenreList,
-      setTVGenreList
+      setTVGenreList,
+      selectedType,
+      setSelectedType
     }}>
       {children}
     </MainContext.Provider>
