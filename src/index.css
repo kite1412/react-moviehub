@@ -98,6 +98,11 @@ input::placeholder {
   border: none;
 }
 
+.button-default:hover {
+  cursor: pointer;
+  opacity: 0.9;
+}
+
 .main-layout {
   height: 100vh;
   width: 100vw;

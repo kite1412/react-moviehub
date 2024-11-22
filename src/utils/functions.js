@@ -5,3 +5,17 @@ export const fixedRating = (raw) => {
 export const getYear = (date) => {
   return date.slice(0, 4);
 };
+
+export function resolveGenres(genreIds, genres) {
+  if (genreIds.length == 0) return "";
+  return genreIds.map(e => {
+    let g = "";
+    genres.forEach(element => {
+      if (element.id == e) {
+        g = element.name;
+        return;
+      }
+    });
+    return g;
+  }).join(" | ");
+}

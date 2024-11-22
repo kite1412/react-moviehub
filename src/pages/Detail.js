@@ -8,6 +8,7 @@ import IconButton from "../components/IconButton";
 import { ReactComponent as Heart } from "../assets/heart.svg";
 import { ReactComponent as Play } from "../assets/play.svg";
 import { OvalLoadingIndicator } from "../components/loadingIndicator";
+import { resolveGenres } from "../utils/functions";
 
 export default function Detail() {
   const location = useLocation();
@@ -92,7 +93,7 @@ export default function Detail() {
               </div>
               <div style={{ color: "rgba(255, 255, 255, 0.7)" }}>{genres}</div>
               <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
-                <IconButton icon={<><Heart /></>} onClick={() => {
+                <IconButton icon={<Heart />} onClick={() => {
 
                 }} />
                 {
@@ -102,7 +103,7 @@ export default function Detail() {
                       justifyContent: "center"
                     }}><OvalLoadingIndicator />
                   </div> : showTrailerButton === 1 ?
-                  <IconButton icon={<><Play /></>} desc="Watch Trailer" onClick={() => {
+                  <IconButton icon={<Play />} desc="Watch Trailer" onClick={() => {
                     window.open(`https://www.youtube.com/watch?v=${trailerId}`, "_blank", "noopener,noreferrer");
                   }} /> : <></>
                 }
@@ -115,12 +116,14 @@ export default function Detail() {
               fontSize: "24px",
               color: "rgba(255, 255, 255, 0.8)"
             }}>
-              <div>
-                <div style={{ fontSize: "18px", fontWeight: 500, color: "white" }}>Overview</div>
-                <div style={{ fontSize: "14px", paddingTop: "4px" }}>
-                  {media.overview}
-                </div>
-              </div>
+              {
+                media.overview ? <div>
+                  <div style={{ fontSize: "18px", fontWeight: 500, color: "white" }}>Overview</div>
+                  <div style={{ fontSize: "14px", paddingTop: "4px" }}>
+                    {media.overview}
+                  </div>
+                </div> : <></>
+              }
               <div style={{ display: "flex", alignItems: "center" }}>
                 <Star style={{ height: "40px", height: "40px", opacity: 0.9 }} />
                 {fixedRating(media.vote_average)}
@@ -134,20 +137,6 @@ export default function Detail() {
       </div>
     </div>
   );
-}
-
-function resolveGenres(genreIds, genres) {
-  if (genreIds.length == 0) return "";
-  return genreIds.map(e => {
-    let g = "";
-    genres.forEach(element => {
-      if (element.id == e) {
-        g = element.name;
-        return;
-      }
-    });
-    return g;
-  }).join(" | ");
 }
 
 async function getVideos(id, isMovie) {

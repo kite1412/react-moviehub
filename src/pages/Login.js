@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import OutlinedTextField from "../components/OutlinedTextField";
 import TitleLogo from "../components/TitleLogo";
-import { Button } from "../components/Buttons";
+import { Button } from "../components/Button";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 import { toastError, toastSuccess, Toast } from "../utils/toast";
