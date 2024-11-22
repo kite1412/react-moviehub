@@ -309,6 +309,7 @@ input::placeholder {
 }
 
 .icon-button {
+  all: unset;
   border-radius: 50px;
   height: 40px;
   width: auto;
@@ -323,5 +324,7 @@ input::placeholder {
 
 .icon-button:hover {
   cursor: pointer;
-  opacity: 0.8;
+  background-color: white;
+  color: #6100C2;
+  opacity: 0.9;
 }

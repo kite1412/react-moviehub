@@ -1,22 +1,36 @@
 import { useLocation } from "react-router-dom";
-import { originalImageUrl } from "../api/tmdbService";
-import { useContext } from "react";
+import { movieVideos, originalImageUrl, tvVideos } from "../api/tmdbService";
+import { useContext, useEffect, useState } from "react";
 import { MainContext } from "../contexts/MainContext";
 import { ReactComponent as Star } from "../assets/star.svg";
 import { fixedRating, getYear } from "../utils/functions";
 import IconButton from "../components/IconButton";
 import { ReactComponent as Heart } from "../assets/heart.svg";
 import { ReactComponent as Play } from "../assets/play.svg";
+import { OvalLoadingIndicator } from "../components/loadingIndicator";
 
 export default function Detail() {
   const location = useLocation();
+  const [trailerId, setTrailerId] = useState("");
+  const [showTrailerButton, setShowTrailerButton] = useState(0);
   const { media, isMovie } = location.state;
   const { movieGenreList, tvGenreList } = useContext(MainContext);
   const genres = resolveGenres(media.genre_ids, isMovie ? movieGenreList : tvGenreList);
   const coverUrl = originalImageUrl(media.poster_path);
   const backdropUrl = originalImageUrl(media.backdrop_path || media.poster_path);
   const title = isMovie ? media.title : media.name;
-  const releaseYear = isMovie ? media.release_date : media.first_release_date;
+  const releaseYear = isMovie ? media.release_date : media.first_air_date;
+  
+  useEffect(() => {
+    const getTrailerLink = async () => {
+      const id = await getVideos(media.id, isMovie);
+      if (id) {
+        setTrailerId(id);
+        setShowTrailerButton(1);
+      } else setShowTrailerButton(-1);
+    };
+    getTrailerLink();
+  }, []);
   return (
     <div className="detail-page">
       <div style={{
@@ -77,13 +91,21 @@ export default function Detail() {
                 </span>
               </div>
               <div style={{ color: "rgba(255, 255, 255, 0.7)" }}>{genres}</div>
-              <div style={{ display: "flex", gap: "16px" }}>
+              <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
                 <IconButton icon={<><Heart /></>} onClick={() => {
 
                 }} />
-                <IconButton icon={<><Play /></>} desc="Watch Trailer" onClick={() => {
-
-                }} />
+                {
+                  !showTrailerButton ? <div style={{
+                      width: "120px",
+                      display: "flex",
+                      justifyContent: "center"
+                    }}><OvalLoadingIndicator />
+                  </div> : showTrailerButton === 1 ?
+                  <IconButton icon={<><Play /></>} desc="Watch Trailer" onClick={() => {
+                    window.open(`https://www.youtube.com/watch?v=${trailerId}`, "_blank", "noopener,noreferrer");
+                  }} /> : <></>
+                }
               </div>
             </div>
             <div style={{
@@ -126,4 +148,19 @@ function resolveGenres(genreIds, genres) {
     });
     return g;
   }).join(" | ");
+}
+
+async function getVideos(id, isMovie) {
+  const videos = isMovie ? await movieVideos(id) : await tvVideos(id);
+  if (!videos) return "";
+  let trailerId = "";
+  if (videos.results) {
+    videos.results.forEach(e => {
+      if (e.type === "Trailer" && e.site === "YouTube") {
+        trailerId = e.key;
+        return;
+      }
+    });
+  }
+  return trailerId;
 }

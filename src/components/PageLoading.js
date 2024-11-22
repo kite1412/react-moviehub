@@ -1,4 +1,4 @@
-import LoadingIndicator from "./LoadingIndicator";
+import LoadingIndicator from "./loadingIndicator";
 
 export default function PageLoading() {
   return (

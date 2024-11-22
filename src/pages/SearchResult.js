@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { searchMovies, searchTVs, tvGenres } from "../api/tmdbService";
 import { MainContext } from "../contexts/MainContext";
-import LoadingIndicator from "../components/LoadingIndicator";
+import LoadingIndicator from "../components/loadingIndicator";
 import MovieGrid from "../components/MovieGrid";
 import TVGrid from "../components/TVGrid";
 import PageLoading from "../components/PageLoading";

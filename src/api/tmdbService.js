@@ -12,6 +12,14 @@ const POPULAR_MOVIE_URL = MOVIE_URL + "/popular";
 const POPULAR_TV_URL = TV_URL + "/popular";
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/";
 
+const movieVideosUrl = (id) => {
+  return `${MOVIE_URL}/${id}/videos`;
+};
+
+const tvVideosUrl = (id) => {
+  return `${TV_URL}/${id}/videos`;
+};
+
 const unincludeAdult = "include_adult=false";
 
 const generateUrl = (url, params = []) => {
@@ -70,4 +78,12 @@ export async function topRatedTVs(params = [unincludeAdult], onFail = () => {}) 
 
 export async function searchTVs(title, onFail = () => {}) {
   return await get(SEARCH_TV_URL, [unincludeAdult, `query=${title}`], onFail)
+}
+
+export async function movieVideos(id, onFail = () => {}) {
+  return await get(movieVideosUrl(id), [], onFail);
+}
+
+export async function tvVideos(id, onFail = () => {}) {
+  return await get(tvVideosUrl(id), [], onFail);
 }
