@@ -20,6 +20,10 @@ const tvVideosUrl = (id) => {
   return `${TV_URL}/${id}/videos`;
 };
 
+const weekTrendingUrl = (isMovie = true) => {
+  return `${BASE_URL}/trending/${isMovie ? "movie" : "tv"}/week`;
+};
+
 const unincludeAdult = "include_adult=false";
 
 const generateUrl = (url, params = []) => {
@@ -86,4 +90,12 @@ export async function movieVideos(id, onFail = () => {}) {
 
 export async function tvVideos(id, onFail = () => {}) {
   return await get(tvVideosUrl(id), [], onFail);
+}
+
+export async function trendingMovies(onFail = () => {}) {
+  return await get(weekTrendingUrl(), [], onFail);
+}
+
+export async function trendingTVs(onFail = () => {}) {
+  return await get(weekTrendingUrl(false), [], onFail);
 }

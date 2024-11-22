@@ -7,6 +7,8 @@ export function HomeProvider({ children }) {
   const [topRatedMovies, setTopRatedMovies] = useState([]);
   const [popularTVs, setPopularTVs] = useState([]);
   const [topRatedTVs, setTopRatedTVs] = useState([]);
+  const [trendingMovies, setTrendingMovies] = useState([]);
+  const [trendingTVs, setTrendingTVs] = useState([]);
   return (
     <HomeContext.Provider value={{
       popularMovies,
@@ -16,7 +18,11 @@ export function HomeProvider({ children }) {
       popularTVs,
       setPopularTVs,
       topRatedTVs,
-      setTopRatedTVs
+      setTopRatedTVs,
+      trendingMovies,
+      setTrendingMovies,
+      trendingTVs,
+      setTrendingTVs
     }}>
       {children}
     </HomeContext.Provider>

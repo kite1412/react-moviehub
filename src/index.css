@@ -328,3 +328,12 @@ input::placeholder {
   color: #6100C2;
   opacity: 0.9;
 }
+
+.trending-header {
+  width: 82vw;
+  height: 50vh;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #6100C2 !important;
+}

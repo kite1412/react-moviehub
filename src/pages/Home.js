@@ -14,6 +14,7 @@ import SearchResult from "./SearchResult";
 import TVCards from "../components/TVCards";
 import PageLoading from "../components/PageLoading";
 import { HomeContext } from "../contexts/HomeContext";
+import TrendingHeader from "../components/TrendingHeader";
 
 export default function Home() {
   const {
@@ -72,34 +73,37 @@ export default function Home() {
   }, [showMovie]);  
   return (
     <MainLayout children={
-      <div className="main-content">
-        {
-          showSearch ? <SearchResult /> : showMovie ? <>
-            { popularMovies.length == 0 && topRatedMovies.length == 0 ? <PageLoading /> : <></> }
-            { popularMovies.length != 0 ? <MovieCards 
-                session={"Popular"} 
-                genres={movieGenreList} 
-                movies={popularMovies} 
-              /> : <></>
-            }
-            { topRatedMovies.length != 0 ?
-              <MovieCards 
-                session={"Top Rated"}
-                genres={movieGenreList} 
-                movies={topRatedMovies} 
-                movieCardClass="movie-card-wider" 
-                showRating={true} 
-              /> 
-              : <></>}
-          </> : <>
-            { popularTVs.length == 0 && topRatedTVs.length == 0 ? <PageLoading /> : <></> }
-            { popularTVs.length != 0 ? <TVCards session={"Popular"} genres={tvGenreList} tvs={popularTVs} /> : <></>}
-            { topRatedTVs.length != 0 ?
-              <TVCards session={"Top Rated"} genres={tvGenreList} tvs={topRatedTVs} tvCardClass="movie-card-wider" showRating={true} /> 
-              : <></>}
-          </>
-        }
-      </div> 
+      <>
+        <TrendingHeader />
+        <div className="main-content">
+          {
+            showSearch ? <SearchResult /> : showMovie ? <>
+              { popularMovies.length == 0 && topRatedMovies.length == 0 ? <PageLoading /> : <></> }
+              { popularMovies.length != 0 ? <MovieCards 
+                  session={"Popular"} 
+                  genres={movieGenreList} 
+                  movies={popularMovies} 
+                /> : <></>
+              }
+              { topRatedMovies.length != 0 ?
+                <MovieCards 
+                  session={"Top Rated"}
+                  genres={movieGenreList} 
+                  movies={topRatedMovies} 
+                  movieCardClass="movie-card-wider" 
+                  showRating={true} 
+                /> 
+                : <></>}
+            </> : <>
+              { popularTVs.length == 0 && topRatedTVs.length == 0 ? <PageLoading /> : <></> }
+              { popularTVs.length != 0 ? <TVCards session={"Popular"} genres={tvGenreList} tvs={popularTVs} /> : <></>}
+              { topRatedTVs.length != 0 ?
+                <TVCards session={"Top Rated"} genres={tvGenreList} tvs={topRatedTVs} tvCardClass="movie-card-wider" showRating={true} /> 
+                : <></>}
+            </>
+          }
+        </div>
+      </> 
     } />
   );
 }
