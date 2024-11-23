@@ -13,10 +13,10 @@ export default function MovieCards({
       <div style={{
         textShadow: "1px 1px 4px rgba(255, 255, 255, 0.7)",
         fontWeight: "500"
-       }}>{session}</div>
+      }}>{session}</div>
       <div className="movie-cards" style={{ color: "black" }}>
         {cards}    
       </div>
-    </ div>
+    </div>
   );
 }

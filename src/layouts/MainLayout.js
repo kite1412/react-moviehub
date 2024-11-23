@@ -3,8 +3,8 @@ import { ReactComponent as Film } from "../assets/film.svg";
 import { ReactComponent as Heart } from "../assets/heart.svg";
 import { ReactComponent as TrendingUp } from "../assets/trending-up.svg";
 import { ReactComponent as Calendar } from "../assets/calendar.svg";
-import profPic from "../assets/profPic.png";
-import { useContext, useState } from "react";
+import { ReactComponent as Profile } from "../assets/profile-circle.svg";
+import { useContext } from "react";
 import { MainContext } from "../contexts/MainContext";
 import SearchBar from "../components/SearchBar";
 import { AuthContext } from "../contexts/AuthContext";
@@ -94,7 +94,10 @@ export default function MainLayout({ children }) {
           gap: "24px"
         }}>
           <SearchBar />
-          <img src={profPic} alt="profile picture" />
+          <Profile style={{
+            height: "45px",
+            width: "45px"
+          }} />
           {currentUser}
         </div>
       </div>
