@@ -32,7 +32,12 @@ export default function SearchResult() {
     fetchResult();
   }, [search, showMovie]);
   return (
-    result.status === 0 ? <PageLoading /> : result.status === -1 ? <p>No results</p> :
+    result.status === 0 ? <PageLoading /> : result.status === -1 ? <p style={{
+      color: "white",
+      fontSize: "24px"
+    }}>
+      No results
+    </p> :
     <div className="search-result">
       {
         showMovie ? <MovieGrid session={`Results for "${result.title}"`} movies={result.data} genres={movieGenreList} />

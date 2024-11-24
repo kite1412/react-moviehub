@@ -15,7 +15,7 @@ export default function MainLayout({ children }) {
     setCurrentMenu, 
     setShowMovie,
     selectedType,
-    setSelectedType 
+    setSelectedType
   } = useContext(MainContext);
   const { currentUser } = useContext(AuthContext);
   const menuItemStyle = (menu) => {
@@ -43,11 +43,11 @@ export default function MainLayout({ children }) {
             <Film />
             Home
           </button>
-          <button style={menuItemStyle("favourites")} onClick={function() {
-            setCurrentMenu("favourites")
+          <button style={menuItemStyle("favorites")} onClick={function() {
+            setCurrentMenu("favorites")
           }}>
             <Heart />
-            Favourites
+            Favorites
           </button>
           <button style={menuItemStyle("trending")} onClick={function() {
             setCurrentMenu("trending");

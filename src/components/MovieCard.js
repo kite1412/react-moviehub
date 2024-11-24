@@ -5,6 +5,8 @@ import { detailPath } from "../utils/paths";
 import { fixedRating, getYear } from "../utils/functions";
 import IconButton from "./IconButton";
 import { ReactComponent as Heart } from "../assets/heart.svg";
+import { useContext } from "react";
+import { MainContext } from "../contexts/MainContext";
 
 export default function MovieCard({
   movie,
@@ -13,6 +15,8 @@ export default function MovieCard({
   showRating = false
 }) {
   const navigate = useNavigate();
+  const { favoriteMovies } = useContext(MainContext);
+  const favorited = favoriteMovies.contains(movie);
   return (
     <div className={className} onClick={() => {
       navigate(detailPath(movie.id), { state: { media: movie, isMovie: true } });
@@ -25,7 +29,16 @@ export default function MovieCard({
       </div>
       <img src={originalImageUrl(movie.poster_path)} alt="poster" />
       { showRating ? <Score score={fixedRating(movie.vote_average)} /> : <></> }
-      <IconButton icon={<Heart />} className="favourite-button"/>
+      <IconButton 
+        icon={<Heart style={{
+          fill: `${ favorited ? "#6100C2" : "transparent"}`
+        }} />} 
+        className={`favorite-button ${favorited ? "favorited" : "not-favorited"}`} 
+        onClick={e => {
+          e.stopPropagation();
+          favorited ? favoriteMovies.remove(movie) : favoriteMovies.add(movie);
+        }}
+      />
     </div>
   );
 }
@@ -37,7 +50,7 @@ export const toCards = (
   showRating = false
 ) => movies.map(e => {
   let g = "";
-  if (e.genre_ids.length != 0) {
+  if (e.genre_ids && e.genre_ids.length != 0) {
     genres.forEach(genre => {
       if (e.genre_ids[0] == genre.id) {
         g = genre.name;

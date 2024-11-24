@@ -104,6 +104,8 @@ export default function TrendingHeader() {
 
 function Content({ e, genreList, showMovie }) {
   const navigate = useNavigate();
+  const { favoriteMovies, favoriteTVs } = useContext(MainContext);
+  const favorited = showMovie ? favoriteMovies.contains(e) : favoriteTVs.contains(e);
   return (
     <div style={{
       display: "flex",
@@ -128,11 +130,20 @@ function Content({ e, genreList, showMovie }) {
         }} onClick={() => {
           navigate(detailPath(e.id), { state: { media: e, isMovie: showMovie } });
         }} />
-        <IconButton icon={<Heart />} style={{ 
-          borderRadius: "14px", 
-          backgroundColor: "white", 
-          color: "#6100C2"
-        }} />
+        <IconButton 
+          icon={<Heart style={{
+            fill: `${ favorited ? "#6100C2" : "transparent"}`
+          }} />} 
+          style={{ 
+            borderRadius: "14px", 
+            backgroundColor: "white", 
+            color: "#6100C2"
+          }}
+          onClick={() => {
+            showMovie ? favorited ? favoriteMovies.remove(e) : favoriteMovies.add(e)
+            : favorited ? favoriteTVs.remove(e) : favoriteTVs.add(e);
+          }} 
+        />
       </div>
     </div>
   );
@@ -145,11 +156,11 @@ function Reset() {
     swiper.slideTo(0);
   }, [showMovie]);
   useEffect(() => {
-    const interval = setInterval(() => {
+    const timeout = setTimeout(() => {
       if (!swiper.isEnd) swiper.slideNext()
         else swiper.slideTo(0);
     }, 3500);
-    return () => clearInterval(interval);
-  }, [showMovie, swiper]);
+    return () => clearTimeout(timeout);
+  }, [showMovie, swiper, swiper.activeIndex]);
   return <></>;
 }

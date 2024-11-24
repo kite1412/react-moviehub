@@ -15,12 +15,18 @@ export default function Detail() {
   const [trailerId, setTrailerId] = useState("");
   const [showTrailerButton, setShowTrailerButton] = useState(0);
   const { media, isMovie } = location.state;
-  const { movieGenreList, tvGenreList } = useContext(MainContext);
+  const { 
+    movieGenreList, 
+    tvGenreList, 
+    favoriteMovies, 
+    favoriteTVs 
+  } = useContext(MainContext);
   const genres = resolveGenres(media.genre_ids, isMovie ? movieGenreList : tvGenreList);
   const coverUrl = originalImageUrl(media.poster_path);
   const backdropUrl = originalImageUrl(media.backdrop_path || media.poster_path);
   const title = isMovie ? media.title : media.name;
   const releaseYear = isMovie ? media.release_date : media.first_air_date;
+  const favorited = isMovie ? favoriteMovies.contains(media) : favoriteTVs.contains(media);
   
   useEffect(() => {
     const getTrailerLink = async () => {
@@ -93,9 +99,19 @@ export default function Detail() {
               </div>
               <div style={{ color: "rgba(255, 255, 255, 0.7)" }}>{genres}</div>
               <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
-                <IconButton icon={<Heart />} onClick={() => {
-
-                }} />
+                <IconButton
+                  icon={<Heart style={{
+                    fill: `${ favorited ? "#6100C2" : "transparent"}`,
+                    stroke: `${ favorited ? "#6100C2" : "" }`
+                  }} />} 
+                  onClick={() => {
+                    isMovie ? favorited ? favoriteMovies.remove(media) : favoriteMovies.add(media)
+                    : favorited ? favoriteTVs.remove(media) : favoriteTVs.add(media);
+                  }}
+                  style={{
+                    backgroundColor: `${favorited ? "white" : ""}`
+                  }} 
+                />
                 {
                   !showTrailerButton ? <div style={{
                       width: "120px",

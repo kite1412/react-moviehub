@@ -5,6 +5,8 @@ import { detailPath } from "../utils/paths";
 import { fixedRating, getYear } from "../utils/functions";
 import IconButton from "./IconButton";
 import { ReactComponent as Heart } from "../assets/heart.svg";
+import { useContext } from "react";
+import { MainContext } from "../contexts/MainContext";
 
 export default function TVCard({
   tv, 
@@ -13,6 +15,8 @@ export default function TVCard({
   showRating = false 
 }) {
   const navigate = useNavigate();
+  const { favoriteTVs } = useContext(MainContext);
+  const favorited = favoriteTVs.contains(tv);
   return (
     <div className={className} onClick={() => {
       navigate(detailPath(tv.id), { state: { media: tv, isMovie: false } })
@@ -25,7 +29,16 @@ export default function TVCard({
       </div>
       <img src={originalImageUrl(tv.poster_path)} alt="poster" />
       { showRating ? <Score score={fixedRating(tv.vote_average)} /> : <></> }
-      <IconButton icon={<Heart />} className="favourite-button"/>
+      <IconButton 
+        icon={<Heart style={{
+          fill: `${ favorited ? "#6100C2" : "transparent"}`
+        }} />} 
+        className={`favorite-button ${favorited ? "favorited" : "not-favorited"}`} 
+        onClick={e => {
+          e.stopPropagation();
+          favorited ? favoriteTVs.remove(tv) : favoriteTVs.add(tv);
+        }}
+      />
     </div>
   );
 }
