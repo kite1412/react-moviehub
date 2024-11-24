@@ -7,7 +7,7 @@ export const MainContext = createContext({
 });
 
 export function MainProvider({ children }) {
-  const menu = ["home", "favorites", "trending", "comingsoon"];
+  const menu = ["home", "favorites", "comingsoon"];
   const [currentMenu, setMenu] = useState(menu[0]);
   const [showSearch, setShowSearch] = useState(false);
   const [search, setSearch] = useState("");

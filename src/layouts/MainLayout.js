@@ -1,7 +1,6 @@
 import TitleLogo from "../components/TitleLogo";
 import { ReactComponent as Film } from "../assets/film.svg";
 import { ReactComponent as Heart } from "../assets/heart.svg";
-import { ReactComponent as TrendingUp } from "../assets/trending-up.svg";
 import { ReactComponent as Calendar } from "../assets/calendar.svg";
 import { ReactComponent as Profile } from "../assets/profile-circle.svg";
 import { useContext } from "react";
@@ -49,12 +48,6 @@ export default function MainLayout({ children }) {
             <Heart />
             Favorites
           </button>
-          <button style={menuItemStyle("trending")} onClick={function() {
-            setCurrentMenu("trending");
-          }}>
-            <TrendingUp />
-            Trending
-          </button>
           <button style={menuItemStyle("comingsoon")} onClick={function() {
             setCurrentMenu("comingsoon")
           }}>
@@ -85,7 +78,7 @@ export default function MainLayout({ children }) {
               setShowMovie(false);
              }}
           >
-            TVs
+            TV Shows
           </button>
         </div>
         <div style={{

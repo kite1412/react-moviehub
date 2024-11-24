@@ -11,6 +11,7 @@ import { ReactComponent as Heart } from "../assets/heart.svg";
 import { getYear, resolveGenres } from "../utils/functions";
 import { useNavigate } from "react-router-dom";
 import { detailPath } from "../utils/paths";
+import { ReactComponent as Trending } from "../assets/trending-up.svg";
 
 export default function TrendingHeader() {
   const {
@@ -57,16 +58,27 @@ export default function TrendingHeader() {
   };
   return (
     !showSearch ? <>
-      <h1 style={{
-          position: "absolute",
-          zIndex: 2,
-          color: "white",
-          marginLeft: "16px",
-          textShadow: "2px 2px 2px #6100C2",
-          marginLeft: "48px"
+      <div style={{
+        position: "absolute",
+        zIndex: 2,
+        color: "white",
+        marginLeft: "16px",
+        textShadow: "2px 2px 2px #6100C2",
+        marginLeft: "48px",
+        display: "flex",
+        alignItems: "center",
+        gap: "12px"
       }}>
-        Trending Now
-      </h1>
+        <h1>
+          Trending Now
+        </h1>
+        <Trending style={{
+          strokeWidth: "3px",
+          height: "32px",
+          width: "auto",
+          filter: "drop-shadow(2px 2px 0px #6100C2)"
+        }} />
+      </div>
       <Swiper
         className="trending-header"
         modules={[Navigation, Pagination]}

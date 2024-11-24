@@ -11,13 +11,24 @@ const SEARCH_TV_URL = BASE_URL + "/search/tv";
 const POPULAR_MOVIE_URL = MOVIE_URL + "/popular";
 const POPULAR_TV_URL = TV_URL + "/popular";
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/";
+const UPCOMING_MOVIES_URL = MOVIE_URL + "/upcoming"
+const ON_THE_AIR_TV_URL = TV_URL + "/on_the_air";
+const LANGUAGE_CONFIG_URL = BASE_URL + "/configuration/languages"
 
 const movieVideosUrl = (id) => {
   return `${MOVIE_URL}/${id}/videos`;
 };
 
+const movieDetailsUrl = (id) => {
+  return `${MOVIE_URL}/${id}`
+};
+
 const tvVideosUrl = (id) => {
   return `${TV_URL}/${id}/videos`;
+};
+
+const tvDetailsUrl = (id) => {
+  return `${TV_URL}/${id}`
 };
 
 const weekTrendingUrl = (isMovie = true) => {
@@ -98,4 +109,26 @@ export async function trendingMovies(onFail = () => {}) {
 
 export async function trendingTVs(onFail = () => {}) {
   return await get(weekTrendingUrl(false), [], onFail);
+}
+
+export async function upcomingMovies(onFail = () => {}) {
+  return await get(UPCOMING_MOVIES_URL, [], onFail);
+}
+
+export async function onTheAirTVs(onFail = () => {}) {
+  return await get(ON_THE_AIR_TV_URL, [], onFail);
+}
+
+export async function movieDetails(id, append = ["credits", "videos"], onFail = () => {}) {
+  const app = append.length ? `append_to_response=${append.join(",")}` : "";
+  return await get(movieDetailsUrl(id), [app], onFail);
+}
+
+export async function tvDetails(id, append = ["credits", "videos"], onFail = () => {}) {
+  const app = append.length ? `append_to_response=${append.join(",")}` : "";
+  return await get(tvDetailsUrl(id), [app], onFail);
+}
+
+export async function languages(onFail = () => {}) {
+  return await get(LANGUAGE_CONFIG_URL, [], onFail);
 }

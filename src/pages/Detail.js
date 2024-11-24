@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { movieVideos, originalImageUrl, tvVideos } from "../api/tmdbService";
+import { movieDetails, originalImageUrl, tvDetails } from "../api/tmdbService";
 import { useContext, useEffect, useState } from "react";
 import { MainContext } from "../contexts/MainContext";
 import { ReactComponent as Star } from "../assets/star.svg";
@@ -9,6 +9,7 @@ import { ReactComponent as Heart } from "../assets/heart.svg";
 import { ReactComponent as Play } from "../assets/play.svg";
 import { OvalLoadingIndicator } from "../components/loadingIndicator";
 import { resolveGenres } from "../utils/functions";
+import CastCards from "../components/CastCards";
 
 export default function Detail() {
   const location = useLocation();
@@ -21,22 +22,28 @@ export default function Detail() {
     favoriteMovies, 
     favoriteTVs 
   } = useContext(MainContext);
-  const genres = resolveGenres(media.genre_ids, isMovie ? movieGenreList : tvGenreList);
+  const [currentMedia, setCurrentMedia] = useState(media);
+  const genres = media.genre_ids ? resolveGenres(media.genre_ids, isMovie ? movieGenreList : tvGenreList)
+    : [];
   const coverUrl = originalImageUrl(media.poster_path);
   const backdropUrl = originalImageUrl(media.backdrop_path || media.poster_path);
   const title = isMovie ? media.title : media.name;
-  const releaseYear = isMovie ? media.release_date : media.first_air_date;
+  const releaseYear = isMovie ? media.release_date ? media.release_date : "-" 
+    : media.first_air_date ? media.first_air_date : "-";
   const favorited = isMovie ? favoriteMovies.contains(media) : favoriteTVs.contains(media);
-  
   useEffect(() => {
-    const getTrailerLink = async () => {
-      const id = await getVideos(media.id, isMovie);
-      if (id) {
-        setTrailerId(id);
-        setShowTrailerButton(1);
+    const getDetails = async () => {
+      const res = isMovie ? await movieDetails(currentMedia.id) : await tvDetails(currentMedia.id);
+      if (res) {
+        setCurrentMedia(res);
+        if (res.videos.results) {
+          const id = resolveVideo(res.videos.results);
+          setTrailerId(id);
+          setShowTrailerButton(id ? 1 : -1);
+        } else setShowTrailerButton(-1);
       } else setShowTrailerButton(-1);
     };
-    getTrailerLink();
+    getDetails();
   }, []);
   return (
     <div className="detail-page">
@@ -105,8 +112,8 @@ export default function Detail() {
                     stroke: `${ favorited ? "#6100C2" : "" }`
                   }} />} 
                   onClick={() => {
-                    isMovie ? favorited ? favoriteMovies.remove(media) : favoriteMovies.add(media)
-                    : favorited ? favoriteTVs.remove(media) : favoriteTVs.add(media);
+                    isMovie ? favorited ? favoriteMovies.remove(currentMedia) : favoriteMovies.add(currentMedia)
+                    : favorited ? favoriteTVs.remove(currentMedia) : favoriteTVs.add(currentMedia);
                   }}
                   style={{
                     backgroundColor: `${favorited ? "white" : ""}`
@@ -133,34 +140,85 @@ export default function Detail() {
               color: "rgba(255, 255, 255, 0.8)"
             }}>
               {
-                media.overview ? <div>
+                currentMedia.overview ? <div>
                   <div style={{ fontSize: "18px", fontWeight: 500, color: "white" }}>Overview</div>
                   <div style={{ fontSize: "14px", paddingTop: "4px" }}>
-                    {media.overview}
+                    {currentMedia.overview}
                   </div>
                 </div> : <></>
               }
               <div style={{ display: "flex", alignItems: "center" }}>
                 <Star style={{ height: "40px", height: "40px", opacity: 0.9 }} />
-                {fixedRating(media.vote_average)}
+                {currentMedia.vote_average ? fixedRating(currentMedia.vote_average) : "NR"}
                 <div style={{ fontSize: "18px", opacity: 0.6, marginLeft: "8px" }}>
-                  {`(${media.vote_count} votes)`}
+                  {`(${currentMedia.vote_count} votes)`}
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <div style={{
+        position: "relative",
+        paddingLeft: "64px",
+        paddingTop: "24px",
+        paddingBottom: "32px"
+      }}>
+        {
+          currentMedia.credits ? currentMedia.credits.cast.length ? <div style={{
+            display: "flex",
+            flexDirection: "column",
+            marginRight: "26vw"
+          }}>
+            <h1>Actors</h1>
+            <CastCards cast={resolveActors(currentMedia.credits.cast)} />
+          </div> : <></> : <></>
+        }
+        <div style={{
+          position: "absolute",
+          right: 0,
+          top: 0,
+          height: "100%",
+          width: "25vw",
+          paddingTop: "24px",
+          paddingLeft: "16px",
+          boxSizing: "border-box"
+        }}>
+          <div style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "32px",
+            justifyContent: "center",
+            height: "100%"
+          }}>
+            <div>
+              <div style={{ fontWeight: "bold" }}>Status</div>
+              <div>{currentMedia.status}</div>
+            </div>
+            <div>
+              <div style={{ fontWeight: "bold" }}>Original Language</div>
+              <div>{currentMedia.original_language}</div>
+            </div>
+            <div>
+              <div style={{ fontWeight: "bold" }}>Budget</div>
+              <div>{currentMedia.budget}</div>
+            </div>
+            <div>
+              <div style={{ fontWeight: "bold" }}>Revenue</div>
+              <div>{currentMedia.revenue}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>asdasf</div>
     </div>
   );
 }
 
-async function getVideos(id, isMovie) {
-  const videos = isMovie ? await movieVideos(id) : await tvVideos(id);
-  if (!videos) return "";
+function resolveVideo(videos) {
   let trailerId = "";
-  if (videos.results) {
-    videos.results.forEach(e => {
+  if (videos) {
+    videos.forEach(e => {
       if (e.type === "Trailer" && e.site === "YouTube") {
         trailerId = e.key;
         return;
@@ -168,4 +226,9 @@ async function getVideos(id, isMovie) {
     });
   }
   return trailerId;
+}
+
+function resolveActors(cast) {
+  if (!cast && !cast.length) return [];
+  return cast.filter(e => e.known_for_department === "Acting");
 }

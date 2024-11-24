@@ -311,6 +311,12 @@ input::placeholder {
   width: 100vw;
   background-image: linear-gradient(135deg, #191817, #191817, #37312A);
   color: white;
+  display: "flex";
+  flex-direction: column;
+  gap: 24px;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .icon-button {
@@ -393,7 +399,7 @@ input::placeholder {
   color: white;
   background-size: 500% 500%;
   opacity: 0.7;
-  transition: background 0.5s ease-out, opacity 0.3s linear ;
+  transition: background 0.3s ease-out, opacity 0.3s linear ;
 }
 
 .focus {
