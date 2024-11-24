@@ -6,6 +6,7 @@ import { MainContext } from "../contexts/MainContext";
 export default function SearchBar() {
   const [search, setS] = useState("");
   const { setShowSearch, setSearch, showSearch } = useContext(MainContext);
+  const [focus, setFocus] = useState(false);
   const inputRef = useRef();
   const onKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -29,19 +30,7 @@ export default function SearchBar() {
             }} 
           /> : <></>
         }
-      <button style={{
-        all: "unset",
-        height: "40px",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        border: "2px solid rgba(255, 255, 255, 0.8)",
-        cursor: "pointer",
-        paddingLeft: "16px",
-        paddingRight: "16px",
-        borderRadius: "50px",
-        color: "white"
-      }}>
+      <button className={`search-bar ${focus ? "focus" : "unfocus"}`}>
         <input 
           placeholder="Search by titles"
           style={{ all: "unset" }}
@@ -49,6 +38,8 @@ export default function SearchBar() {
           onKeyDown={onKeyDown}
           ref={inputRef}
           onChange={(e) => setS(e.target.value)}
+          onFocus={() => {setFocus(true)}}
+          onBlur={() => {setFocus(false)}}
         />
         <Search />
       </button>

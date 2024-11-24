@@ -3,6 +3,8 @@ import { originalImageUrl } from "../api/tmdbService";
 import Score from "./Score";
 import { detailPath } from "../utils/paths";
 import { fixedRating, getYear } from "../utils/functions";
+import IconButton from "./IconButton";
+import { ReactComponent as Heart } from "../assets/heart.svg";
 
 export default function TVCard({
   tv, 
@@ -22,7 +24,8 @@ export default function TVCard({
         </p>
       </div>
       <img src={originalImageUrl(tv.poster_path)} alt="poster" />
-    { showRating ? <Score score={fixedRating(tv.vote_average)} /> : <></> }
+      { showRating ? <Score score={fixedRating(tv.vote_average)} /> : <></> }
+      <IconButton icon={<Heart />} className="favourite-button"/>
     </div>
   );
 }

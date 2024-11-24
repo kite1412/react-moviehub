@@ -126,7 +126,7 @@ function Content({ e, genreList, showMovie }) {
           paddingBottom: "16px",
           fontSize: "16px"
         }} onClick={() => {
-          navigate(detailPath(e.id), { state: { media: e, isMovie: showMovie } })
+          navigate(detailPath(e.id), { state: { media: e, isMovie: showMovie } });
         }} />
         <IconButton icon={<Heart />} style={{ 
           borderRadius: "14px", 
@@ -144,5 +144,12 @@ function Reset() {
   useEffect(() => {
     swiper.slideTo(0);
   }, [showMovie]);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!swiper.isEnd) swiper.slideNext()
+        else swiper.slideTo(0);
+    }, 3500);
+    return () => clearInterval(interval);
+  }, [showMovie, swiper]);
   return <></>;
 }

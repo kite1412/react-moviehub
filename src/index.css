@@ -342,3 +342,48 @@ input::placeholder {
 .swiper-pagination-bullet-active {
   background-color: #6100C2 !important;
 }
+
+.favourite-button {
+  all: unset;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-right: 8px;
+  margin-top: 8px;
+  background-image: linear-gradient(120deg, white, gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  height: 16px;
+  width: 16px;
+  border-radius: 10px;
+  color: #6100C2;
+  transition: color 0.2s ease-in;
+}
+
+.favourite-button:hover {
+  background-image: linear-gradient(120deg, #6100C2, #bb78ff);
+  color: white;
+}
+
+.search-bar {
+  all: unset;
+  height: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  padding-left: 16px;
+  padding-right: 16px;
+  border-radius: 50px;
+  color: white;
+  background-size: 200% 200%;
+  transition: background 0.5s ease-out, border 0.5s ease-in;
+}
+
+.focus {
+  background: linear-gradient(120deg,#bb78ff 10%, #ef79f1);
+  background-size: 100% 100%;
+}
