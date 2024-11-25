@@ -171,7 +171,7 @@ function Reset() {
     const timeout = setTimeout(() => {
       if (!swiper.isEnd) swiper.slideNext()
         else swiper.slideTo(0);
-    }, 3500);
+    }, swiper.isBeginning ? 5000 : 3500);
     return () => clearTimeout(timeout);
   }, [showMovie, swiper, swiper.activeIndex]);
   return <></>;

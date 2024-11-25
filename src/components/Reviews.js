@@ -19,7 +19,8 @@ export default function Reviews({ reviews }) {
           reviews.results.map(e => {
             return <div style={{
               display: "flex",
-              flexDirection: "column"
+              flexDirection: "column",
+              gap: "4px"
             }}>
               <div style={{ display: "flex", gap: "12px" }}>
                 {
@@ -28,24 +29,25 @@ export default function Reviews({ reviews }) {
                     src={originalImageUrl(e.author_details.avatar_path)} 
                     alt="profile picture"
                     style={{
-                      height: "60px",
-                      width: "60px",
+                      height: "50px",
+                      width: "50px",
                       borderRadius: "50px",
                       padding: "4px",
                       boxSizing: "border-box"
                     }} 
                   />
-                  : <Profile style={{ height: "60px", width: "60px" }} />
+                  : <Profile style={{ height: "50px", width: "50px" }} />
                 }
-                <div style={{ display: "flex", flexDirection: "column", marginTop: "4px" }}>
+                <div style={{ display: "flex", flexDirection: "column" }}>
                   <div>{e.author}</div>
                   <div style={{ color: "gray" }}>{`Written on ${reformatDate(e)}`}</div>
                 </div>
               </div>
               <div style={{
                 boxSizing: "border-box",
-                paddingLeft: "72px",
-                textAlign: "justify"
+                paddingLeft: "62px",
+                textAlign: "justify",
+                fontSize: "14px"
               }}>{e.content}</div>
             </div>
           })

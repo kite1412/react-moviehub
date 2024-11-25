@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { movieDetails, originalImageUrl, tvDetails, languages as getLanguages } from "../api/tmdbService";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { MainContext } from "../contexts/MainContext";
 import { ReactComponent as Star } from "../assets/star.svg";
 import { fixedRating, getYear } from "../utils/functions";
@@ -11,9 +11,12 @@ import { OvalLoadingIndicator } from "../components/loadingIndicator";
 import { resolveGenres } from "../utils/functions";
 import CastCards from "../components/CastCards";
 import Reviews from "../components/Reviews";
+import MovieCards from "../components/MovieCards";
+import TVCards from "../components/TVCards";
 
 export default function Detail() {
   const location = useLocation();
+  const ref = useRef();
   const [trailerId, setTrailerId] = useState("");
   const [showTrailerButton, setShowTrailerButton] = useState(0);
   const { media, isMovie } = location.state;
@@ -38,7 +41,7 @@ export default function Detail() {
   
   useEffect(() => {
     const getDetails = async () => {
-      const res = isMovie ? await movieDetails(currentMedia.id) : await tvDetails(currentMedia.id);
+      const res = isMovie ? await movieDetails(media.id) : await tvDetails(media.id);
       if (res) {
         setCurrentMedia(res);
         if (res.videos.results) {
@@ -57,9 +60,10 @@ export default function Detail() {
     };
     getDetails();
     setOLanguage();
-  }, []);
+    ref.current.scrollTo(0, 0);
+  }, [media]);
   return (
-    <div className="detail-page">
+    <div className="detail-page" ref={ref}>
       <div style={{
         height: "70%",
         width: "100%",
@@ -181,21 +185,40 @@ export default function Detail() {
         flexDirection: "column"
       }}>
         <div style={{
-          display: "flex",
-          alignItems: "center"
+          display: "flex"
         }}>
-          {
-            currentMedia.credits ? currentMedia.credits.cast.length ? <div style={{
-              display: "flex",
-              flexDirection: "column",
-              width: "74vw"
-            }}>
-              <h1 style={{
-                textShadow: "3px 3px 0px #6100C2"
-              }}>Actors</h1>
-              <CastCards cast={resolveActors(currentMedia.credits.cast)} />
-            </div> : <></> : <></>
-          }
+          <div style={{
+                display: "flex",
+                flexDirection: "column",
+                width: "74vw",
+                gap: "40px"
+          }}>
+            {
+              currentMedia.credits ? currentMedia.credits.cast.length ? <div>
+                <h1 style={{
+                  textShadow: "3px 3px 0px #6100C2"
+                }}>Actors</h1>
+                <CastCards cast={resolveActors(currentMedia.credits.cast)} />
+              </div> : <></> : <></>
+            }
+            {
+              currentMedia.recommendations && currentMedia.recommendations.results.length ? <div style={{
+                backgroundImage: "linear-gradient(120deg, rgba(30, 30, 30, 0.5), rgba(0, 0, 0, 0.4))",
+                borderRadius: "10px",
+                padding: "24px"
+              }}>
+                <div style={{
+                  textShadow: "2px 2px 0px #6100C2",
+                  fontSize: "24px"
+                }}>Recommendations</div>
+                {
+                  isMovie ? <MovieCards movies={currentMedia.recommendations.results} genres={movieGenreList} /> :
+                  <TVCards tvs={currentMedia.recommendations.results} genres={tvGenreList} />
+                }
+              </div> : <></>
+            }
+            <Reviews reviews={currentMedia.reviews} />
+          </div>
           <div style={{
             right: 0,
             top: 0,
@@ -220,27 +243,47 @@ export default function Detail() {
               {
                 language ? <div>
                   <div style={{ fontWeight: "bold" }}>Original Language</div>
-                  <div>
-                    {language}
-                  </div>
+                  <div>{language}</div>
                 </div> : <></>
               }
               {
                 isMovie ? <div>
-                <div style={{ fontWeight: "bold" }}>Budget</div>
+                  <div style={{ fontWeight: "bold" }}>Budget</div>
                   <div>{toDollar(currentMedia.budget)}</div>
                 </div> : <></>
               }
               {
                 isMovie ? <div>
-                <div style={{ fontWeight: "bold" }}>Revenue</div>
+                  <div style={{ fontWeight: "bold" }}>Revenue</div>
                   <div>{toDollar(currentMedia.revenue)}</div>
+                </div> : <></>
+              }
+              {
+                currentMedia.keywords && currentMedia.keywords.keywords.length ? <div>
+                  <div style={{ fontWeight: "bold", paddingBottom: "4px" }}>Keywords</div>
+                  <div style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: "6px"
+                  }}>
+                    {
+                      currentMedia.keywords.keywords.map(e => {
+                        return <div style={{
+                          border: "2px solid #6100C2",
+                          borderRadius: "8px",
+                          padding: "6px",
+                          fontSize: "14px"
+                        }}>
+                          {e.name}
+                        </div>
+                      })
+                    }
+                  </div>
                 </div> : <></>
               }
             </div>
           </div>
         </div>
-        <Reviews reviews={currentMedia.reviews} />
       </div>
     </div>
   );

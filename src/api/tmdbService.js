@@ -36,6 +36,7 @@ const weekTrendingUrl = (isMovie = true) => {
 };
 
 const unincludeAdult = "include_adult=false";
+const detailDefaultFields = ["credits", "videos", "reviews", "recommendations", "keywords"];
 
 const generateUrl = (url, params = []) => {
   return `${url}?api_key=${process.env.REACT_APP_TMDB_API_KEY}&${params.join("&")}`;
@@ -119,12 +120,12 @@ export async function onTheAirTVs(onFail = () => {}) {
   return await get(ON_THE_AIR_TV_URL, [], onFail);
 }
 
-export async function movieDetails(id, append = ["credits", "videos", "reviews"], onFail = () => {}) {
+export async function movieDetails(id, append = detailDefaultFields, onFail = () => {}) {
   const app = append.length ? `append_to_response=${append.join(",")}` : "";
   return await get(movieDetailsUrl(id), [app], onFail);
 }
 
-export async function tvDetails(id, append = ["credits", "videos", "reviews"], onFail = () => {}) {
+export async function tvDetails(id, append = detailDefaultFields, onFail = () => {}) {
   const app = append.length ? `append_to_response=${append.join(",")}` : "";
   return await get(tvDetailsUrl(id), [app], onFail);
 }
