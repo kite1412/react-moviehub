@@ -260,6 +260,7 @@ input::placeholder {
   scrollbar-width: none;
   -ms-overflow-style: none; 
   background-image: linear-gradient(135deg, #191817, #191817, #37312A);
+  background-image: linear-gradient(135deg, #191817, #191817, #37312A);
   height: 100%;
   width: auto;
   align-items: center;
@@ -283,6 +284,14 @@ input::placeholder {
 .clear-search {
   height: 36px;
   width: 28px;
+  opacity: 0;
+  transform: rotate(90deg);
+  transition: opacity 0.5s ease, transform 0.6s ease;
+}
+
+.clear-visible {
+  transform: rotate(0deg);
+  opacity: 1;
 }
 
 .clear-search:hover {

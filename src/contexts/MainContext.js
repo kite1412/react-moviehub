@@ -19,6 +19,7 @@ export function MainProvider({ children }) {
   const [favTVs, setFavTVs] = useState([]);
   const favoriteMovies = new MediaCollection(favMovies, setFavMovies);
   const favoriteTVs = new MediaCollection(favTVs, setFavTVs);
+  const [languages, setLanguages] = useState([]);
   const setCurrentMenu = (m) => {
     window.scrollTo(0, 0);
     setMenu(m);
@@ -40,7 +41,9 @@ export function MainProvider({ children }) {
       selectedType,
       setSelectedType,
       favoriteMovies,
-      favoriteTVs
+      favoriteTVs,
+      languages,
+      setLanguages
     }}>
       {children}
     </MainContext.Provider>

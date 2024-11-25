@@ -21,14 +21,14 @@ export default function SearchBar() {
       alignItems: "center"
     }}>
         {
-          showSearch ? <ChevronLeft 
-            className={"clear-search"} 
+          <ChevronLeft 
+            className={`clear-search ${showSearch ? "clear-visible" : ""}`} 
             onClick={() => {
               setShowSearch(false);
               setS("");
               inputRef.current.blur();
             }} 
-          /> : <></>
+          />
         }
       <button className={`search-bar ${focus ? "focus" : "unfocus"}`}>
         <input 

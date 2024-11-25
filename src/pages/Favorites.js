@@ -7,7 +7,9 @@ export default function Favourites() {
   const {
     favoriteMovies,
     favoriteTVs,
-    showMovie
+    showMovie,
+    movieGenreList,
+    tvGenreList
   } = useContext(MainContext);
   const emptyStyle = {
     color: "white",
@@ -18,8 +20,16 @@ export default function Favourites() {
   return (
     <div className="main-content">
       {
-        showMovie ? favoriteMovies.list.length ? <MovieGrid movies={favoriteMovies.list} session={"Favorite Movies"} /> 
-        : <p style={emptyStyle}>No Listed Movies</p> : favoriteTVs.list.length ? <TVGrid tvs={favoriteTVs.list} session={"Favorite TV Shows"} />
+        showMovie ? favoriteMovies.list.length ? <MovieGrid 
+          movies={favoriteMovies.list} 
+          session={"Favorite Movies"}
+          genres={movieGenreList}
+        /> 
+        : <p style={emptyStyle}>No Listed Movies</p> : favoriteTVs.list.length ? <TVGrid 
+          tvs={favoriteTVs.list} 
+          session={"Favorite TV Shows"}
+          genres={tvGenreList} 
+        />
         : <p style={emptyStyle}>No Listed TV Shows</p>
       }
     </div>

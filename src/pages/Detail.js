@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { movieDetails, originalImageUrl, tvDetails } from "../api/tmdbService";
+import { movieDetails, originalImageUrl, tvDetails, languages as getLanguages } from "../api/tmdbService";
 import { useContext, useEffect, useState } from "react";
 import { MainContext } from "../contexts/MainContext";
 import { ReactComponent as Star } from "../assets/star.svg";
@@ -20,9 +20,12 @@ export default function Detail() {
     movieGenreList, 
     tvGenreList, 
     favoriteMovies, 
-    favoriteTVs 
+    favoriteTVs,
+    languages,
+    setLanguages 
   } = useContext(MainContext);
   const [currentMedia, setCurrentMedia] = useState(media);
+  const [language, setLanguage] = useState("");
   const genres = media.genre_ids ? resolveGenres(media.genre_ids, isMovie ? movieGenreList : tvGenreList)
     : [];
   const coverUrl = originalImageUrl(media.poster_path);
@@ -31,6 +34,7 @@ export default function Detail() {
   const releaseYear = isMovie ? media.release_date ? media.release_date : "-" 
     : media.first_air_date ? media.first_air_date : "-";
   const favorited = isMovie ? favoriteMovies.contains(media) : favoriteTVs.contains(media);
+  
   useEffect(() => {
     const getDetails = async () => {
       const res = isMovie ? await movieDetails(currentMedia.id) : await tvDetails(currentMedia.id);
@@ -43,7 +47,15 @@ export default function Detail() {
         } else setShowTrailerButton(-1);
       } else setShowTrailerButton(-1);
     };
+    const setOLanguage = async () => {
+      setLanguage(await resolveLanguage(
+        currentMedia.original_language, 
+        languages,
+        setLanguages
+      ));
+    };
     getDetails();
+    setOLanguage();
   }, []);
   return (
     <div className="detail-page">
@@ -159,23 +171,23 @@ export default function Detail() {
         </div>
       </div>
       <div style={{
-        position: "relative",
         paddingLeft: "64px",
         paddingTop: "24px",
-        paddingBottom: "32px"
+        paddingBottom: "32px",
+        display: "flex",
+        alignItems: "center"
       }}>
         {
           currentMedia.credits ? currentMedia.credits.cast.length ? <div style={{
             display: "flex",
             flexDirection: "column",
-            marginRight: "26vw"
+            width: "74vw"
           }}>
             <h1>Actors</h1>
             <CastCards cast={resolveActors(currentMedia.credits.cast)} />
           </div> : <></> : <></>
         }
         <div style={{
-          position: "absolute",
           right: 0,
           top: 0,
           height: "100%",
@@ -188,25 +200,34 @@ export default function Detail() {
             display: "flex",
             flexDirection: "column",
             gap: "32px",
-            justifyContent: "center",
             height: "100%"
           }}>
-            <div>
-              <div style={{ fontWeight: "bold" }}>Status</div>
-              <div>{currentMedia.status}</div>
-            </div>
-            <div>
-              <div style={{ fontWeight: "bold" }}>Original Language</div>
-              <div>{currentMedia.original_language}</div>
-            </div>
-            <div>
+            {
+              currentMedia.status ? <div>
+                <div style={{ fontWeight: "bold" }}>Status</div>
+                <div>{currentMedia.status}</div>
+              </div> : <></>
+            }
+            {
+              language ? <div>
+                <div style={{ fontWeight: "bold" }}>Original Language</div>
+                <div>
+                  {language}
+                </div>
+              </div> : <></>
+            }
+            {
+              isMovie ? <div>
               <div style={{ fontWeight: "bold" }}>Budget</div>
-              <div>{currentMedia.budget}</div>
-            </div>
-            <div>
+                <div>{toDollar(currentMedia.budget)}</div>
+              </div> : <></>
+            }
+            {
+              isMovie ? <div>
               <div style={{ fontWeight: "bold" }}>Revenue</div>
-              <div>{currentMedia.revenue}</div>
-            </div>
+                <div>{toDollar(currentMedia.revenue)}</div>
+              </div> : <></>
+            }
           </div>
         </div>
       </div>
@@ -232,3 +253,22 @@ function resolveActors(cast) {
   if (!cast && !cast.length) return [];
   return cast.filter(e => e.known_for_department === "Acting");
 }
+
+async function resolveLanguage(original, languages, onFetch = () => {}) {
+  let ls = languages;
+  if (!ls.length) {
+    const res = await getLanguages();
+    if (res.length) {
+      ls = res;
+      onFetch(res);
+    }
+  }
+  for (let i = 0; i < ls.length; i++) if (ls[i].iso_639_1 === original) 
+    return ls[i].english_name;
+  return "";
+}
+
+const toDollar = (value) => value ? new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+}).format(value) : "-";

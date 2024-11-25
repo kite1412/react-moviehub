@@ -50,7 +50,7 @@ export const toCards = (
   showRating = false
 ) => movies.map(e => {
   let g = "";
-  if (e.genre_ids && e.genre_ids.length != 0) {
+  if (e.genre_ids && e.genre_ids.length) {
     genres.forEach(genre => {
       if (e.genre_ids[0] == genre.id) {
         g = genre.name;
