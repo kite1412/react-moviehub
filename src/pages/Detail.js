@@ -10,6 +10,7 @@ import { ReactComponent as Play } from "../assets/play.svg";
 import { OvalLoadingIndicator } from "../components/loadingIndicator";
 import { resolveGenres } from "../utils/functions";
 import CastCards from "../components/CastCards";
+import Reviews from "../components/Reviews";
 
 export default function Detail() {
   const location = useLocation();
@@ -174,64 +175,73 @@ export default function Detail() {
         paddingLeft: "64px",
         paddingTop: "24px",
         paddingBottom: "32px",
+        paddingRight: "64px",
+        gap: "40px",
         display: "flex",
-        alignItems: "center"
+        flexDirection: "column"
       }}>
-        {
-          currentMedia.credits ? currentMedia.credits.cast.length ? <div style={{
-            display: "flex",
-            flexDirection: "column",
-            width: "74vw"
-          }}>
-            <h1>Actors</h1>
-            <CastCards cast={resolveActors(currentMedia.credits.cast)} />
-          </div> : <></> : <></>
-        }
         <div style={{
-          right: 0,
-          top: 0,
-          height: "100%",
-          width: "25vw",
-          paddingTop: "24px",
-          paddingLeft: "16px",
-          boxSizing: "border-box"
+          display: "flex",
+          alignItems: "center"
         }}>
+          {
+            currentMedia.credits ? currentMedia.credits.cast.length ? <div style={{
+              display: "flex",
+              flexDirection: "column",
+              width: "74vw"
+            }}>
+              <h1 style={{
+                textShadow: "3px 3px 0px #6100C2"
+              }}>Actors</h1>
+              <CastCards cast={resolveActors(currentMedia.credits.cast)} />
+            </div> : <></> : <></>
+          }
           <div style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "32px",
-            height: "100%"
+            right: 0,
+            top: 0,
+            height: "100%",
+            width: "25vw",
+            paddingTop: "24px",
+            paddingLeft: "16px",
+            boxSizing: "border-box"
           }}>
-            {
-              currentMedia.status ? <div>
-                <div style={{ fontWeight: "bold" }}>Status</div>
-                <div>{currentMedia.status}</div>
-              </div> : <></>
-            }
-            {
-              language ? <div>
-                <div style={{ fontWeight: "bold" }}>Original Language</div>
-                <div>
-                  {language}
-                </div>
-              </div> : <></>
-            }
-            {
-              isMovie ? <div>
-              <div style={{ fontWeight: "bold" }}>Budget</div>
-                <div>{toDollar(currentMedia.budget)}</div>
-              </div> : <></>
-            }
-            {
-              isMovie ? <div>
-              <div style={{ fontWeight: "bold" }}>Revenue</div>
-                <div>{toDollar(currentMedia.revenue)}</div>
-              </div> : <></>
-            }
+            <div style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "32px",
+              height: "100%"
+            }}>
+              {
+                currentMedia.status ? <div>
+                  <div style={{ fontWeight: "bold" }}>Status</div>
+                  <div>{currentMedia.status}</div>
+                </div> : <></>
+              }
+              {
+                language ? <div>
+                  <div style={{ fontWeight: "bold" }}>Original Language</div>
+                  <div>
+                    {language}
+                  </div>
+                </div> : <></>
+              }
+              {
+                isMovie ? <div>
+                <div style={{ fontWeight: "bold" }}>Budget</div>
+                  <div>{toDollar(currentMedia.budget)}</div>
+                </div> : <></>
+              }
+              {
+                isMovie ? <div>
+                <div style={{ fontWeight: "bold" }}>Revenue</div>
+                  <div>{toDollar(currentMedia.revenue)}</div>
+                </div> : <></>
+              }
+            </div>
           </div>
         </div>
+        <Reviews reviews={currentMedia.reviews} />
       </div>
-      <div>asdasf</div>
     </div>
   );
 }
@@ -270,5 +280,5 @@ async function resolveLanguage(original, languages, onFetch = () => {}) {
 
 const toDollar = (value) => value ? new Intl.NumberFormat("en-US", {
   style: "currency",
-  currency: "USD",
+  currency: "USD"
 }).format(value) : "-";

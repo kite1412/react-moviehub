@@ -119,12 +119,12 @@ export async function onTheAirTVs(onFail = () => {}) {
   return await get(ON_THE_AIR_TV_URL, [], onFail);
 }
 
-export async function movieDetails(id, append = ["credits", "videos"], onFail = () => {}) {
+export async function movieDetails(id, append = ["credits", "videos", "reviews"], onFail = () => {}) {
   const app = append.length ? `append_to_response=${append.join(",")}` : "";
   return await get(movieDetailsUrl(id), [app], onFail);
 }
 
-export async function tvDetails(id, append = ["credits", "videos"], onFail = () => {}) {
+export async function tvDetails(id, append = ["credits", "videos", "reviews"], onFail = () => {}) {
   const app = append.length ? `append_to_response=${append.join(",")}` : "";
   return await get(tvDetailsUrl(id), [app], onFail);
 }
