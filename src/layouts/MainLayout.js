@@ -7,6 +7,7 @@ import { useContext } from "react";
 import { MainContext } from "../contexts/MainContext";
 import SearchBar from "../components/SearchBar";
 import { AuthContext } from "../contexts/AuthContext";
+import { Toast } from "../utils/toast";
 
 export default function MainLayout({ children }) {
   const { 
@@ -96,6 +97,7 @@ export default function MainLayout({ children }) {
       </div>
       <div id="main-content">
         {children}
+        <Toast />
       </div>
     </div>
   );

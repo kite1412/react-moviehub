@@ -12,6 +12,7 @@ import { getYear, resolveGenres } from "../utils/functions";
 import { useNavigate } from "react-router-dom";
 import { detailPath } from "../utils/paths";
 import { ReactComponent as Trending } from "../assets/trending-up.svg";
+import { toastError, toastSuccess } from "../utils/toast";
 
 export default function TrendingHeader() {
   const {
@@ -154,6 +155,8 @@ function Content({ e, genreList, showMovie }) {
           onClick={() => {
             showMovie ? favorited ? favoriteMovies.remove(e) : favoriteMovies.add(e)
             : favorited ? favoriteTVs.remove(e) : favoriteTVs.add(e);
+            favorited ? toastError(`${showMovie ? e.title : e.name} removed from favorites`) : 
+              toastSuccess(`${showMovie ? e.title : e.name} added to favorites`)
           }} 
         />
       </div>

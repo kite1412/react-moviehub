@@ -13,6 +13,8 @@ import CastCards from "../components/CastCards";
 import Reviews from "../components/Reviews";
 import MovieCards from "../components/MovieCards";
 import TVCards from "../components/TVCards";
+import { Toast } from "../utils/toast";
+import { toastError, toastSuccess } from "../utils/toast";
 
 export default function Detail() {
   const location = useLocation();
@@ -131,6 +133,8 @@ export default function Detail() {
                   onClick={() => {
                     isMovie ? favorited ? favoriteMovies.remove(currentMedia) : favoriteMovies.add(currentMedia)
                     : favorited ? favoriteTVs.remove(currentMedia) : favoriteTVs.add(currentMedia);
+                    favorited ? toastError(`${isMovie ? media.title : media.name} removed from favorites`) : 
+                      toastSuccess(`${isMovie ? media.title : media.name} added to favorites`)
                   }}
                   style={{
                     backgroundColor: `${favorited ? "white" : ""}`
@@ -209,7 +213,8 @@ export default function Detail() {
               }}>
                 <div style={{
                   textShadow: "2px 2px 0px #6100C2",
-                  fontSize: "24px"
+                  fontSize: "24px",
+                  fontWeight: "bold"
                 }}>Recommendations</div>
                 {
                   isMovie ? <MovieCards movies={currentMedia.recommendations.results} genres={movieGenreList} /> :
@@ -259,32 +264,34 @@ export default function Detail() {
                 </div> : <></>
               }
               {
-                currentMedia.keywords && currentMedia.keywords.keywords.length ? <div>
-                  <div style={{ fontWeight: "bold", paddingBottom: "4px" }}>Keywords</div>
-                  <div style={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: "6px"
-                  }}>
-                    {
-                      currentMedia.keywords.keywords.map(e => {
-                        return <div style={{
-                          border: "2px solid #6100C2",
-                          borderRadius: "8px",
-                          padding: "6px",
-                          fontSize: "14px"
-                        }}>
-                          {e.name}
-                        </div>
-                      })
-                    }
-                  </div>
-                </div> : <></>
+                currentMedia.keywords && 
+                  (isMovie ? currentMedia.keywords.keywords.length : currentMedia.keywords.results.length) ? <div>
+                    <div style={{ fontWeight: "bold", paddingBottom: "4px" }}>Keywords</div>
+                    <div style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: "6px"
+                    }}>
+                      {
+                        (isMovie ? currentMedia.keywords.keywords : currentMedia.keywords.results).map(e => {
+                          return <div style={{
+                            border: "2px solid #6100C2",
+                            borderRadius: "8px",
+                            padding: "6px",
+                            fontSize: "14px"
+                          }}>
+                            {e.name}
+                          </div>
+                        })
+                      }
+                    </div>
+                  </div> : <></>
               }
             </div>
           </div>
         </div>
       </div>
+      <Toast />
     </div>
   );
 }

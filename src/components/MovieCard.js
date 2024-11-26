@@ -7,6 +7,7 @@ import IconButton from "./IconButton";
 import { ReactComponent as Heart } from "../assets/heart.svg";
 import { useContext } from "react";
 import { MainContext } from "../contexts/MainContext";
+import { toastError, toastSuccess } from "../utils/toast";
 
 export default function MovieCard({
   movie,
@@ -37,6 +38,7 @@ export default function MovieCard({
         onClick={e => {
           e.stopPropagation();
           favorited ? favoriteMovies.remove(movie) : favoriteMovies.add(movie);
+          favorited ? toastError(`${movie.title} removed from favorites`) : toastSuccess(`${movie.title} added to favorites`);
         }}
       />
     </div>
