@@ -10,7 +10,7 @@ import { SIGNUP_PATH, detailPath } from "./utils/paths"
 import Main from './pages/Main';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   let page;
   if (!isLoggedIn) page = Login;
   else page = Main;
