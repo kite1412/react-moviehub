@@ -13,8 +13,7 @@ import CastCards from "../components/CastCards";
 import Reviews from "../components/Reviews";
 import MovieCards from "../components/MovieCards";
 import TVCards from "../components/TVCards";
-import { Toast } from "../utils/toast";
-import { toastError, toastSuccess } from "../utils/toast";
+import { Toast, toastError, toastSuccess } from "../utils/toast";
 
 export default function Detail() {
   const location = useLocation();

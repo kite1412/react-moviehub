@@ -5,11 +5,12 @@ import { MainContext } from "../contexts/MainContext";
 
 export default function SearchBar() {
   const [search, setS] = useState("");
-  const { setShowSearch, setSearch, showSearch } = useContext(MainContext);
+  const { setShowSearch, setSearch, showSearch, setCurrentMenu } = useContext(MainContext);
   const [focus, setFocus] = useState(false);
   const inputRef = useRef();
   const onKeyDown = (e) => {
     if (e.key === "Enter") {
+      setCurrentMenu("home");
       setShowSearch(true);
       setSearch(search);
     }

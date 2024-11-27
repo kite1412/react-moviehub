@@ -5,7 +5,7 @@ import { Button } from "./Button";
 import { ReactComponent as Clear } from "../assets/cancel.svg";
 import { AuthContext } from "../contexts/AuthContext";
 import { OvalLoadingIndicator } from "./loadingIndicator";
-import { Toast, toastSuccess } from "../utils/toast";
+import { toastSuccess } from "../utils/toast";
 
 export default function Reviews({ reviews }) {
   const [active, setActive] = useState(false);
@@ -85,7 +85,8 @@ export default function Reviews({ reviews }) {
                       content: inputValue,
                       author_details: {
                         avatar_path: ""
-                      }
+                      },
+                      me: true
                     } 
                     , ...revs
                   ]
@@ -128,7 +129,7 @@ export default function Reviews({ reviews }) {
                   : <Profile style={{ height: "50px", width: "50px" }} />
                 }
                 <div style={{ display: "flex", flexDirection: "column" }}>
-                  <div>{e.author}</div>
+                  <div>{e.author}{e.me ? <span style={{ color: "grey", fontSize: "14px", marginLeft: "8px" }}>(you)</span> : <></>}</div>
                   <div style={{ color: "gray" }}>{`Written on ${reformatDate(e)}`}</div>
                 </div>
               </div>
@@ -142,7 +143,6 @@ export default function Reviews({ reviews }) {
           }) : <h3 style={{ width: "100%", display: "flex", justifyContent: "center" }}>No reviews yet</h3>
         }
       </div>
-      <Toast />
     </div>
   );
 }
