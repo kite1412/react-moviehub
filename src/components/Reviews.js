@@ -20,7 +20,7 @@ export default function Reviews({ reviews }) {
   }, [reviews]);
 
   return (
-    revs && revs.length ? <div style={{
+    <div style={{
       display: "flex",
       flexDirection: "column"
     }}>
@@ -105,7 +105,7 @@ export default function Reviews({ reviews }) {
         marginTop: "24px"
       }}>
         {
-          revs.map(e => {
+          revs && revs.length ? revs.map(e => {
             return <div style={{
               display: "flex",
               flexDirection: "column",
@@ -139,11 +139,11 @@ export default function Reviews({ reviews }) {
                 fontSize: "14px"
               }}>{e.content}</div>
             </div>
-          })
+          }) : <h3 style={{ width: "100%", display: "flex", justifyContent: "center" }}>No reviews yet</h3>
         }
       </div>
       <Toast />
-    </div> : <></>
+    </div>
   );
 }
 

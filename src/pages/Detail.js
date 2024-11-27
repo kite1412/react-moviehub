@@ -192,10 +192,12 @@ export default function Detail() {
           display: "flex"
         }}>
           <div style={{
-                display: "flex",
-                flexDirection: "column",
-                width: "74vw",
-                gap: "40px"
+            display: "flex",
+            flexDirection: "column",
+            width: "74vw",
+            gap: "40px",
+            boxSizing: "border-box",
+            paddingBottom: "64px"
           }}>
             {
               currentMedia.credits ? currentMedia.credits.cast.length ? <div>
@@ -252,6 +254,29 @@ export default function Detail() {
                 </div> : <></>
               }
               {
+                !isMovie ? currentMedia.networks && currentMedia.networks.length ? <div>
+                  <div style={{ fontWeight: "bold" }}>Available In</div>
+                  <div style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: "2px"
+                  }}>
+                    {
+                      currentMedia.networks.map(e => {
+                        return <>
+                          <img src={originalImageUrl(e.logo_path)} alt="logo" style={{
+                            height: "24px",
+                            width: "auto",
+                            backgroundColor: "white",
+                            padding: "2px"
+                          }} />
+                        </>
+                      })
+                    }
+                  </div>
+                </div> : <></> : <></>
+              }
+              {
                 isMovie ? <div>
                   <div style={{ fontWeight: "bold" }}>Budget</div>
                   <div>{toDollar(currentMedia.budget)}</div>
@@ -262,6 +287,12 @@ export default function Detail() {
                   <div style={{ fontWeight: "bold" }}>Revenue</div>
                   <div>{toDollar(currentMedia.revenue)}</div>
                 </div> : <></>
+              }
+              {
+                isMovie ? currentMedia.runtime ? <div>
+                  <div style={{ fontWeight: "bold" }}>Duration</div>
+                  <div>{resolveRuntime(currentMedia.runtime)}</div>
+                </div> : <></> : <></>
               }
               {
                 currentMedia.keywords && 
@@ -332,3 +363,9 @@ const toDollar = (value) => value ? new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD"
 }).format(value) : "-";
+
+const resolveRuntime = runtime => {
+  const hours = Math.floor(runtime / 60);
+  const minutes = runtime % 60;
+  return `${hours} ${hours > 1 ? "hours" : "hour"} ${minutes} ${minutes > 1 ? "minutes" : "minute"}`;
+}
