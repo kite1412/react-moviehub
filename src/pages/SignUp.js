@@ -10,7 +10,9 @@ export default function SignUp() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [complete, setComplete] = useState(false);
   const { registeredUser, addUser, setUser } = useContext(AuthContext);
+  const actionDisabled = complete || !username || !password || !confirmPassword;
   const navigate = useNavigate();
   const signUp = () => {
     if (username == "" || password == "") {
@@ -24,6 +26,7 @@ export default function SignUp() {
       }
     } 
     if (password === confirmPassword) {
+      setComplete(true);
       toastSuccess("You are signed up");
       addUser({ 
         username: username,
@@ -36,14 +39,41 @@ export default function SignUp() {
     }
     else toastError("Password doesn't match!");
   };
+  const onKeyDown = e => {
+    if (e.key === "Enter") signUp();
+  }; 
   return (
     <div className="login-page">
       <TitleLogo />
       <div style={{color: 'white'}}>Discover millions of movies</div>
-      <OutlinedTextField label="New Username" input={username} onChange={setUsername} />
-      <OutlinedTextField label="Password" input={password} onChange={setPassword} isSensitive={true} />
-      <OutlinedTextField label="Confirm Password" input={confirmPassword} onChange={setConfirmPassword} isSensitive={true} />
-      <Button action={"Sign up"} onClick={signUp} />
+      <OutlinedTextField 
+        label="New Username" 
+        input={username} 
+        onChange={setUsername}
+        onKeyDown={onKeyDown} 
+      />
+      <OutlinedTextField 
+        label="Password" 
+        input={password} 
+        onChange={setPassword} 
+        isSensitive={true}
+        onKeyDown={onKeyDown}
+      />
+      <OutlinedTextField 
+        label="Confirm Password" 
+        input={confirmPassword} 
+        onChange={setConfirmPassword} 
+        isSensitive={true}
+        onKeyDown={onKeyDown} 
+      />
+      <Button 
+        action={"Sign up"} 
+        onClick={signUp}
+        disabled={actionDisabled}
+        style={{
+          backgroundColor: actionDisabled ? "grey" : ""
+        }}
+      />
       <Toast />
     </div>
   );

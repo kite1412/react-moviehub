@@ -96,6 +96,7 @@ input::placeholder {
   padding-top: 12px;
   padding-bottom: 12px;
   border: none;
+  transition: background-color 0.2s ease-in;
 }
 
 .button-default:hover {
