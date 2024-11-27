@@ -8,15 +8,20 @@ import Detail from './pages/Detail';
 import { HomeProvider } from './contexts/HomeContext';
 import { SIGNUP_PATH, detailPath } from "./utils/paths"
 import Main from './pages/Main';
+import { toastError } from './utils/toast';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   let page;
-  if (!isLoggedIn) page = Login;
-  else page = Main;
+  const logout = () => {
+    setIsLoggedIn(false);
+    setTimeout(() => toastError("Logged out"), 100);
+  };
+  if (!isLoggedIn) page = <Login />;
+  else page = <Main logout={logout} />;
   const login = () => {
     setIsLoggedIn(true);
-    page = Main;
+    page = <Main logout={logout} />;
   };
   return (
     <Router>
@@ -24,8 +29,8 @@ function App() {
         <AuthProvider children={
           <HomeProvider children={
             <Routes>
-              <Route path="/" Component={page} />
-              <Route path={SIGNUP_PATH} Component={SignUp}/>
+              <Route path="/" element={page} />
+              <Route path={SIGNUP_PATH} element={<SignUp />} />
               <Route path={detailPath()} Component={Detail} />
             </Routes>
           } />

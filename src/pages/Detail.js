@@ -255,7 +255,7 @@ export default function Detail() {
               }
               {
                 !isMovie ? currentMedia.networks && currentMedia.networks.length ? <div>
-                  <div style={{ fontWeight: "bold" }}>Available In</div>
+                  <div style={{ fontWeight: "bold" }}>Available On</div>
                   <div style={{
                     display: "flex",
                     flexWrap: "wrap",

@@ -3,13 +3,14 @@ import { ReactComponent as Film } from "../assets/film.svg";
 import { ReactComponent as Heart } from "../assets/heart.svg";
 import { ReactComponent as Calendar } from "../assets/calendar.svg";
 import { ReactComponent as Profile } from "../assets/profile-circle.svg";
-import { useContext } from "react";
+import { ReactComponent as Exit } from "../assets/exit.svg";
+import { useContext, useState } from "react";
 import { MainContext } from "../contexts/MainContext";
 import SearchBar from "../components/SearchBar";
 import { AuthContext } from "../contexts/AuthContext";
 import { Toast } from "../utils/toast";
 
-export default function MainLayout({ children }) {
+export default function MainLayout({ children, logout }) {
   const { 
     currentMenu,
     setCurrentMenu, 
@@ -18,6 +19,19 @@ export default function MainLayout({ children }) {
     setSelectedType
   } = useContext(MainContext);
   const { currentUser } = useContext(AuthContext);
+  const [logoutWarning, setLogoutWarning] = useState(false);
+  const [animateOut, setAnimateOut] = useState(false);
+  const dismissLogout = (loggedOut = false) => {
+    setAnimateOut(true);
+    setTimeout(() => {
+      setLogoutWarning(false);
+      setAnimateOut(false);
+      if (loggedOut) {
+        setCurrentMenu("home");
+        logout();
+      }
+    }, 300);
+  };
   const menuItemStyle = (menu) => {
     return {
       all: "unset",
@@ -25,16 +39,21 @@ export default function MainLayout({ children }) {
       cursor: "pointer",
       display: "flex",
       gap: "16px",
-      opacity: currentMenu == menu ? 1 : 0.7
+      opacity: currentMenu == menu ? 1 : 0.6,
+      transition: "opacity 0.4s linear"
     };
   };
   return (
-    <div className="main-layout">
+    <div className="main-layout" style={{
+      overflow: logoutWarning ? "hidden" : ""
+    }}>
       <div id="navbar">
         <div style={{
           width: "100%",
           paddingTop: "22px",
-          paddingLeft: "32px"
+          paddingLeft: "32px",
+          display: "flex",
+          flexDirection: "column"
         }}><TitleLogo /></div>
         <div id="menu">
           <button style={menuItemStyle("home")} onClick={function() {
@@ -55,6 +74,14 @@ export default function MainLayout({ children }) {
             <Calendar />
             Coming Soon
           </button>
+          <div style={{ marginTop: "32px" }}>
+            <button style={menuItemStyle("")} onClick={function() {
+              setLogoutWarning(true);
+            }}>
+              <Exit style={{ height: "28px", width: "28px" }} />
+              Logout
+            </button>
+          </div>
         </div>
       </div>
       <div id="header">
@@ -98,6 +125,44 @@ export default function MainLayout({ children }) {
       <div id="main-content">
         {children}
         <Toast />
+      </div>
+      <div style={{
+        position: "absolute",
+        opacity: logoutWarning && !animateOut ? 1 : 0,
+        height: "100vh",
+        width: "100vw",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        transition: "opacity 0.3s ease-in-out",
+        zIndex: logoutWarning ? 10 : -2,
+        backdropFilter: "blur(10px)",
+        overflow: "hidden"
+      }}>
+        <div style={{
+          backgroundColor: "rgb(40, 40, 40)",
+          borderRadius: "16px",
+          padding: "16px",
+          color: "white",
+          display: "flex",
+          flexDirection: "column",
+          gap: "16px"
+        }}>
+          <h4>Are you sure you want to log out?</h4>
+          <div style={{ 
+            display: "flex", 
+            justifyContent: "space-around",
+            paddingBottom: "8px" 
+          }}>
+            <span style={{ cursor: "pointer" }} onClick={() => {
+              dismissLogout();
+            }}>Cancel</span>
+            <span style={{ color: "red", cursor: "pointer" }} onClick={() => {
+              dismissLogout(true);
+            }}>Log Out</span>
+          </div>
+        </div>
       </div>
     </div>
   );

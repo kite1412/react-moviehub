@@ -4,7 +4,7 @@ import MainLayout from "../layouts/MainLayout";
 import Home from "./Home";
 import Favourites from "./Favorites";
 
-export default function Main() {
+export default function Main({logout}) {
   const { currentMenu } = useContext(MainContext);
   const currentPage = () => {
     switch (currentMenu) {
@@ -15,6 +15,6 @@ export default function Main() {
     }
   };
   return (
-    <MainLayout children={currentPage()}/>
+    <MainLayout children={currentPage()} logout={logout} />
   );
 }
