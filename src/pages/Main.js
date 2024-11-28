@@ -4,6 +4,7 @@ import MainLayout from "../layouts/MainLayout";
 import Home from "./Home";
 import Favourites from "./Favorites";
 import { HomeContext } from "../contexts/HomeContext";
+import Watchlist from "./Watchlist";
 
 export default function Main({logout}) {
   const { currentMenu } = useContext(MainContext);
@@ -12,6 +13,8 @@ export default function Main({logout}) {
     switch (currentMenu) {
       case "favorites":
         return <Favourites />
+      case "watchlist":
+        return <Watchlist />
       default:
         return <Home />;
     }

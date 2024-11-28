@@ -7,6 +7,7 @@ import { fixedRating, getYear } from "../utils/functions";
 import IconButton from "../components/IconButton";
 import { ReactComponent as Heart } from "../assets/heart.svg";
 import { ReactComponent as Play } from "../assets/play.svg";
+import { ReactComponent as Bookmark } from "../assets/bookmark.svg";
 import { OvalLoadingIndicator } from "../components/loadingIndicator";
 import { resolveGenres } from "../utils/functions";
 import CastCards from "../components/CastCards";
@@ -27,7 +28,9 @@ export default function Detail() {
     favoriteMovies, 
     favoriteTVs,
     languages,
-    setLanguages 
+    setLanguages,
+    movieWatchlist,
+    tvWatchlist
   } = useContext(MainContext);
   const [currentMedia, setCurrentMedia] = useState(media);
   const [language, setLanguage] = useState("");
@@ -39,7 +42,8 @@ export default function Detail() {
   const releaseYear = isMovie ? media.release_date ? media.release_date : "-" 
     : media.first_air_date ? media.first_air_date : "-";
   const favorited = isMovie ? favoriteMovies.contains(media) : favoriteTVs.contains(media);
-  
+  const watchlisted = isMovie ? movieWatchlist.contains(currentMedia) : tvWatchlist.contains(currentMedia);
+
   useEffect(() => {
     setCurrentMedia(media);
     const getDetails = async () => {
@@ -135,11 +139,26 @@ export default function Detail() {
                     isMovie ? favorited ? favoriteMovies.remove(currentMedia) : favoriteMovies.add(currentMedia)
                     : favorited ? favoriteTVs.remove(currentMedia) : favoriteTVs.add(currentMedia);
                     favorited ? toastError(`${isMovie ? media.title : media.name} removed from favorites`) : 
-                      toastSuccess(`${isMovie ? media.title : media.name} added to favorites`)
+                      toastSuccess(`${isMovie ? media.title : media.name} added to favorites`);
                   }}
                   style={{
                     backgroundColor: `${favorited ? "white" : ""}`
                   }} 
+                />
+                <IconButton
+                  icon={<Bookmark style={{
+                    fill: watchlisted ? "#6100C2" : "transparent",
+                    color: watchlisted ? "#6100C2" : ""
+                  }} />}
+                  onClick={() => {
+                    isMovie ? watchlisted ? movieWatchlist.remove(currentMedia) : movieWatchlist.add(currentMedia)
+                    : watchlisted ? tvWatchlist.remove(currentMedia) : tvWatchlist.add(currentMedia);
+                    watchlisted ? toastError(`${isMovie ? media.title : media.name} removed from watchlist`) : 
+                      toastSuccess(`${isMovie ? media.title : media.name} added to watchlist`)
+                  }} 
+                  style={{
+                    backgroundColor: `${watchlisted ? "white" : ""}`
+                  }}
                 />
                 {
                   !showTrailerButton ? <div style={{

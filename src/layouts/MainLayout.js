@@ -4,6 +4,7 @@ import { ReactComponent as Heart } from "../assets/heart.svg";
 import { ReactComponent as Calendar } from "../assets/calendar.svg";
 import { ReactComponent as Profile } from "../assets/profile-circle.svg";
 import { ReactComponent as Exit } from "../assets/exit.svg";
+import { ReactComponent as Bookmark } from "../assets/bookmark.svg";
 import { useContext, useState } from "react";
 import { MainContext } from "../contexts/MainContext";
 import SearchBar from "../components/SearchBar";
@@ -16,8 +17,7 @@ export default function MainLayout({ children, logout }) {
     setCurrentMenu, 
     setShowMovie,
     selectedType,
-    setSelectedType,
-    
+    setSelectedType
   } = useContext(MainContext);
   const { currentUser } = useContext(AuthContext);
   const [logoutWarning, setLogoutWarning] = useState(false);
@@ -75,8 +75,20 @@ export default function MainLayout({ children, logout }) {
             <Calendar />
             Coming Soon
           </button>
+          <button style={menuItemStyle("watchlist")} onClick={function() {
+            setCurrentMenu("watchlist")
+          }}>
+            <Bookmark />
+            Watchlist
+          </button>
           <div style={{ marginTop: "32px" }}>
-            <button style={menuItemStyle("")} onClick={function() {
+            <button style={{
+              all: "unset",
+              color: "#DC143C",
+              cursor: "pointer",
+              display: "flex",
+              gap: "16px"
+            }} onClick={function() {
               setLogoutWarning(true);
             }}>
               <Exit style={{ height: "28px", width: "28px" }} />

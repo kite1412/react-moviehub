@@ -17,8 +17,12 @@ export function MainProvider({ children }) {
   const [selectedType, setSelectedType] = useState("movie");
   const [favMovies, setFavMovies] = useState([]);
   const [favTVs, setFavTVs] = useState([]);
+  const [mWatchlist, setMWatchlist] = useState([]);
+  const [tWatchlist, setTWatchlist] = useState([]);
   const favoriteMovies = new MediaCollection(favMovies, setFavMovies);
   const favoriteTVs = new MediaCollection(favTVs, setFavTVs);
+  const movieWatchlist = new MediaCollection(mWatchlist, setMWatchlist);
+  const tvWatchlist = new MediaCollection(tWatchlist, setTWatchlist);
   const [languages, setLanguages] = useState([]);
   const setCurrentMenu = (m) => {
     window.scrollTo(0, 0);
@@ -43,7 +47,9 @@ export function MainProvider({ children }) {
       favoriteMovies,
       favoriteTVs,
       languages,
-      setLanguages
+      setLanguages,
+      movieWatchlist,
+      tvWatchlist
     }}>
       {children}
     </MainContext.Provider>
