@@ -5,6 +5,7 @@ import LoadingIndicator from "../components/loadingIndicator";
 import MovieGrid from "../components/MovieGrid";
 import TVGrid from "../components/TVGrid";
 import PageLoading from "../components/PageLoading";
+import { ReactComponent as VideoSlash } from "../assets/video-slash.svg";
 
 export default function SearchResult() {
   const [result, setResult] = useState({data: [], status: 0});
@@ -32,12 +33,19 @@ export default function SearchResult() {
     fetchResult();
   }, [search, showMovie]);
   return (
-    result.status === 0 ? <PageLoading /> : result.status === -1 ? <p style={{
-      color: "white",
-      fontSize: "24px"
+    result.status === 0 ? <PageLoading /> : result.status === -1 ? <div style={{
+      color: "#412161",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      height: "90%",
+      boxSizing: "border-box",
+      paddingBottom: "65px"
     }}>
-      No results
-    </p> :
+      <VideoSlash style={{ height: "170px", width: "170px" }} />
+      <h2>No results found</h2>
+    </div> :
     <div className="search-result">
       {
         showMovie ? <MovieGrid session={`Results for "${result.title}"`} movies={result.data} genres={movieGenreList} />

@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { MainContext } from "../contexts/MainContext";
 import MovieGrid from "../components/MovieGrid";
 import TVGrid from "../components/TVGrid";
+import { ReactComponent as BookmarkSlash } from "../assets/bookmark-slash.svg";
 
 export default function Watchlist() {
   const {
@@ -11,12 +12,22 @@ export default function Watchlist() {
     movieWatchlist,
     tvWatchlist
   } = useContext(MainContext);
-  const emptyStyle = {
-    color: "white",
-    fontSize: "24px",
-    fontStyle: "italic",
-    fontWeight: "bold"
-  };
+  const empty = <div style={{
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "90%",
+    paddingBottom: "65px",
+    boxSizing: "border-box",
+    color: "#412161"
+  }}>
+    <BookmarkSlash style={{
+      height: "170px",
+      width: "170px"
+    }} />
+    <h2>{showMovie ? "Movie" : "TV Show"} watchlist is empty</h2>
+  </div>;
   return (
     <div className="main-content">
       {
@@ -25,12 +36,12 @@ export default function Watchlist() {
           session={"Movie Watchlist"}
           genres={movieGenreList}
         /> 
-        : <p style={emptyStyle}>Watchlist is empty</p> : tvWatchlist.list.length ? <TVGrid 
+        : empty : tvWatchlist.list.length ? <TVGrid 
           tvs={tvWatchlist.list} 
           session={"TV Show Watchlist"}
           genres={tvGenreList} 
         />
-        : <p style={emptyStyle}>Watchlist is empty</p>
+        : empty
       }
     </div>
   );
