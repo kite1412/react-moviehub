@@ -74,7 +74,7 @@ export default function Home() {
   return (
     <>
       <TrendingHeader />
-      <div className="main-content">
+      <div className="main-content" style={{ overflowY: !showSearch ? "hidden" : "" }}>
         {
           showSearch ? <SearchResult /> : showMovie ? <>
             { popularMovies.length == 0 && topRatedMovies.length == 0 ? <PageLoading /> : <></> }

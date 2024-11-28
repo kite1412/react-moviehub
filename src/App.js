@@ -12,16 +12,12 @@ import { toastError } from './utils/toast';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  let page;
   const logout = () => {
     setIsLoggedIn(false);
     setTimeout(() => toastError("Logged out"), 100);
   };
-  if (!isLoggedIn) page = <Login />;
-  else page = <Main logout={logout} />;
   const login = () => {
     setIsLoggedIn(true);
-    page = <Main logout={logout} />;
   };
   return (
     <Router>
@@ -29,7 +25,11 @@ function App() {
         <AuthProvider children={
           <HomeProvider children={
             <Routes>
-              <Route path="/" element={page} />
+              <Route path="/" element={<>
+                {
+                  isLoggedIn ? <Main logout={logout} /> : <Login />
+                }
+              </>} />
               <Route path={SIGNUP_PATH} element={<SignUp />} />
               <Route path={detailPath()} Component={Detail} />
             </Routes>

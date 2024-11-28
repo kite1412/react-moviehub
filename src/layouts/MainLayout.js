@@ -16,7 +16,8 @@ export default function MainLayout({ children, logout }) {
     setCurrentMenu, 
     setShowMovie,
     selectedType,
-    setSelectedType
+    setSelectedType,
+    
   } = useContext(MainContext);
   const { currentUser } = useContext(AuthContext);
   const [logoutWarning, setLogoutWarning] = useState(false);

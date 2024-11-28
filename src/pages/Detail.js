@@ -41,10 +41,20 @@ export default function Detail() {
   const favorited = isMovie ? favoriteMovies.contains(media) : favoriteTVs.contains(media);
   
   useEffect(() => {
+    setCurrentMedia(media);
     const getDetails = async () => {
       const res = isMovie ? await movieDetails(media.id) : await tvDetails(media.id);
+      const setOLanguage = async () => {
+        const res = await resolveLanguage(
+          media.original_language, 
+          languages,
+          setLanguages
+        );
+        setLanguage(res);
+      };
       if (res) {
         setCurrentMedia(res);
+        setOLanguage();
         if (res.videos.results) {
           const id = resolveVideo(res.videos.results);
           setTrailerId(id);
@@ -52,15 +62,7 @@ export default function Detail() {
         } else setShowTrailerButton(-1);
       } else setShowTrailerButton(-1);
     };
-    const setOLanguage = async () => {
-      setLanguage(await resolveLanguage(
-        currentMedia.original_language, 
-        languages,
-        setLanguages
-      ));
-    };
     getDetails();
-    setOLanguage();
     ref.current.scrollTo(0, 0);
   }, [media]);
   return (
