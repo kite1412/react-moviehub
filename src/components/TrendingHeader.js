@@ -23,7 +23,7 @@ export default function TrendingHeader() {
     currentSlide,
     setCurrentSlide
   } = useContext(HomeContext);
-  const  { 
+  const { 
     showMovie, 
     movieGenreList, 
     tvGenreList, 

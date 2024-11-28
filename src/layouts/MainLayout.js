@@ -11,7 +11,7 @@ import SearchBar from "../components/SearchBar";
 import { AuthContext } from "../contexts/AuthContext";
 import { Toast } from "../utils/toast";
 
-export default function MainLayout({ children, logout }) {
+export default function MainLayout({ children, logout, applyPadding: applyMargin = true, translucentHeader = false }) {
   const { 
     currentMenu,
     setCurrentMenu, 
@@ -69,11 +69,11 @@ export default function MainLayout({ children, logout }) {
             <Heart />
             Favorites
           </button>
-          <button style={menuItemStyle("comingsoon")} onClick={function() {
-            setCurrentMenu("comingsoon")
+          <button style={menuItemStyle("upcoming")} onClick={function() {
+            setCurrentMenu("upcoming")
           }}>
             <Calendar />
-            Coming Soon
+            Upcoming
           </button>
           <button style={menuItemStyle("watchlist")} onClick={function() {
             setCurrentMenu("watchlist")
@@ -97,7 +97,9 @@ export default function MainLayout({ children, logout }) {
           </div>
         </div>
       </div>
-      <div id="header">
+      <div id="header" style={{
+        backgroundImage: translucentHeader ? "none" : ""
+      }}>
         <div style={{
           display: "flex",
           gap: "32px",
@@ -135,7 +137,10 @@ export default function MainLayout({ children, logout }) {
           {currentUser}
         </div>
       </div>
-      <div id="main-content">
+      <div id="main-content" style={applyMargin ? {
+        marginLeft: "18%",
+        marginTop: "65px"
+      } : {}}>
         {children}
         <Toast />
       </div>
