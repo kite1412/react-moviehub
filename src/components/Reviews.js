@@ -6,6 +6,7 @@ import { ReactComponent as Clear } from "../assets/cancel.svg";
 import { AuthContext } from "../contexts/AuthContext";
 import { OvalLoadingIndicator } from "./loadingIndicator";
 import { toastSuccess } from "../utils/toast";
+import { reformatDate } from "../utils/functions";
 
 export default function Reviews({ reviews }) {
   const [active, setActive] = useState(false);
@@ -130,7 +131,7 @@ export default function Reviews({ reviews }) {
                 }
                 <div style={{ display: "flex", flexDirection: "column" }}>
                   <div>{e.author}{e.me ? <span style={{ color: "grey", fontSize: "14px", marginLeft: "8px" }}>(you)</span> : <></>}</div>
-                  <div style={{ color: "gray" }}>{`Written on ${reformatDate(e)}`}</div>
+                  <div style={{ color: "gray" }}>{`Written on ${reformatDate(e.created_at)}`}</div>
                 </div>
               </div>
               <div style={{
@@ -145,9 +146,4 @@ export default function Reviews({ reviews }) {
       </div>
     </div>
   );
-}
-
-function reformatDate(review) {
-  const date = new Date(review.created_at);
-  return `${date.getDate()} ${date.toLocaleString("default", { month: "long" })} ${date.getFullYear()}`
 }

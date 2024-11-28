@@ -19,3 +19,8 @@ export function resolveGenres(genreIds, genres) {
     return g;
   }).join(" | ");
 }
+
+export function reformatDate(dateString) {
+  const date = new Date(dateString);
+  return `${date.getDate()} ${date.toLocaleString("default", { month: "long" })} ${date.getFullYear()}`
+}
