@@ -35,7 +35,7 @@ export default function Detail() {
   const [currentMedia, setCurrentMedia] = useState(media);
   const [language, setLanguage] = useState("");
   const genres = media.genre_ids ? resolveGenres(media.genre_ids, isMovie ? movieGenreList : tvGenreList)
-    : [];
+    : "";
   const coverUrl = originalImageUrl(media.poster_path);
   const backdropUrl = originalImageUrl(media.backdrop_path || media.poster_path);
   const title = isMovie ? media.title : media.name;

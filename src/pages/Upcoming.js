@@ -5,17 +5,29 @@ import { onTheAirTVs, originalImageUrl } from "../api/tmdbService";
 import 'swiper/css/bundle';
 import { upcomingMovies as getUpcomingMovies } from "../api/tmdbService";
 import { Navigation } from "swiper/modules";
-import { reformatDate } from "../utils/functions";
+import { reformatDate, resolveGenres } from "../utils/functions";
 import PageLoading from "../components/PageLoading";
 import IconButton from "../components/IconButton";
 import { ReactComponent as Bookmark } from "../assets/bookmark.svg";
 import { toastError, toastSuccess } from "../utils/toast";
 
 export default function Upcoming() {
-  const { showMovie, movieWatchlist, tvWatchlist } = useContext(MainContext);
+  const { 
+    showMovie, 
+    movieWatchlist, 
+    tvWatchlist,
+    movieGenreList,
+    tvGenreList 
+  } = useContext(MainContext);
   const [upcomingMovies, setUpcomingMovies] = useState([]);
   const [upcomingTVs, setUpcomingTVs] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const genres = (index) => {
+    return resolveGenres(
+      (showMovie ? upcomingMovies : upcomingTVs)[index].genre_ids, 
+      showMovie ? movieGenreList : tvGenreList
+    );
+  };
   const watchlisted = (index) => (showMovie ? movieWatchlist : tvWatchlist).contains(
     (showMovie ? upcomingMovies : upcomingTVs)[index]
   );
@@ -105,14 +117,18 @@ export default function Upcoming() {
                     color: "white",
                     paddingRight: "10%",
                     textAlign: "justify",
-                    gap: "16px"
+                    gap: "8px",
+                    width: "100%"
                   }}>
                     <h1>{showMovie ? e.title : e.name}</h1>
                     {
+                      genres ? <div>{genres(i)}</div> : <></>
+                    }
+                    {
                       showMovie ? <div style={{ 
                         fontStyle: "italic", 
-                        color: "rgb(180, 180, 180)",
-                        fontWeight: 500 
+                        color: "#c68eff",
+                        fontWeight: "bold" 
                       }}>
                         Release Date: {`${reformatDate(e.release_date)}`}
                       </div> : <></>
@@ -120,7 +136,8 @@ export default function Upcoming() {
                     <div className="scrollbarc" style={{ 
                       maxHeight: "20%",
                       overflowY: "auto",
-                      paddingRight: "8px"
+                      paddingRight: "8px",
+                      marginTop: "16px"
                     }}>{e.overview}</div>
                     <div style={{ display: "flex", justifyContent: "end" }}>
                       <IconButton 
