@@ -7,7 +7,7 @@ import {
   popoularTVs as popularsT,
   topRatedTVs as topTVs 
 } from "../api/tmdbService";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import MovieCards from "../components/MovieCards";
 import { MainContext } from "../contexts/MainContext";
 import SearchResult from "./SearchResult";

@@ -133,7 +133,8 @@ export default function Detail() {
                 <IconButton
                   icon={<Heart style={{
                     fill: `${ favorited ? "#6100C2" : "transparent"}`,
-                    stroke: `${ favorited ? "#6100C2" : "" }`
+                    stroke: `${ favorited ? "#6100C2" : "" }`,
+                    transition: "fill 0.3s ease"
                   }} />} 
                   onClick={() => {
                     isMovie ? favorited ? favoriteMovies.remove(currentMedia) : favoriteMovies.add(currentMedia)
@@ -148,7 +149,8 @@ export default function Detail() {
                 <IconButton
                   icon={<Bookmark style={{
                     fill: watchlisted ? "#6100C2" : "transparent",
-                    color: watchlisted ? "#6100C2" : ""
+                    color: watchlisted ? "#6100C2" : "",
+                    transition: "fill 0.3s ease"
                   }} />}
                   onClick={() => {
                     isMovie ? watchlisted ? movieWatchlist.remove(currentMedia) : movieWatchlist.add(currentMedia)

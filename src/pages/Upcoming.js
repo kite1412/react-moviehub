@@ -6,11 +6,19 @@ import 'swiper/css/bundle';
 import { upcomingMovies as getUpcomingMovies } from "../api/tmdbService";
 import { Navigation } from "swiper/modules";
 import { reformatDate } from "../utils/functions";
+import PageLoading from "../components/PageLoading";
+import IconButton from "../components/IconButton";
+import { ReactComponent as Bookmark } from "../assets/bookmark.svg";
+import { toastError, toastSuccess } from "../utils/toast";
 
 export default function Upcoming() {
-  const { showMovie } = useContext(MainContext);
+  const { showMovie, movieWatchlist, tvWatchlist } = useContext(MainContext);
   const [upcomingMovies, setUpcomingMovies] = useState([]);
   const [upcomingTVs, setUpcomingTVs] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const watchlisted = (index) => (showMovie ? movieWatchlist : tvWatchlist).contains(
+    (showMovie ? upcomingMovies : upcomingTVs)[index]
+  );
   useEffect(() => {
     const fetchMovies = async () => {
       const res = await getUpcomingMovies();
@@ -41,7 +49,7 @@ export default function Upcoming() {
         {showMovie ? "Upcoming Movies" : "Airing TV Shows"}
       </h1>
       {
-        <Swiper 
+        (showMovie ? upcomingMovies.length : upcomingTVs) ? <Swiper 
           slidesPerView={1} 
           style={{
             height: "100%",
@@ -51,14 +59,14 @@ export default function Upcoming() {
             cursor: "grab"
           }}
           onSlideChange={s => {
-            
+            setCurrentIndex(s.activeIndex);
           }}
           modules={[Navigation]}
           navigation={true}
         >
           <Reset />
           {
-            (showMovie ? upcomingMovies : upcomingTVs).map(e => {
+            (showMovie ? upcomingMovies : upcomingTVs).map((e, i) => {
               return e.id !== 933260 ? <SwiperSlide style={{
                 position: "relative", 
                 height: "100%",
@@ -114,13 +122,36 @@ export default function Upcoming() {
                       overflowY: "auto",
                       paddingRight: "8px"
                     }}>{e.overview}</div>
-                    
+                    <div style={{ display: "flex", justifyContent: "end" }}>
+                      <IconButton 
+                        icon={<Bookmark style={{
+                          fill: `${watchlisted(i) ? "#6100C2" : "transparent"}`,
+                          transition: "fill 0.2s ease"
+                        }} />} 
+                        desc={`${!watchlisted(i) ? "Add to watchlist" : "Remove from watchlist"}`}
+                        style={{
+                          borderRadius: "16px",
+                          backgroundColor: `${watchlisted(i) ? "white" : ""}`,
+                          color: `${watchlisted(i) ? "#6100C2" : ""}`,
+                        }}
+                        onClick={() => {
+                          watchlisted(i) ? function() {
+                            (showMovie ? movieWatchlist : tvWatchlist).remove(e);
+                            toastError(`${showMovie ? e.title : e.name} removed from watchlist`);
+                          }()
+                          : function() {
+                            (showMovie ? movieWatchlist : tvWatchlist).add(e);
+                            toastSuccess(`${showMovie ? e.title : e.name} added to watchlist`);
+                          }()
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
               </SwiperSlide> : <></>
             })
           }
-        </Swiper>
+        </Swiper> : <PageLoading />
       }
     </div>
   );

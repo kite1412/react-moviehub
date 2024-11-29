@@ -40,7 +40,7 @@ export default function MainLayout({ children, logout, applyPadding: applyMargin
       cursor: "pointer",
       display: "flex",
       gap: "16px",
-      opacity: currentMenu == menu ? 1 : 0.6,
+      opacity: currentMenu == menu ? 1 : 0.4,
       transition: "opacity 0.4s linear"
     };
   };

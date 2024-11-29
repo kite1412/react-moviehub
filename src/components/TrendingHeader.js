@@ -145,7 +145,8 @@ function Content({ e, genreList, showMovie }) {
         }} />
         <IconButton 
           icon={<Heart style={{
-            fill: `${ favorited ? "#6100C2" : "transparent"}`
+            fill: `${ favorited ? "#6100C2" : "transparent"}`,
+            transition: "fill 0.3s ease"
           }} />} 
           style={{ 
             borderRadius: "14px", 
