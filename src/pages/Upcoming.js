@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { MainContext } from "../contexts/MainContext";
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
-import { onTheAirTVs, originalImageUrl } from "../api/tmdbService";
+import { onTheAirTVs, originalImageUrl, tvGenres } from "../api/tmdbService";
 import 'swiper/css/bundle';
 import { upcomingMovies as getUpcomingMovies } from "../api/tmdbService";
 import { Navigation } from "swiper/modules";
@@ -17,7 +17,8 @@ export default function Upcoming() {
     movieWatchlist, 
     tvWatchlist,
     movieGenreList,
-    tvGenreList 
+    tvGenreList,
+    setTVGenreList
   } = useContext(MainContext);
   const [upcomingMovies, setUpcomingMovies] = useState([]);
   const [upcomingTVs, setUpcomingTVs] = useState([]);
@@ -40,7 +41,14 @@ export default function Upcoming() {
       const res = await onTheAirTVs();
       if (!upcomingTVs.length) setUpcomingTVs(res.results);
     };
-    showMovie ? fetchMovies() : fetchTVs();
+    const fetchTVGenreList = async (callback) => {
+      if (tvGenreList && !tvGenreList.length) {
+        const res = await tvGenres();
+        setTVGenreList(res.genres);
+      }
+      callback();
+    };
+    showMovie ? fetchMovies() : fetchTVGenreList(() => fetchTVs());
   }, [showMovie]);
   const backgroundBlur = "3px";
   return (
@@ -122,7 +130,7 @@ export default function Upcoming() {
                   }}>
                     <h1>{showMovie ? e.title : e.name}</h1>
                     {
-                      genres ? <div>{genres(i)}</div> : <></>
+                      genres(i) ? <div>{genres(i)}</div> : <></>
                     }
                     {
                       showMovie ? <div style={{ 

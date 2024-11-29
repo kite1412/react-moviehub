@@ -1,4 +1,3 @@
-import MainLayout from "../layouts/MainLayout";
 import { 
   popularMovies as popularsM,
   movieGenres, 
@@ -77,8 +76,8 @@ export default function Home() {
       <div className="main-content" style={{ overflowY: !showSearch ? "hidden" : "" }}>
         {
           showSearch ? <SearchResult /> : showMovie ? <>
-            { popularMovies.length == 0 && topRatedMovies.length == 0 ? <PageLoading /> : <></> }
-            { popularMovies.length != 0 ? <MovieCards 
+            { !popularMovies.length && !topRatedMovies.length ? <PageLoading /> : <></> }
+            { popularMovies.length ? <MovieCards 
                 session={"Popular"} 
                 genres={movieGenreList} 
                 movies={popularMovies} 

@@ -7,7 +7,7 @@ export const getYear = (date) => {
 };
 
 export function resolveGenres(genreIds, genres) {
-  if (genreIds && genreIds.length == 0) return "";
+  if (genreIds && !genreIds.length) return "";
   return genreIds.map(e => {
     let g = "";
     genres.forEach(element => {
