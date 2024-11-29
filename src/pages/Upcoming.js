@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { MainContext } from "../contexts/MainContext";
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 import { onTheAirTVs, originalImageUrl } from "../api/tmdbService";
@@ -153,6 +153,13 @@ export default function Upcoming() {
           }
         </Swiper> : <PageLoading />
       }
+      {
+        (showMovie ? upcomingMovies.length : upcomingTVs.length) ? <Indicator 
+          list={showMovie ? upcomingMovies : upcomingTVs} 
+          currentIndex={currentIndex}
+        />
+        : <></>
+      }
     </div>
   );
 }
@@ -164,4 +171,76 @@ function Reset() {
     swiper.slideTo(0);
   }, [showMovie]);
   return <></>;
+}
+
+function Indicator({ list, currentIndex }) {
+  const [show, setShow] = useState(true);
+  const selected = (index) => index === currentIndex;
+  const refs = useRef([]);
+  useEffect(() => {
+    setShow(true);
+    const t1 = setTimeout(() => {
+      if (refs.current[currentIndex]) refs.current[currentIndex].scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center"
+      });  
+    }, 300);
+    const t2 = setTimeout(() => {
+      setShow(false);
+    }, 2000);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, [currentIndex]);
+  return (
+    <div style={{
+      width: "40%",
+      height: "15%",
+      position: "absolute",
+      zIndex: 2,
+      bottom: 0,
+      transform: `translate(68%, ${show ? "-16px" : "100%"})`,
+      transition: "transform 0.5s ease",
+      display: "flex",
+      justifyContent: "center"
+    }}>
+      <div style={{
+        backgroundColor: "white",
+        height: "100%",
+        width: "100%",
+        opacity: 0.5,
+        borderRadius: "20px",
+        position: "absolute"
+      }} />
+      <div style={{
+        display: "flex",
+        gap: "6px",
+        position: "absolute",
+        paddingTop: "8px",
+        paddingBottom: "8px",
+        padding: "4px",
+        boxSizing: "border-box",
+        height: "100%",
+        width: "95%",
+        overflow: "hidden"
+      }}>
+        {
+          list.filter(e => e.id !== 933260).map((e, i) => {
+            return <img 
+              src={`${originalImageUrl(e.poster_path)}`}
+              alt="cover"
+              style={{
+                borderRadius: "12px",
+                outline: `${selected(i) ? "2px solid white" : ""}`,
+                opacity: `${selected(i) ? 1 : 0.7}`
+              }}
+              ref={e => refs.current[i] = e}
+            /> 
+          }) 
+        }
+      </div>
+    </div>
+  );
 }
