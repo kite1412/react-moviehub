@@ -35,37 +35,49 @@ export default function Home() {
     setTVGenreList 
   } = useContext(MainContext);
   useEffect(() => {
-    const fetchMovieGenres = async (successCallback) => {
-      const res = await movieGenres();
-      setMovieGenreList(res.genres);
-      successCallback();
+    const fetchMovieGenres = async (callback) => {
+      if (!movieGenreList.length) {
+        const res = await movieGenres();
+        setMovieGenreList(res.genres);
+      }
+      callback();
     };
-    const fetchTVGenres = async (successCallback) => {
-      const res = await tvGenres();
-      setTVGenreList(res.genres);
-      successCallback();
+    const fetchTVGenres = async (callback) => {
+      if (!tvGenreList.length) {
+        const res = await tvGenres();
+        setTVGenreList(res.genres);  
+      }
+      callback();
     };
     const fetchPopularMovies = async () => {
-      const res = await popularsM();
-      if (res != null) setPopularMovies(res.results);
+      if (!popularMovies.length) {
+        const res = await popularsM();
+        if (res != null) setPopularMovies(res.results);
+      }
     };
     const fetchTopRatedMovies = async () => {
-      const res = await topMovies();
-      if (res != null) setTopRatedMovies(res.results);
+      if (!topRatedMovies.length) {
+        const res = await topMovies();
+        if (res != null) setTopRatedMovies(res.results);
+      }
     };
     const fetchPopularTVs = async () => {
-      const res = await popularsT();
-      if (res != null) setPopularTVs(res.results);
+      if (!popularTVs.length) {
+        const res = await popularsT();
+        if (res != null) setPopularTVs(res.results);
+      }
     };
     const fetchTopRatedTVs = async () => {
-      const res = await topTVs();
-      if (res != null) setTopRatedTVs(res.results);
+      if (!topRatedTVs.length) {
+        const res = await topTVs();
+        if (res != null) setTopRatedTVs(res.results);  
+      }
     };
-    if (movieGenreList.length == 0 && showMovie) fetchMovieGenres(() => {
+    if (showMovie) fetchMovieGenres(() => {
       fetchPopularMovies();
       fetchTopRatedMovies();
     });
-    if (tvGenreList.length == 0 && !showMovie) fetchTVGenres(() => {
+    if (!showMovie) fetchTVGenres(() => {
       fetchPopularTVs();
       fetchTopRatedTVs();
     });
