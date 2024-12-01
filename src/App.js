@@ -9,9 +9,10 @@ import { HomeProvider } from './contexts/HomeContext';
 import { SIGNUP_PATH, detailPath } from "./utils/paths"
 import Main from './pages/Main';
 import { toastError } from './utils/toast';
+import LoginPage from './pages/Login2';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const logout = () => {
     setIsLoggedIn(false);
     setTimeout(() => toastError("Logged out"), 100);
@@ -27,7 +28,7 @@ function App() {
             <Routes>
               <Route path="/" element={<>
                 {
-                  isLoggedIn ? <Main logout={logout} /> : <Login />
+                  isLoggedIn ? <Main logout={logout} /> : <LoginPage />
                 }
               </>} />
               <Route path={SIGNUP_PATH} element={<SignUp />} />
