@@ -1,15 +1,13 @@
-import Login from './pages/Login';
-import SignUp from './pages/SignUp';
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { useState } from 'react';
 import { MainProvider } from './contexts/MainContext';
 import Detail from './pages/Detail';
 import { HomeProvider } from './contexts/HomeContext';
-import { SIGNUP_PATH, detailPath } from "./utils/paths"
+import { detailPath } from "./utils/paths"
 import Main from './pages/Main';
 import { toastError } from './utils/toast';
-import LoginPage from './pages/Login2';
+import Login from './pages/Login';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -28,10 +26,9 @@ function App() {
             <Routes>
               <Route path="/" element={<>
                 {
-                  isLoggedIn ? <Main logout={logout} /> : <LoginPage />
+                  isLoggedIn ? <Main logout={logout} /> : <Login />
                 }
               </>} />
-              <Route path={SIGNUP_PATH} element={<SignUp />} />
               <Route path={detailPath()} Component={Detail} />
             </Routes>
           } />
