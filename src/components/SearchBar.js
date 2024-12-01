@@ -4,15 +4,21 @@ import { ReactComponent as ChevronLeft } from "../assets/chevron-left.svg";
 import { MainContext } from "../contexts/MainContext";
 
 export default function SearchBar() {
-  const [search, setS] = useState("");
-  const { setShowSearch, setSearch, showSearch, setCurrentMenu } = useContext(MainContext);
+  const { 
+    setShowSearch, 
+    setSearch, 
+    showSearch, 
+    setCurrentMenu, 
+    search
+  } = useContext(MainContext);
+  const [s, setS] = useState(search);
   const [focus, setFocus] = useState(false);
   const inputRef = useRef();
   const onKeyDown = (e) => {
     if (e.key === "Enter") {
       setCurrentMenu("home");
       setShowSearch(true);
-      setSearch(search);
+      setSearch(s);
     }
   };
   return (
@@ -27,6 +33,7 @@ export default function SearchBar() {
             onClick={() => {
               setShowSearch(false);
               setS("");
+              setSearch("");
               inputRef.current.blur();
             }} 
           />
@@ -35,7 +42,7 @@ export default function SearchBar() {
         <input 
           placeholder="Search by titles"
           style={{ all: "unset" }}
-          value={search} 
+          value={s} 
           onKeyDown={onKeyDown}
           ref={inputRef}
           onChange={(e) => setS(e.target.value)}
