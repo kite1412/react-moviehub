@@ -137,8 +137,8 @@ export default function Detail() {
                     transition: "fill 0.3s ease"
                   }} />} 
                   onClick={() => {
-                    isMovie ? favorited ? favoriteMovies.remove(currentMedia) : favoriteMovies.add(currentMedia)
-                    : favorited ? favoriteTVs.remove(currentMedia) : favoriteTVs.add(currentMedia);
+                    isMovie ? favorited ? favoriteMovies.remove(media) : favoriteMovies.add(media)
+                    : favorited ? favoriteTVs.remove(media) : favoriteTVs.add(media);
                     favorited ? toastError(`${isMovie ? media.title : media.name} removed from favorites`) : 
                       toastSuccess(`${isMovie ? media.title : media.name} added to favorites`);
                   }}
@@ -153,8 +153,8 @@ export default function Detail() {
                     transition: "fill 0.3s ease"
                   }} />}
                   onClick={() => {
-                    isMovie ? watchlisted ? movieWatchlist.remove(currentMedia) : movieWatchlist.add(currentMedia)
-                    : watchlisted ? tvWatchlist.remove(currentMedia) : tvWatchlist.add(currentMedia);
+                    isMovie ? watchlisted ? movieWatchlist.remove(media) : movieWatchlist.add(media)
+                    : watchlisted ? tvWatchlist.remove(media) : tvWatchlist.add(media);
                     watchlisted ? toastError(`${isMovie ? media.title : media.name} removed from watchlist`) : 
                       toastSuccess(`${isMovie ? media.title : media.name} added to watchlist`)
                   }} 

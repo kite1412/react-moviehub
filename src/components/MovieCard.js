@@ -19,7 +19,7 @@ export default function MovieCard({
   const { favoriteMovies } = useContext(MainContext);
   const favorited = favoriteMovies.contains(movie);
   return (
-    <div className={className} onClick={() => {
+    movie.id !== 179387 ? <div className={className} onClick={() => {
       navigate(detailPath(movie.id), { state: { media: movie, isMovie: true } });
     }}>
       <div id="description">
@@ -41,7 +41,7 @@ export default function MovieCard({
           favorited ? toastError(`${movie.title} removed from favorites`) : toastSuccess(`${movie.title} added to favorites`);
         }}
       />
-    </div>
+    </div> : <></>
   );
 }
 

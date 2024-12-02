@@ -12,12 +12,6 @@ export default function Favourites() {
     movieGenreList,
     tvGenreList
   } = useContext(MainContext);
-  const emptyStyle = {
-    color: "white",
-    fontSize: "24px",
-    fontStyle: "italic",
-    fontWeight: "bold"
-  };
   const empty = <div style={{
     display: "flex",
     flexDirection: "column",

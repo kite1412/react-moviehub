@@ -121,7 +121,7 @@ export default function Login() {
             <Button 
               action={isLogin ? "Log in" : "Sign Up"} onClick={login} 
               style={{
-                backgroundColor: actionDisabled ? "grey" : ""
+                backgroundColor: actionDisabled ? "grey" : "",
               }}
               disabled={actionDisabled}
             />
@@ -159,7 +159,8 @@ export default function Login() {
               style={{
                 all: "unset",
                 textDecoration: "underline",
-                cursor: "pointer"
+                cursor: "pointer",
+                color: "#6100C2"
               }} 
               onClick={() => {
                 setIsLogin(!isLogin);
