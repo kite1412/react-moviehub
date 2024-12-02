@@ -10,8 +10,12 @@ import { MainContext } from "../contexts/MainContext";
 import SearchBar from "../components/SearchBar";
 import { AuthContext } from "../contexts/AuthContext";
 import { Toast } from "../utils/toast";
+import { small } from "../utils/screen";
+import { useMediaQuery } from "react-responsive";
 
-export default function MainLayout({ children, logout, applyPadding: applyMargin = true, translucentHeader = false }) {
+const bottomNavBarHeight = "84px";
+
+export default function MainLayout({ children, logout, applyMargin = true, translucentHeader = false }) {
   const { 
     currentMenu,
     setCurrentMenu, 
@@ -19,6 +23,7 @@ export default function MainLayout({ children, logout, applyPadding: applyMargin
     selectedType,
     setSelectedType
   } = useContext(MainContext);
+  const s = useMediaQuery(small);
   const { currentUser } = useContext(AuthContext);
   const [logoutWarning, setLogoutWarning] = useState(false);
   const [animateOut, setAnimateOut] = useState(false);
@@ -44,106 +49,127 @@ export default function MainLayout({ children, logout, applyPadding: applyMargin
       transition: "opacity 0.4s linear"
     };
   };
+  const menus = (showLabel) => [
+    <button style={menuItemStyle("home")} onClick={function() {
+      setCurrentMenu("home")
+    }}>
+      <Film />
+      { showLabel ? "Home" : "" }
+    </button>,
+    <button style={menuItemStyle("favorites")} onClick={function() {
+      setCurrentMenu("favorites")
+    }}>
+      <Heart />
+      { showLabel ? "Favorites" : "" }
+    </button>,
+    <button style={menuItemStyle("upcoming")} onClick={function() {
+      setCurrentMenu("upcoming")
+    }}>
+      <Calendar />
+      { showLabel ? "Upcoming" : "" }
+    </button>,
+    <button style={menuItemStyle("watchlist")} onClick={function() {
+      setCurrentMenu("watchlist")
+    }}>
+      <Bookmark />
+      { showLabel ? "Watchlist" : "" }
+    </button>,
+    <div style={{ marginTop: showLabel ? "32px" : "" }}>
+      <button style={{
+        all: "unset",
+        color: "#DC143C",
+        cursor: "pointer",
+        display: "flex",
+        gap: "16px"
+      }} onClick={function() {
+        setLogoutWarning(true);
+      }}>
+        <Exit style={{ height: "28px", width: "28px" }} />
+        { showLabel ? "Logout" : ""}
+      </button>
+    </div>
+  ];
   return (
     <div className="main-layout" style={{
       overflow: logoutWarning ? "hidden" : ""
     }}>
-      <div id="navbar">
-        <div style={{
-          width: "100%",
-          paddingTop: "22px",
-          paddingLeft: "32px",
-          display: "flex",
-          flexDirection: "column"
-        }}><TitleLogo /></div>
-        <div id="menu">
-          <button style={menuItemStyle("home")} onClick={function() {
-            setCurrentMenu("home")
+      {
+        !s ? <div id="navbar">
+          <div style={{
+            width: "100%",
+            paddingTop: "22px",
+            paddingLeft: "32px",
+            display: "flex",
+            flexDirection: "column"
+          }}><TitleLogo /></div>
+          <div id="menu">
+            { menus(true) }
+          </div>
+        </div> : <></>
+      }
+      {
+        !s ? <div id="header" style={{
+          backgroundImage: translucentHeader ? "none" : ""
+        }}>
+          <div style={{
+            display: "flex",
+            gap: "32px",
+            alignItems: "center"
           }}>
-            <Film />
-            Home
-          </button>
-          <button style={menuItemStyle("favorites")} onClick={function() {
-            setCurrentMenu("favorites")
-          }}>
-            <Heart />
-            Favorites
-          </button>
-          <button style={menuItemStyle("upcoming")} onClick={function() {
-            setCurrentMenu("upcoming")
-          }}>
-            <Calendar />
-            Upcoming
-          </button>
-          <button style={menuItemStyle("watchlist")} onClick={function() {
-            setCurrentMenu("watchlist")
-          }}>
-            <Bookmark />
-            Watchlist
-          </button>
-          <div style={{ marginTop: "32px" }}>
-            <button style={{
-              all: "unset",
-              color: "#DC143C",
-              cursor: "pointer",
-              display: "flex",
-              gap: "16px"
-            }} onClick={function() {
-              setLogoutWarning(true);
-            }}>
-              <Exit style={{ height: "28px", width: "28px" }} />
-              Logout
+            <button 
+              className={`media-type ${selectedType == "movie" ? "type-selected" : "type-unselected"}`}
+              onClick={() => {
+                setSelectedType("movie") 
+                setShowMovie(true);
+              }}
+            >
+              Movies
+            </button>
+            <button 
+              className={`media-type ${selectedType == "tv" ? "type-selected" : "type-unselected"}`}
+              onClick={() => {
+                setSelectedType("tv")
+                setShowMovie(false);
+               }}
+            >
+              TV Shows
             </button>
           </div>
-        </div>
-      </div>
-      <div id="header" style={{
-        backgroundImage: translucentHeader ? "none" : ""
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "24px"
+          }}>
+            <SearchBar />
+            <Profile style={{
+              height: "45px",
+              width: "45px"
+            }} />
+            {currentUser}
+          </div>
+        </div>: <></>
+      }
+      <div id="main-content" style={{
+        marginLeft: applyMargin ? !s ? "18%" : "" : "",
+        marginTop: applyMargin ? !s ? "65px" : "" : "",
       }}>
-        <div style={{
-          display: "flex",
-          gap: "32px",
-          alignItems: "center"
-        }}>
-          <button 
-            className={`media-type ${selectedType == "movie" ? "type-selected" : "type-unselected"}`}
-            onClick={() => {
-              setSelectedType("movie") 
-              setShowMovie(true);
-            }}
-          >
-            Movies
-          </button>
-          <button 
-            className={`media-type ${selectedType == "tv" ? "type-selected" : "type-unselected"}`}
-            onClick={() => {
-              setSelectedType("tv")
-              setShowMovie(false);
-             }}
-          >
-            TV Shows
-          </button>
-        </div>
-        <div style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "24px"
-        }}>
-          <SearchBar />
-          <Profile style={{
-            height: "45px",
-            width: "45px"
-          }} />
-          {currentUser}
-        </div>
-      </div>
-      <div id="main-content" style={applyMargin ? {
-        marginLeft: "18%",
-        marginTop: "65px"
-      } : {}}>
         {children}
         <Toast />
       </div>
+      {
+        s ? <div style={{
+          position: "fixed",
+          bottom: 0,
+          display: "flex",
+          justifyContent: "space-around",
+          width: "100%",
+          padding: "24px",
+          boxSizing: "border-box",
+          backgroundColor: "#6100C2"
+        }}>
+          { menus(false) }
+        </div> : <></>
+      }
       <div style={{
         position: "absolute",
         opacity: logoutWarning && !animateOut ? 1 : 0,

@@ -12,7 +12,8 @@ export default function TVCards({
     <div className="movie-cards-parent">
       <div style={{
         textShadow: "1px 1px 4px rgba(255, 255, 255, 0.7)",
-        fontWeight: "500"
+        fontWeight: "500",
+        fontSize: "24px"
        }}>{session}</div>
       <div className="movie-cards" style={{ color: "black" }}>
         {cards}    

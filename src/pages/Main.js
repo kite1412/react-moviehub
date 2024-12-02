@@ -30,7 +30,7 @@ export default function Main({logout}) {
         logout();
         setCurrentSlide(0);
       }}
-      applyPadding={!isUpcoming}
+      applyMargin={!isUpcoming}
       translucentHeader={isUpcoming} 
     />
   );
