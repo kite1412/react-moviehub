@@ -13,7 +13,7 @@ import { Toast } from "../utils/toast";
 import { small } from "../utils/screen";
 import { useMediaQuery } from "react-responsive";
 
-const bottomNavBarHeight = "84px";
+const bottomNavBarHeight = "78px";
 
 export default function MainLayout({ children, logout, applyMargin = true, translucentHeader = false }) {
   const { 
@@ -151,9 +151,12 @@ export default function MainLayout({ children, logout, applyMargin = true, trans
       }
       <div id="main-content" style={{
         marginLeft: applyMargin ? !s ? "18%" : "" : "",
-        marginTop: applyMargin ? !s ? "65px" : "" : "",
+        marginTop: applyMargin ? !s ? "65px" : "" : ""
       }}>
-        {children}
+        <div>
+          {children}
+          { s ? <div style={{ height: bottomNavBarHeight, backgroundColor: "#6100C2" }} /> : <></> }
+        </div>
         <Toast />
       </div>
       {
@@ -162,10 +165,12 @@ export default function MainLayout({ children, logout, applyMargin = true, trans
           bottom: 0,
           display: "flex",
           justifyContent: "space-around",
+          alignItems: "center",
           width: "100%",
-          padding: "24px",
+          height: bottomNavBarHeight,
           boxSizing: "border-box",
-          backgroundColor: "#6100C2"
+          backgroundColor: "#6100C2",
+          padding: "16px"
         }}>
           { menus(false) }
         </div> : <></>

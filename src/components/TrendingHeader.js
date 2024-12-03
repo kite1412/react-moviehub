@@ -13,6 +13,8 @@ import { useNavigate } from "react-router-dom";
 import { detailPath } from "../utils/paths";
 import { ReactComponent as Trending } from "../assets/trending-up.svg";
 import { toastError, toastSuccess } from "../utils/toast";
+import { useMediaQuery } from "react-responsive";
+import { small } from "../utils/screen";
 
 export default function TrendingHeader() {
   const {
@@ -29,6 +31,7 @@ export default function TrendingHeader() {
     tvGenreList, 
     showSearch
   } = useContext(MainContext);
+  const s = useMediaQuery(small);
   useEffect(() => {
     const fetchTrendingMovies = async () => {
       if (!trendingMovies.length) {
@@ -54,16 +57,18 @@ export default function TrendingHeader() {
       height: "100%",
       width: "100%",
       backgroundSize: "cover",
-      backgroundBlendMode: "multiply"
+      backgroundBlendMode: "multiply",
+      backgroundPosition: s ? "center" : "",
+      boxSizing: "border-box",
+      paddingBottom: s ? "12px" : ""
     };
   };
   return (
-    !showSearch ? <>
+    !showSearch ? <div style={{ position: "relative" }}>
       <div style={{
         position: "absolute",
         zIndex: 2,
         color: "white",
-        marginLeft: "16px",
         textShadow: "2px 2px 2px #6100C2",
         marginLeft: "48px",
         display: "flex",
@@ -90,7 +95,8 @@ export default function TrendingHeader() {
         style={{
           "--swiper-navigation-size": "24px",
           "--swiper-navigation-color": "#6100C2",
-          backgroundColor: "rgb(35, 35, 35)"
+          backgroundColor: "rgb(35, 35, 35)",
+          width: "100%"
         }}
         onSlideChange={(s) => {
           setCurrentSlide(s.activeIndex);
@@ -101,21 +107,21 @@ export default function TrendingHeader() {
         {
           showMovie ? trendingMovies.length ? trendingMovies.map(e => {
             return <SwiperSlide style={slideStyle(e)}>
-              <Content e={e} genreList={movieGenreList} showMovie={showMovie} />
+              <Content s={s} e={e} genreList={movieGenreList} showMovie={showMovie} />
             </SwiperSlide>
           })
           : <></> : trendingTVs.length ? trendingTVs.map(e => {
             return <SwiperSlide style={slideStyle(e)}>
-              <Content e={e} genreList={tvGenreList} showMovie={showMovie} />
+              <Content s={s} e={e} genreList={tvGenreList} showMovie={showMovie} />
             </SwiperSlide>
           }) : <></>
         }
       </Swiper>
-    </> : <></>
+    </div> : <></>
   );
 }
 
-function Content({ e, genreList, showMovie }) {
+function Content({ e, genreList, showMovie, s }) {
   const navigate = useNavigate();
   const { favoriteMovies, favoriteTVs } = useContext(MainContext);
   const favorited = showMovie ? favoriteMovies.contains(e) : favoriteTVs.contains(e);
@@ -128,8 +134,8 @@ function Content({ e, genreList, showMovie }) {
       marginLeft: "48px",
       gap: "8px"
     }}>
-      <span style={{ fontSize: "32px", fontWeight: 500 }}>{showMovie ? e.title : e.name}</span>
-      <span style={{ color: "lightgray" }}>
+      <span style={{ fontSize: !s? "32px" : "24px", fontWeight: 500 }}>{showMovie ? e.title : e.name}</span>
+      <span style={{ color: "lightgray", fontSize: s ? "12px" : "" }}>
         {getYear(showMovie ? e.release_date : e.first_air_date)}
         {e.genre_ids.length ? ` | ${resolveGenres(e.genre_ids, genreList)}` : ""}
       </span>

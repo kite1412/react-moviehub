@@ -5,7 +5,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 576px) {
   .movie-card-default {
     position: relative;
     min-width: 40%;
@@ -23,7 +23,7 @@ body {
   }
 }
 
-@media (min-width: 768px) and (max-width: 1024px) {
+@media (min-width: 577px) and (max-width: 768px) {
   .movie-card-default {
     position: relative;
     border-radius: 10px;
@@ -41,7 +41,7 @@ body {
   }
 }
 
-@media (min-width: 1025px) {
+@media (min-width: 769px) {
   .movie-card-default {
     position: relative;
     border-radius: 10px;
@@ -152,6 +152,7 @@ input::placeholder {
 .main-layout #main-content {
   height: 100%;
   width: 100%;
+  overflow-x: hidden;
 }
 
 .main-layout #menu {
@@ -432,11 +433,10 @@ input::placeholder {
 }
 
 ::-webkit-scrollbar-track {
-  background-color: rgba(255, 255, 255, 0.3);
-  border-radius: 16px;
+  background-color: rgb(100, 100, 100);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #6100C2;
-  border-radius: 10px;
+  background: #5909aa;
+  border-radius: 24px;
 }
