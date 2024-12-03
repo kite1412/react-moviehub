@@ -6,6 +6,8 @@ import { Button } from "../components/Button";
 import { Toast, toastError, toastSuccess } from "../utils/toast";
 import { AuthContext } from "../contexts/AuthContext";
 import { Fade } from "react-awesome-reveal";
+import { useMediaQuery } from "react-responsive";
+import { large } from "../utils/screen";
 
 export default function Login() {
   const [isLogin, setIsLogin] = useState(true);
@@ -15,6 +17,7 @@ export default function Login() {
   const [complete, setComplete] = useState(false);
   const actionDisabled = complete || !username || !password || (!isLogin ? !confirmPassword : false);
   const { registeredUser, setUser, addUser } = useContext(AuthContext);
+  const l = useMediaQuery(large);
   const login = () => {
     for (let i = 0; i <= registeredUser.users.length; i++) {
       const user = registeredUser.users[i];
@@ -60,6 +63,26 @@ export default function Login() {
   const onKeyDown = e => {
     if (e.key === "Enter") isLogin ? login() : signUp();
   };
+  const fieldWidth = {
+    width: !l ? "70%" : ""
+  }
+  const toggle = () => <span style={{ color: "white" }}>
+    {`${isLogin ? "Don't" : "Already"} have an account?`} <button 
+      style={{
+        all: "unset",
+        textDecoration: "underline",
+        cursor: "pointer",
+        color: "#6100C2"
+      }} 
+      onClick={() => {
+        setIsLogin(!isLogin);
+        setUsername("");
+        setPassword("");
+        setConfirmPassword("");
+      }}>
+      {isLogin ? "Sign Up" : "Login"}
+    </button>
+  </span>;
   return (
     <div style={{
       height: "100vh",
@@ -71,11 +94,11 @@ export default function Login() {
         backgroundImage: `linear-gradient(120deg, #6100C2 50%, #191817 90%), 
           url(${backgroundImage})`,
         height: "100%",
-        width: "65%",
+        width: l ? "65%" : "100%",
         backgroundBlendMode: "multiply",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        transform: `translateX(${!isLogin ? "35vw" : "0"})`,
+        transform: l ? `translateX(${!isLogin ? "35vw" : "0"})` : "",
         transition: "transform 0.5s ease"
       }}>
         <div style={{
@@ -94,13 +117,15 @@ export default function Login() {
             input={username} 
             onChange={setUsername}
             onKeyDown={onKeyDown}
+            style={fieldWidth}
           />
           <OutlinedTextField 
             label="Password" 
             input={password} 
             onChange={setPassword} 
             isSensitive={true}
-            onKeyDown={onKeyDown} 
+            onKeyDown={onKeyDown}
+            style={fieldWidth} 
           />
           {
             !isLogin ? <OutlinedTextField 
@@ -109,10 +134,11 @@ export default function Login() {
               onChange={setConfirmPassword} 
               isSensitive={true}
               onKeyDown={onKeyDown} 
+              style={fieldWidth}
             /> : <></>
           }
           <div style={{
-            marginTop: "32px", 
+            marginTop: "16px", 
             display: "flex", 
             flexDirection: "column", 
             gap: "10px", 
@@ -126,53 +152,42 @@ export default function Login() {
               disabled={actionDisabled}
             />
           </div>
+          {
+            !l ? toggle() : <></>
+          }
         </div>
       </div>
-      <div style={{
-        height: "100%",
-        width: "35%",
-        backgroundImage: `linear-gradient(${isLogin ? "120deg" : "-120deg"}, #191817, #191817 65%, #2A241D)`,
-        transform: `translateX(${!isLogin ? "-65vw" : "0"})`,
-        transition: "transform 0.5s ease",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        gap: "16px",
-        paddingBottom: "50px",
-        boxSizing: "border-box"
-      }}>
-        <Fade delay={300} damping={0.1} cascade style={{
-          fontSize: "32px",
-          color: "white",
-          fontWeight: "bold",
-          textShadow: "2px 2px 0px #6100C2"
+      {
+        l ? <div style={{
+          height: "100%",
+          width: "35%",
+          backgroundImage: `linear-gradient(${isLogin ? "120deg" : "-120deg"}, #191817, #191817 65%, #2A241D)`,
+          transform: `translateX(${!isLogin ? "-65vw" : "0"})`,
+          transition: "transform 0.5s ease",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "16px",
+          paddingBottom: "50px",
+          boxSizing: "border-box"
         }}>
-          Welcome to MovieHub
-        </Fade>
-        <Fade delay={2000} style={{
-          color: "white",
-          display: "flex"
-        }}>
-          <span>
-            {`${isLogin ? "Don't" : "Already"} have an account?`} <button 
-              style={{
-                all: "unset",
-                textDecoration: "underline",
-                cursor: "pointer",
-                color: "#6100C2"
-              }} 
-              onClick={() => {
-                setIsLogin(!isLogin);
-                setUsername("");
-                setPassword("");
-                setConfirmPassword("");
-              }}>
-              {isLogin ? "Sign Up" : "Login"}
-            </button>
-          </span> 
-        </Fade>
-      </div>
+          <Fade delay={300} damping={0.1} cascade style={{
+            fontSize: "32px",
+            color: "white",
+            fontWeight: "bold",
+            textShadow: "2px 2px 0px #6100C2"
+          }}>
+            Welcome to MovieHub
+          </Fade>
+          <Fade delay={2000} style={{
+            color: "white",
+            display: "flex"
+          }}>
+             {toggle()}
+          </Fade>
+        </div> : <></>
+      }
       <Toast />
     </div>
   );

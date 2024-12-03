@@ -6,8 +6,9 @@ export default function OutlinedTextField({
   label, 
   input, 
   onChange, 
+  onKeyDown,
   isSensitive = false,
-  onKeyDown
+  style = {}
 }) {
   const handleChange = (event) => {
     onChange(event.target.value);
@@ -24,7 +25,7 @@ export default function OutlinedTextField({
     transform: "translate(-130%, 50%)"
   };
   return (
-    <div className="outlined-text-field">
+    <div className="outlined-text-field" style={style}>
       <label >{label}</label>
       <input 
         type={
