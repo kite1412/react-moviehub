@@ -10,10 +10,9 @@ import { MainContext } from "../contexts/MainContext";
 import SearchBar from "../components/SearchBar";
 import { AuthContext } from "../contexts/AuthContext";
 import { Toast } from "../utils/toast";
-import { small } from "../utils/screen";
+import { medium, small } from "../utils/screen";
 import { useMediaQuery } from "react-responsive";
-
-const bottomNavBarHeight = "78px";
+import { bottomNavBarHeight, navigationRailWidth } from "../utils/const";
 
 export default function MainLayout({ children, logout, applyMargin = true, translucentHeader = false }) {
   const { 
@@ -24,6 +23,7 @@ export default function MainLayout({ children, logout, applyMargin = true, trans
     setSelectedType
   } = useContext(MainContext);
   const s = useMediaQuery(small);
+  const m = useMediaQuery(medium);
   const { currentUser } = useContext(AuthContext);
   const [logoutWarning, setLogoutWarning] = useState(false);
   const [animateOut, setAnimateOut] = useState(false);
@@ -95,66 +95,64 @@ export default function MainLayout({ children, logout, applyMargin = true, trans
     }}>
       {
         !s ? <div id="navbar">
-          <div style={{
-            width: "100%",
-            paddingTop: "22px",
-            paddingLeft: "32px",
-            display: "flex",
-            flexDirection: "column"
-          }}><TitleLogo /></div>
+          {
+            !m ? <div style={{
+              width: "100%",
+              paddingTop: "22px",
+              paddingLeft: "32px"
+            }}><TitleLogo /></div> : <></>
+          }
           <div id="menu">
-            { menus(true) }
+            { menus(!m) }
           </div>
         </div> : <></>
       }
-      {
-        !s ? <div id="header" style={{
+      <div id="header" style={{
           backgroundImage: translucentHeader ? "none" : ""
-        }}>
-          <div style={{
-            display: "flex",
-            gap: "32px",
-            alignItems: "center"
-          }}>
-            <button 
-              className={`media-type ${selectedType == "movie" ? "type-selected" : "type-unselected"}`}
-              onClick={() => {
-                setSelectedType("movie") 
-                setShowMovie(true);
-              }}
-            >
-              Movies
-            </button>
-            <button 
-              className={`media-type ${selectedType == "tv" ? "type-selected" : "type-unselected"}`}
-              onClick={() => {
-                setSelectedType("tv")
-                setShowMovie(false);
-               }}
-            >
-              TV Shows
-            </button>
-          </div>
-          <div style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "24px"
-          }}>
-            <SearchBar />
-            <Profile style={{
-              height: "45px",
-              width: "45px"
-            }} />
-            {currentUser}
-          </div>
-        </div>: <></>
-      }
-      <div id="main-content" style={{
-        marginLeft: applyMargin ? !s ? "18%" : "" : "",
-        marginTop: applyMargin ? !s ? "65px" : "" : ""
       }}>
-        <div>
-          {children}
+        <div style={{
+          display: "flex",
+          gap: "32px",
+          alignItems: "center"
+        }}>
+          <button 
+            className={`media-type ${selectedType == "movie" ? "type-selected" : "type-unselected"}`}
+            onClick={() => {
+              setSelectedType("movie") 
+              setShowMovie(true);
+            }}
+          >
+            Movies
+          </button>
+          <button 
+            className={`media-type ${selectedType == "tv" ? "type-selected" : "type-unselected"}`}
+            onClick={() => {
+              setSelectedType("tv")
+              setShowMovie(false);
+            }}
+          >
+            { !s ? "TV Shows" : "TVs" }
+          </button>
+        </div>
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "24px"
+        }}>
+          <SearchBar />
+          <Profile style={{
+            height: "45px",
+            width: "45px"
+          }} />
+          {currentUser}
+        </div>
+      </div>
+      <div id="main-content" style={{
+        marginLeft: applyMargin ? !s ? !m ? "18%" : navigationRailWidth : "" : "",
+        marginTop: applyMargin ? "65px" : ""
+      }}>
+        <div style={{ height: "100%", width: "100%" }}>
+          {children}        
           { s ? <div style={{ height: bottomNavBarHeight, backgroundColor: "#6100C2" }} /> : <></> }
         </div>
         <Toast />

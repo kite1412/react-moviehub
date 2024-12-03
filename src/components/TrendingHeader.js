@@ -14,7 +14,7 @@ import { detailPath } from "../utils/paths";
 import { ReactComponent as Trending } from "../assets/trending-up.svg";
 import { toastError, toastSuccess } from "../utils/toast";
 import { useMediaQuery } from "react-responsive";
-import { small } from "../utils/screen";
+import { medium, small } from "../utils/screen";
 
 export default function TrendingHeader() {
   const {
@@ -32,6 +32,7 @@ export default function TrendingHeader() {
     showSearch
   } = useContext(MainContext);
   const s = useMediaQuery(small);
+  const m = useMediaQuery(medium);
   useEffect(() => {
     const fetchTrendingMovies = async () => {
       if (!trendingMovies.length) {
@@ -60,7 +61,7 @@ export default function TrendingHeader() {
       backgroundBlendMode: "multiply",
       backgroundPosition: s ? "center" : "",
       boxSizing: "border-box",
-      paddingBottom: s ? "12px" : ""
+      paddingBottom: s || m ? "12px" : ""
     };
   };
   return (
@@ -107,12 +108,12 @@ export default function TrendingHeader() {
         {
           showMovie ? trendingMovies.length ? trendingMovies.map(e => {
             return <SwiperSlide style={slideStyle(e)}>
-              <Content s={s} e={e} genreList={movieGenreList} showMovie={showMovie} />
+              <Content s={s} m={m} e={e} genreList={movieGenreList} showMovie={showMovie} />
             </SwiperSlide>
           })
           : <></> : trendingTVs.length ? trendingTVs.map(e => {
             return <SwiperSlide style={slideStyle(e)}>
-              <Content s={s} e={e} genreList={tvGenreList} showMovie={showMovie} />
+              <Content s={s} m={m} e={e} genreList={tvGenreList} showMovie={showMovie} />
             </SwiperSlide>
           }) : <></>
         }
@@ -121,7 +122,7 @@ export default function TrendingHeader() {
   );
 }
 
-function Content({ e, genreList, showMovie, s }) {
+function Content({ e, genreList, showMovie, s, m }) {
   const navigate = useNavigate();
   const { favoriteMovies, favoriteTVs } = useContext(MainContext);
   const favorited = showMovie ? favoriteMovies.contains(e) : favoriteTVs.contains(e);
@@ -134,8 +135,8 @@ function Content({ e, genreList, showMovie, s }) {
       marginLeft: "48px",
       gap: "8px"
     }}>
-      <span style={{ fontSize: !s? "32px" : "24px", fontWeight: 500 }}>{showMovie ? e.title : e.name}</span>
-      <span style={{ color: "lightgray", fontSize: s ? "12px" : "" }}>
+      <span style={{ fontSize: !s && !m ? "32px" : "24px", fontWeight: 500 }}>{showMovie ? e.title : e.name}</span>
+      <span style={{ color: "lightgray", fontSize: s || m ? "12px" : "" }}>
         {getYear(showMovie ? e.release_date : e.first_air_date)}
         {e.genre_ids.length ? ` | ${resolveGenres(e.genre_ids, genreList)}` : ""}
       </span>
