@@ -166,7 +166,8 @@ export default function MainLayout({ children, logout, applyMargin = true, trans
           height: bottomNavBarHeight,
           boxSizing: "border-box",
           backgroundColor: "#6100C2",
-          padding: "16px"
+          padding: "16px",
+          zIndex: 100
         }}>
           { menus(false) }
         </div> : <></>

@@ -10,6 +10,9 @@ import PageLoading from "../components/PageLoading";
 import IconButton from "../components/IconButton";
 import { ReactComponent as Bookmark } from "../assets/bookmark.svg";
 import { toastError, toastSuccess } from "../utils/toast";
+import { useMediaQuery } from "react-responsive";
+import { large, medium, small } from "../utils/screen";
+import { bottomNavBarHeight, navigationRailWidth } from "../utils/const";
 
 export default function Upcoming() {
   const { 
@@ -51,12 +54,51 @@ export default function Upcoming() {
     showMovie ? fetchMovies() : fetchTVGenreList(() => fetchTVs());
   }, [showMovie]);
   const backgroundBlur = "3px";
+  const m = useMediaQuery(medium);
+  const s = useMediaQuery(small);
+  const l = useMediaQuery(large);
+  const overview = (e) => <div className="scrollbarc" style={{ 
+    maxHeight: !s ? "20%" : "80%",
+    overflowY: "auto",
+    paddingRight: "8px",
+    marginTop: "16px",
+    color: "white",
+    width: "100%",
+    textAlign: "justify"
+  }}>{e.overview}</div>;
+  const bookmark = (e, i, withDesc = true, size = "") => <IconButton 
+    icon={<Bookmark style={{
+      fill: `${watchlisted(i) ? "#6100C2" : "transparent"}`,
+      transition: "fill 0.2s ease",
+      height: size ? size : "",
+      width: size ? size : ""
+    }} />} 
+    desc={`${withDesc ? !watchlisted(i) ? "Add to watchlist" : "Remove from watchlist" : ""}`}
+    style={{
+      borderRadius: "16px",
+      backgroundColor: `${watchlisted(i) ? "white" : ""}`,
+      color: `${watchlisted(i) ? "#6100C2" : ""}`,
+      height: size ? size : "",
+      width: size ? size : ""
+    }}
+    onClick={() => {
+      watchlisted(i) ? function() {
+        (showMovie ? movieWatchlist : tvWatchlist).remove(e);
+        toastError(`${showMovie ? e.title : e.name} removed from watchlist`);
+      }()
+      : function() {
+        (showMovie ? movieWatchlist : tvWatchlist).add(e);
+        toastSuccess(`${showMovie ? e.title : e.name} added to watchlist`);
+      }()
+    }}
+  />;
   return (
     <div className="main-content" style={{ 
       padding: "0px",
-      marginLeft: "18%",
+      marginLeft: m ? navigationRailWidth : !s ? "18%" : "",
       position: "relative",
-      alignItems: "start"
+      alignItems: "start",
+      overflow: "clip"
     }} >
       <h1 style={{
         position: "absolute",
@@ -76,7 +118,9 @@ export default function Upcoming() {
             width: "100%",
             "--swiper-navigation-size": "24px",
             "--swiper-navigation-color": "#6100C2",
-            cursor: "grab"
+            cursor: "grab",
+            boxSizing: "border-box",
+            paddingBottom: s ? bottomNavBarHeight : ""
           }}
           onSlideChange={s => {
             setCurrentIndex(s.activeIndex);
@@ -101,76 +145,73 @@ export default function Upcoming() {
                   width: "100%",
                   position: "absolute",
                   filter: `blur(${backgroundBlur})`,
-                  boxSizing: "border-box",
                   marginLeft: `${backgroundBlur}`,
                   zIndex: -1
                 }} />
                 <div style={{ 
                   display: "flex", 
                   height: "100%", 
-                  width: "100%", 
+                  width: "100%",
                   paddingTop: "164px",
                   paddingLeft: "40px",
                   boxSizing: "border-box",
-                  gap: "40px"
+                  gap: l ? "40px" : "16px"
                 }}>
-                  <img src={`${originalImageUrl(e.poster_path)}`} alt="cover" style={{
-                    height: "60%",
-                    width: "auto",
-                    borderRadius: "24px"
-                  }} />
+                  <div style={{ 
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "100%",
+                    width: s ? "100%" : "",
+                    position: "relative"
+                  }}>
+                    <img src={`${originalImageUrl(e.poster_path)}`} alt="cover" style={{
+                      height: !l ? "50%" : "60%",
+                      width: "auto",
+                      borderRadius: "24px"
+                    }} /> 
+                    {
+                      s ? <div style={{
+                        position: "absolute",
+                        right: -10,
+                        color: "white"
+                      }}>
+                        {bookmark(e, i, false, "16px")}
+                      </div> : <></>
+                    }
+                    {
+                      s ? <div style={{ width: "200%", height: "50%" }}>
+                        {overview(e)}
+                      </div> : ""
+                    }
+                  </div>
                   <div style={{
                     display: "flex",
                     flexDirection: "column",
                     color: "white",
                     paddingRight: "10%",
-                    textAlign: "justify",
                     gap: "8px",
                     width: "100%"
                   }}>
-                    <h1>{showMovie ? e.title : e.name}</h1>
+                    <h1 style={{ fontSize: m ? "30px" : s ? "20px" : "" }}>{showMovie ? e.title : e.name}</h1>
                     {
-                      genres(i) ? <div>{genres(i)}</div> : <></>
+                      genres(i) ? <div style={{ fontSize: !l ? "12px" : "" }}>{genres(i)}</div> : <></>
                     }
                     {
                       showMovie ? <div style={{ 
                         fontStyle: "italic", 
                         color: "#c68eff",
-                        fontWeight: "bold" 
+                        fontWeight: "bold",
+                        fontSize: !l ? "12px" : "" 
                       }}>
                         Release Date: {`${reformatDate(e.release_date)}`}
                       </div> : <></>
                     }
-                    <div className="scrollbarc" style={{ 
-                      maxHeight: "20%",
-                      overflowY: "auto",
-                      paddingRight: "8px",
-                      marginTop: "16px"
-                    }}>{e.overview}</div>
-                    <div style={{ display: "flex", justifyContent: "end" }}>
-                      <IconButton 
-                        icon={<Bookmark style={{
-                          fill: `${watchlisted(i) ? "#6100C2" : "transparent"}`,
-                          transition: "fill 0.2s ease"
-                        }} />} 
-                        desc={`${!watchlisted(i) ? "Add to watchlist" : "Remove from watchlist"}`}
-                        style={{
-                          borderRadius: "16px",
-                          backgroundColor: `${watchlisted(i) ? "white" : ""}`,
-                          color: `${watchlisted(i) ? "#6100C2" : ""}`,
-                        }}
-                        onClick={() => {
-                          watchlisted(i) ? function() {
-                            (showMovie ? movieWatchlist : tvWatchlist).remove(e);
-                            toastError(`${showMovie ? e.title : e.name} removed from watchlist`);
-                          }()
-                          : function() {
-                            (showMovie ? movieWatchlist : tvWatchlist).add(e);
-                            toastSuccess(`${showMovie ? e.title : e.name} added to watchlist`);
-                          }()
-                        }}
-                      />
-                    </div>
+                    {l || m ? overview(e) : <></>}
+                    {
+                      !s ? <div style={{ display: "flex", justifyContent: "end" }}>
+                        {bookmark(e, i)}
+                      </div> : <></>
+                    }
                   </div>
                 </div>
               </SwiperSlide> : <></>
@@ -202,6 +243,8 @@ function Indicator({ list, currentIndex }) {
   const [show, setShow] = useState(true);
   const selected = (index) => index === currentIndex;
   const refs = useRef([]);
+  const s = useMediaQuery(small);
+  const l = useMediaQuery(large);
   useEffect(() => {
     setShow(true);
     const t1 = setTimeout(() => {
@@ -221,12 +264,12 @@ function Indicator({ list, currentIndex }) {
   }, [currentIndex]);
   return (
     <div style={{
-      width: "40%",
+      width: "100%",
       height: "15%",
       position: "absolute",
       zIndex: 2,
       bottom: 0,
-      transform: `translate(68%, ${show ? "-16px" : "100%"})`,
+      transform: `translate(0, ${show ? !s ? "-16px" : "-94px" : "100%"})`,
       transition: "transform 0.5s ease",
       display: "flex",
       justifyContent: "center"
@@ -234,7 +277,7 @@ function Indicator({ list, currentIndex }) {
       <div style={{
         backgroundColor: "white",
         height: "100%",
-        width: "100%",
+        width: l ? "50%" : "70%",
         opacity: 0.5,
         borderRadius: "20px",
         position: "absolute"
@@ -248,8 +291,9 @@ function Indicator({ list, currentIndex }) {
         padding: "4px",
         boxSizing: "border-box",
         height: "100%",
-        width: "95%",
-        overflow: "hidden"
+        width: l ? "48%" : "68%",
+        overflow: "hidden",
+        borderRadius: "20px"
       }}>
         {
           list.filter(e => e.id !== 933260).map((e, i) => {

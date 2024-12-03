@@ -7,7 +7,7 @@ import { Toast, toastError, toastSuccess } from "../utils/toast";
 import { AuthContext } from "../contexts/AuthContext";
 import { Fade } from "react-awesome-reveal";
 import { useMediaQuery } from "react-responsive";
-import { large } from "../utils/screen";
+import { large, medium } from "../utils/screen";
 
 export default function Login() {
   const [isLogin, setIsLogin] = useState(true);
@@ -18,6 +18,7 @@ export default function Login() {
   const actionDisabled = complete || !username || !password || (!isLogin ? !confirmPassword : false);
   const { registeredUser, setUser, addUser } = useContext(AuthContext);
   const l = useMediaQuery(large);
+  const m = useMediaQuery(medium);
   const login = () => {
     for (let i = 0; i <= registeredUser.users.length; i++) {
       const user = registeredUser.users[i];
@@ -64,7 +65,7 @@ export default function Login() {
     if (e.key === "Enter") isLogin ? login() : signUp();
   };
   const fieldWidth = {
-    width: !l ? "70%" : ""
+    width: !l ? !m ? "70%" : "55%" : ""
   }
   const toggle = () => <span style={{ color: "white" }}>
     {`${isLogin ? "Don't" : "Already"} have an account?`} <button 
