@@ -2,6 +2,8 @@ import { useContext, useRef, useState } from "react";
 import { ReactComponent as Search } from "../assets/search.svg";
 import { ReactComponent as ChevronLeft } from "../assets/chevron-left.svg";
 import { MainContext } from "../contexts/MainContext";
+import { useMediaQuery } from "react-responsive";
+import { small } from "../utils/screen";
 
 export default function SearchBar() {
   const { 
@@ -21,10 +23,11 @@ export default function SearchBar() {
       setSearch(s);
     }
   };
+  const sm = useMediaQuery(small);
   return (
     <div style={{
       display: "flex",
-      gap: "16px",
+      gap: !sm ? "16px" : "",
       alignItems: "center"
     }}>
         {
@@ -38,10 +41,13 @@ export default function SearchBar() {
             }} 
           />
         }
-      <button className={`search-bar ${focus ? "focus" : "unfocus"}`}>
+      <button className={`search-bar ${focus ? "focus" : "unfocus"}`} style={sm ? {
+        paddingLeft: "8px",
+        paddingRight: "8px"
+      } : {}}>
         <input 
           placeholder="Search by titles"
-          style={{ all: "unset" }}
+          style={{ all: "unset", width: sm ? "80px" : "", fontSize: sm ? "10px" : "" }}
           value={s} 
           onKeyDown={onKeyDown}
           ref={inputRef}
@@ -49,7 +55,10 @@ export default function SearchBar() {
           onFocus={() => {setFocus(true)}}
           onBlur={() => {setFocus(false)}}
         />
-        <Search />
+        <Search style={ sm ? {
+          height: "20px",
+          width: "20px"
+        } : {}} />
       </button>
     </div>
   );

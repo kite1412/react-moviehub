@@ -144,17 +144,14 @@ export default function MainLayout({ children, logout, applyMargin = true, trans
             height: "45px",
             width: "45px"
           }} />
-          {currentUser}
+          {!s ? currentUser : ""}
         </div>
       </div>
       <div id="main-content" style={{
         marginLeft: applyMargin ? !s ? !m ? "18%" : navigationRailWidth : "" : "",
         marginTop: applyMargin ? "65px" : ""
       }}>
-        <div style={{ height: "100%", width: "100%" }}>
-          {children}        
-          { s ? <div style={{ height: bottomNavBarHeight, backgroundColor: "#6100C2" }} /> : <></> }
-        </div>
+        {children}
         <Toast />
       </div>
       {
