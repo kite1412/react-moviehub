@@ -148,8 +148,9 @@ export default function MainLayout({ children, logout, applyMargin = true, trans
         </div>
       </div>
       <div id="main-content" style={{
-        marginLeft: applyMargin ? !s ? !m ? "18%" : navigationRailWidth : "" : "",
-        marginTop: applyMargin ? "65px" : ""
+        paddingLeft: applyMargin ? !s ? !m ? "18%" : navigationRailWidth : "" : "",
+        paddingTop: applyMargin ? "65px" : "",
+        boxSizing: "border-box"
       }}>
         {children}
         <Toast />

@@ -336,8 +336,8 @@ input::placeholder {
 .main-content {
   padding-left: 32px;
   padding-right: 12px;
-  padding-bottom: 32px;
   padding-top: 32px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 40px;

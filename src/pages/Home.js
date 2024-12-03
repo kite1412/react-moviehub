@@ -14,6 +14,9 @@ import TVCards from "../components/TVCards";
 import PageLoading from "../components/PageLoading";
 import { HomeContext } from "../contexts/HomeContext";
 import TrendingHeader from "../components/TrendingHeader";
+import { useMediaQuery } from "react-responsive";
+import { small } from "../utils/screen";
+import { bottomNavBarHeight } from "../utils/const";
 
 export default function Home() {
   const {
@@ -82,12 +85,19 @@ export default function Home() {
       fetchTopRatedTVs();
     });
   }, [showMovie]);  
+  const s = useMediaQuery(small);
+  const sectionStyle = {
+    paddingBottom: s ? bottomNavBarHeight : "32px",
+    display: "flex",
+    flexDirection: "column",
+    gap: "32px"
+  }
   return (
     <>
       <TrendingHeader />
-      <div className="main-content" style={{ overflowY: !showSearch ? "hidden" : "" }}>
+      <div className="main-content">
         {
-          showSearch ? <SearchResult /> : showMovie ? <>
+          showSearch ? <SearchResult /> : showMovie ? <div style={sectionStyle}>
             { !popularMovies.length && !topRatedMovies.length ? <PageLoading /> : <></> }
             { popularMovies.length ? <MovieCards 
                 session={"Popular"} 
@@ -104,14 +114,14 @@ export default function Home() {
                 showRating={true} 
               /> 
               : <></>}
-          </> : <>
+          </div> : <div style={sectionStyle}>
             { popularTVs.length == 0 && topRatedTVs.length == 0 ? <PageLoading /> : <></> }
             { popularTVs.length != 0 ? <TVCards session={"Popular"} genres={tvGenreList} tvs={popularTVs} /> : <></>}
             { topRatedTVs.length != 0 ?
               <TVCards session={"Top Rated"} genres={tvGenreList} tvs={topRatedTVs} tvCardClass="movie-card-wider" showRating={true} /> 
               : <></>}
-          </>
-          }  
+          </div>
+        }
       </div>
     </>
   );

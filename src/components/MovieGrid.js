@@ -19,13 +19,8 @@ export default function MovieGrid({ session, movies = [], genres = [] }) {
         fontWeight: "500",
         color: "white"
       }}>{session}</div>
-      <div className="movie-grid">
+      <div className="movie-grid" style={{paddingBottom: s ? bottomNavBarHeight : "32px"}}>
         {cards}
-        {
-          s ? <div style={{
-            height: bottomNavBarHeight
-          }} /> : <></>
-        }
       </div>
     </div>
   );
