@@ -14,7 +14,13 @@ import { medium, small } from "../utils/screen";
 import { useMediaQuery } from "react-responsive";
 import { bottomNavBarHeight, navigationRailWidth } from "../utils/const";
 
-export default function MainLayout({ children, logout, applyMargin = true, translucentHeader = false }) {
+export default function MainLayout({ 
+  children, 
+  logout, 
+  applyMargin = true, 
+  translucentHeader = false,
+  applyHeaderMargin = false
+}) {
   const { 
     currentMenu,
     setCurrentMenu, 
@@ -94,7 +100,10 @@ export default function MainLayout({ children, logout, applyMargin = true, trans
       overflow: logoutWarning ? "hidden" : ""
     }}>
       {
-        !s ? <div id="navbar">
+        !s ? <div id="navbar" style={{
+          marginTop: !applyHeaderMargin && m ? "65px" : "",
+          transition: "margin-top 0.2s ease"
+        }}>
           {
             !m ? <div style={{
               width: "100%",
@@ -108,7 +117,8 @@ export default function MainLayout({ children, logout, applyMargin = true, trans
         </div> : <></>
       }
       <div id="header" style={{
-          backgroundImage: translucentHeader ? "none" : ""
+        backgroundImage: translucentHeader ? "none" : "",
+        marginLeft: applyHeaderMargin ? navigationRailWidth : ""
       }}>
         <div style={{
           display: "flex",

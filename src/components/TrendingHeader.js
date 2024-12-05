@@ -4,7 +4,7 @@ import { MainContext } from "../contexts/MainContext";
 import { originalImageUrl, trendingMovies as trendingM, trendingTVs as trendingT } from "../api/tmdbService"; 
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 import 'swiper/css/bundle';
-import { Navigation, Pagination } from "swiper/modules";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import IconButton from "./IconButton";
 import { Button } from "./Button";
 import { ReactComponent as Heart } from "../assets/heart.svg";
@@ -88,7 +88,7 @@ export default function TrendingHeader() {
       </div>
       <Swiper
         className="trending-header"
-        modules={[Navigation, Pagination]}
+        modules={[Navigation, Pagination, Autoplay]}
         grabCursor={true}
         pagination={true}
         navigation={true}
@@ -103,6 +103,9 @@ export default function TrendingHeader() {
           setCurrentSlide(s.activeIndex);
         }}
         initialSlide={currentSlide}
+        autoplay={{
+          delay: currentSlide === 0 ? 5000 : 3000,
+        }}
       >
         <Reset />
         {
@@ -178,12 +181,5 @@ function Reset() {
   useEffect(() => {
     swiper.slideTo(0);
   }, [showMovie]);
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (!swiper.isEnd) swiper.slideNext()
-        else swiper.slideTo(0);
-    }, swiper.isBeginning ? 5000 : 3500);
-    return () => clearTimeout(timeout);
-  }, [showMovie, swiper, swiper.activeIndex]);
   return <></>;
 }

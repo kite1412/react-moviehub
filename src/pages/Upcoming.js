@@ -145,8 +145,9 @@ export default function Upcoming() {
                   width: "100%",
                   position: "absolute",
                   filter: `blur(${backgroundBlur})`,
-                  marginLeft: `${backgroundBlur}`,
-                  zIndex: -1
+                  marginRight: `${backgroundBlur}`,
+                  zIndex: -1,
+                  backgroundPosition: "center"
                 }} />
                 <div style={{ 
                   display: "flex", 
@@ -179,7 +180,7 @@ export default function Upcoming() {
                       </div> : <></>
                     }
                     {
-                      s ? <div style={{ width: "200%", height: "50%" }}>
+                      s ? <div style={{ width: "180%", height: "50%" }}>
                         {overview(e)}
                       </div> : ""
                     }
