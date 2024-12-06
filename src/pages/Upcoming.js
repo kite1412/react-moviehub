@@ -26,15 +26,22 @@ export default function Upcoming() {
   const [upcomingMovies, setUpcomingMovies] = useState([]);
   const [upcomingTVs, setUpcomingTVs] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const backgroundBlur = "3px";
+  const m = useMediaQuery(medium);
+  const s = useMediaQuery(small);
+  const l = useMediaQuery(large);
+
   const genres = (index) => {
     return resolveGenres(
       (showMovie ? upcomingMovies : upcomingTVs)[index].genre_ids, 
       showMovie ? movieGenreList : tvGenreList
     );
   };
+  
   const watchlisted = (index) => (showMovie ? movieWatchlist : tvWatchlist).contains(
     (showMovie ? upcomingMovies : upcomingTVs)[index]
   );
+  
   useEffect(() => {
     const fetchMovies = async () => {
       const res = await getUpcomingMovies();
@@ -53,10 +60,7 @@ export default function Upcoming() {
     };
     showMovie ? fetchMovies() : fetchTVGenreList(() => fetchTVs());
   }, [showMovie]);
-  const backgroundBlur = "3px";
-  const m = useMediaQuery(medium);
-  const s = useMediaQuery(small);
-  const l = useMediaQuery(large);
+
   const overview = (e) => <div className="scrollbarc" style={{ 
     maxHeight: !s ? "20%" : "80%",
     overflowY: "auto",
@@ -66,6 +70,7 @@ export default function Upcoming() {
     width: "100%",
     textAlign: "justify"
   }}>{e.overview}</div>;
+  
   const bookmark = (e, i, withDesc = true, size = "") => <IconButton 
     icon={<Bookmark style={{
       fill: `${watchlisted(i) ? "#6100C2" : "transparent"}`,
