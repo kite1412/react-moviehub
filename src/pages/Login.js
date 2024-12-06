@@ -146,7 +146,7 @@ export default function Login() {
             alignItems: "center"
           }}>
             <Button 
-              action={isLogin ? "Log in" : "Sign Up"} onClick={login} 
+              action={isLogin ? "Log in" : "Sign Up"} onClick={isLogin ? login : signUp} 
               style={{
                 backgroundColor: actionDisabled ? "grey" : "",
               }}
