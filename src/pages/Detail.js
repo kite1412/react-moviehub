@@ -384,7 +384,7 @@ export default function Detail() {
                 }
               </div> : <></>
             }
-            <Reviews reviews={currentMedia.reviews} />
+            <Reviews media={currentMedia} isMovie={isMovie} />
           </div>
           {
             l ? <div style={{

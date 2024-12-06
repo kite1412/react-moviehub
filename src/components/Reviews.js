@@ -9,8 +9,9 @@ import { toastSuccess } from "../utils/toast";
 import { reformatDate } from "../utils/functions";
 import { useMediaQuery } from "react-responsive";
 import { small } from "../utils/screen";
+import { MainContext } from "../contexts/MainContext";
 
-export default function Reviews({ reviews }) {
+export default function Reviews({ media, isMovie }) {
   const [active, setActive] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const ref = useRef();
@@ -18,10 +19,11 @@ export default function Reviews({ reviews }) {
   const { currentUser } = useContext(AuthContext);
   const [submitting, setSubmitting] = useState(false);
   const s = useMediaQuery(small);
+  const { myReviews } = useContext(MainContext);
 
   useEffect(() => {
-    setRevs(reviews && reviews.results ? reviews.results : []);
-  }, [reviews]);
+    setRevs(media.reviews && media.reviews.results ? media.reviews.results : []);
+  }, [media.reviews]);
 
   return (
     <div style={{
@@ -80,18 +82,23 @@ export default function Reviews({ reviews }) {
           onClick={() => {
             if (inputValue && !submitting) {
               setSubmitting(true);
+              const review = {
+                id: crypto.randomUUID(),
+                author: currentUser,
+                created_at: new Date(),
+                content: inputValue,
+                author_details: {
+                  avatar_path: ""
+                },
+                me: true,
+                media: media,
+                isMovie: isMovie
+              };
+              myReviews.add(review);
               setTimeout(() => {
                 setRevs(
                   [
-                    {
-                      author: currentUser,
-                      created_at: new Date(),
-                      content: inputValue,
-                      author_details: {
-                        avatar_path: ""
-                      },
-                      me: true
-                    } 
+                    review
                     , ...revs
                   ]
                 );

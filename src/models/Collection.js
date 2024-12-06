@@ -1,4 +1,4 @@
-export default class MediaCollection {
+export default class Collection {
   constructor(array, setArray) {
     this.list = array;
     this.setList = setArray;

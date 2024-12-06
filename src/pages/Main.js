@@ -8,6 +8,7 @@ import Watchlist from "./Watchlist";
 import Upcoming from "./Upcoming";
 import { useMediaQuery } from "react-responsive";
 import { medium } from "../utils/screen";
+import MyReviews from "./MyReviews";
 
 export default function Main({logout}) {
   const { currentMenu } = useContext(MainContext);
@@ -21,6 +22,8 @@ export default function Main({logout}) {
         return <Watchlist />
       case "upcoming":
         return <Upcoming />
+        case "myreviews":
+          return <MyReviews />
       default:
         return <Home />;
     }

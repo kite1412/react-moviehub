@@ -13,6 +13,7 @@ import { Toast } from "../utils/toast";
 import { medium, small } from "../utils/screen";
 import { useMediaQuery } from "react-responsive";
 import { bottomNavBarHeight, navigationRailWidth } from "../utils/const";
+import { ReactComponent as Write } from "../assets/write.svg";
 
 export default function MainLayout({ 
   children, 
@@ -79,6 +80,12 @@ export default function MainLayout({
     }}>
       <Bookmark />
       { showLabel ? "Watchlist" : "" }
+    </button>,
+    <button style={menuItemStyle("myreviews")} onClick={function() {
+      setCurrentMenu("myreviews")
+    }}>
+      <Write style={{  }} />
+      { showLabel ? "My Reviews" : "" }
     </button>,
     <div style={{ marginTop: showLabel ? "32px" : "" }}>
       <button style={{

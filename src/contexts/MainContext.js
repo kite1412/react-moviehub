@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import MediaCollection from "../model/MediaCollection";
+import Collection from "../models/Collection";
 
 export const MainContext = createContext({
   movieGenreList: [],
@@ -19,11 +19,13 @@ export function MainProvider({ children }) {
   const [favTVs, setFavTVs] = useState([]);
   const [mWatchlist, setMWatchlist] = useState([]);
   const [tWatchlist, setTWatchlist] = useState([]);
-  const favoriteMovies = new MediaCollection(favMovies, setFavMovies);
-  const favoriteTVs = new MediaCollection(favTVs, setFavTVs);
-  const movieWatchlist = new MediaCollection(mWatchlist, setMWatchlist);
-  const tvWatchlist = new MediaCollection(tWatchlist, setTWatchlist);
+  const favoriteMovies = new Collection(favMovies, setFavMovies);
+  const favoriteTVs = new Collection(favTVs, setFavTVs);
+  const movieWatchlist = new Collection(mWatchlist, setMWatchlist);
+  const tvWatchlist = new Collection(tWatchlist, setTWatchlist);
   const [languages, setLanguages] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  const myReviews = new Collection(reviews, setReviews);
   const setCurrentMenu = (m) => {
     window.scrollTo(0, 0);
     setMenu(m);
@@ -49,7 +51,8 @@ export function MainProvider({ children }) {
       languages,
       setLanguages,
       movieWatchlist,
-      tvWatchlist
+      tvWatchlist,
+      myReviews
     }}>
       {children}
     </MainContext.Provider>
