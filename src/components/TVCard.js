@@ -22,10 +22,10 @@ export default function TVCard({
       navigate(detailPath(tv.id), { state: { media: tv, isMovie: false } })
     }}>
       <div id="description">
-        <p>{tv.name}</p>
-        <p style={{ fontSize: "11px", fontWeight: "normal" }}>
+        <div>{tv.name}</div>
+        <div style={{ fontSize: "11px", fontWeight: "normal" }}>
           {tv.first_air_date !== undefined ? getYear(tv.first_air_date) : ""} { genre !== ""  ? `| ${genre}` : ""}
-        </p>
+        </div>
       </div>
       <img src={originalImageUrl(tv.poster_path)} alt="poster" />
       { showRating ? <Score score={fixedRating(tv.vote_average)} /> : <></> }

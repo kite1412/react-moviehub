@@ -142,6 +142,92 @@ export default function Detail() {
     }
   </div>
 
+  const details = () => <div style={{
+    display: l ? "flex" : "grid",
+    flexDirection: "column",
+    gap: "32px",
+    height: "100%",
+    gridTemplateColumns: !l ? "repeat(2, 1fr)" : ""
+  }}>
+    {
+      currentMedia.status ? <div>
+        <div style={{ fontWeight: "bold" }}>Status</div>
+        <div>{currentMedia.status}</div>
+      </div> : <></>
+    }
+    {
+      language ? <div>
+        <div style={{ fontWeight: "bold" }}>Original Language</div>
+        <div>{language}</div>
+      </div> : <></>
+    }
+    {
+      !isMovie ? currentMedia.networks && currentMedia.networks.length ? <div>
+        <div style={{ fontWeight: "bold" }}>Available On</div>
+        <div style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "2px"
+        }}>
+          {
+            currentMedia.networks.map(e => {
+              return <>
+                <img src={originalImageUrl(e.logo_path)} alt="logo" style={{
+                  height: "24px",
+                  width: "auto",
+                  backgroundColor: "white",
+                  padding: "2px"
+                }} />
+              </>
+            })
+          }
+        </div>
+      </div> : <></> : <></>
+    }
+    {
+      isMovie ? <div>
+        <div style={{ fontWeight: "bold" }}>Budget</div>
+        <div>{toDollar(currentMedia.budget)}</div>
+      </div> : <></>
+    }
+    {
+      isMovie ? <div>
+        <div style={{ fontWeight: "bold" }}>Revenue</div>
+        <div>{toDollar(currentMedia.revenue)}</div>
+      </div> : <></>
+    }
+    {
+      isMovie ? currentMedia.runtime ? <div>
+        <div style={{ fontWeight: "bold" }}>Duration</div>
+        <div>{resolveRuntime(currentMedia.runtime)}</div>
+      </div> : <></> : <></>
+    }
+    {
+      currentMedia.keywords && 
+        (isMovie ? currentMedia.keywords.keywords.length : currentMedia.keywords.results.length) ? <div>
+          <div style={{ fontWeight: "bold", paddingBottom: "4px" }}>Keywords</div>
+          <div style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "6px"
+          }}>
+            {
+              (isMovie ? currentMedia.keywords.keywords : currentMedia.keywords.results).map(e => {
+                return <div style={{
+                  border: "2px solid #6100C2",
+                  borderRadius: "8px",
+                  padding: "6px",
+                  fontSize: "14px"
+                }}>
+                  {e.name}
+                </div>
+              })
+            }
+          </div>
+        </div> : <></>
+    }
+  </div>
+
   useEffect(() => {
     setCurrentMedia(media);
     const getDetails = async () => {
@@ -260,7 +346,8 @@ export default function Detail() {
         display: "flex",
         flexDirection: "column"
       }}>
-        { !l ? overview() : <></> }
+        { currentMedia.overview && !l ? overview() : <></> }
+        { !l ? details() : <></> }
         <div style={{
           display: "flex"
         }}>
@@ -270,7 +357,7 @@ export default function Detail() {
             width: l ? "74vw" : "100%",
             gap: "40px",
             boxSizing: "border-box",
-            paddingBottom: "64px"
+            paddingBottom: "64px",
           }}>
             {
               currentMedia.credits ? currentMedia.credits.cast.length ? <div>
@@ -309,90 +396,7 @@ export default function Detail() {
               paddingLeft: "16px",
               boxSizing: "border-box"
             }}>
-              <div style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "32px",
-                height: "100%"
-              }}>
-                {
-                  currentMedia.status ? <div>
-                    <div style={{ fontWeight: "bold" }}>Status</div>
-                    <div>{currentMedia.status}</div>
-                  </div> : <></>
-                }
-                {
-                  language ? <div>
-                    <div style={{ fontWeight: "bold" }}>Original Language</div>
-                    <div>{language}</div>
-                  </div> : <></>
-                }
-                {
-                  !isMovie ? currentMedia.networks && currentMedia.networks.length ? <div>
-                    <div style={{ fontWeight: "bold" }}>Available On</div>
-                    <div style={{
-                      display: "flex",
-                      flexWrap: "wrap",
-                      gap: "2px"
-                    }}>
-                      {
-                        currentMedia.networks.map(e => {
-                          return <>
-                            <img src={originalImageUrl(e.logo_path)} alt="logo" style={{
-                              height: "24px",
-                              width: "auto",
-                              backgroundColor: "white",
-                              padding: "2px"
-                            }} />
-                          </>
-                        })
-                      }
-                    </div>
-                  </div> : <></> : <></>
-                }
-                {
-                  isMovie ? <div>
-                    <div style={{ fontWeight: "bold" }}>Budget</div>
-                    <div>{toDollar(currentMedia.budget)}</div>
-                  </div> : <></>
-                }
-                {
-                  isMovie ? <div>
-                    <div style={{ fontWeight: "bold" }}>Revenue</div>
-                    <div>{toDollar(currentMedia.revenue)}</div>
-                  </div> : <></>
-                }
-                {
-                  isMovie ? currentMedia.runtime ? <div>
-                    <div style={{ fontWeight: "bold" }}>Duration</div>
-                    <div>{resolveRuntime(currentMedia.runtime)}</div>
-                  </div> : <></> : <></>
-                }
-                {
-                  currentMedia.keywords && 
-                    (isMovie ? currentMedia.keywords.keywords.length : currentMedia.keywords.results.length) ? <div>
-                      <div style={{ fontWeight: "bold", paddingBottom: "4px" }}>Keywords</div>
-                      <div style={{
-                        display: "flex",
-                        flexWrap: "wrap",
-                        gap: "6px"
-                      }}>
-                        {
-                          (isMovie ? currentMedia.keywords.keywords : currentMedia.keywords.results).map(e => {
-                            return <div style={{
-                              border: "2px solid #6100C2",
-                              borderRadius: "8px",
-                              padding: "6px",
-                              fontSize: "14px"
-                            }}>
-                              {e.name}
-                            </div>
-                          })
-                        }
-                      </div>
-                    </div> : <></>
-                }
-              </div>
+              {details()}
             </div> : <></>
           }
         </div>

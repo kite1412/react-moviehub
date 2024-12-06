@@ -7,6 +7,8 @@ import { AuthContext } from "../contexts/AuthContext";
 import { OvalLoadingIndicator } from "./loadingIndicator";
 import { toastSuccess } from "../utils/toast";
 import { reformatDate } from "../utils/functions";
+import { useMediaQuery } from "react-responsive";
+import { small } from "../utils/screen";
 
 export default function Reviews({ reviews }) {
   const [active, setActive] = useState(false);
@@ -15,6 +17,7 @@ export default function Reviews({ reviews }) {
   const [revs, setRevs] = useState([]);
   const { currentUser } = useContext(AuthContext);
   const [submitting, setSubmitting] = useState(false);
+  const s = useMediaQuery(small);
 
   useEffect(() => {
     setRevs(reviews && reviews.results ? reviews.results : []);
@@ -136,7 +139,7 @@ export default function Reviews({ reviews }) {
               </div>
               <div style={{
                 boxSizing: "border-box",
-                paddingLeft: "62px",
+                paddingLeft: !s ? "62px" : "",
                 textAlign: "justify",
                 fontSize: "14px"
               }}>{e.content}</div>

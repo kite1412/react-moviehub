@@ -8,6 +8,8 @@ import { ReactComponent as Heart } from "../assets/heart.svg";
 import { useContext } from "react";
 import { MainContext } from "../contexts/MainContext";
 import { toastError, toastSuccess } from "../utils/toast";
+import { useMediaQuery } from "react-responsive";
+import { small } from "../utils/screen";
 
 export default function MovieCard({
   movie,
@@ -18,15 +20,20 @@ export default function MovieCard({
   const navigate = useNavigate();
   const { favoriteMovies } = useContext(MainContext);
   const favorited = favoriteMovies.contains(movie);
+  const s = useMediaQuery(small);
+
   return (
     movie.id !== 179387 ? <div className={className} onClick={() => {
       navigate(detailPath(movie.id), { state: { media: movie, isMovie: true } });
     }}>
-      <div id="description">
-        <p>{movie.title}</p>
-        <p style={{ fontSize: "11px", fontWeight: "normal" }}>
+      <div id="description" style={{
+        gap: s ? "4px" : "",
+        fontSize: s ? "12px" : ""
+      }}> 
+        <div>{movie.title}</div>
+        <div style={{ fontSize: !s ? "11px" : "10px", fontWeight: "normal" }}>
           {movie.release_date !== undefined ? getYear(movie.release_date) : ""} { genre !== ""  ? `| ${genre}` : ""}
-        </p>
+        </div>
       </div>
       <img src={originalImageUrl(movie.poster_path)} alt="poster" />
       { showRating ? <Score score={fixedRating(movie.vote_average)} /> : <></> }

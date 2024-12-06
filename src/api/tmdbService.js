@@ -43,7 +43,7 @@ const generateUrl = (url, params = []) => {
 }
 
 export const originalImageUrl = (filePath) => {
-  return `${IMAGE_BASE_URL}/original/${filePath}`;
+  return filePath ? `${IMAGE_BASE_URL}/original/${filePath}` : "";
 }
 
 async function get(url, params = [], onFail) {
