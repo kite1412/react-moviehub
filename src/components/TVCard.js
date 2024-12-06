@@ -7,6 +7,7 @@ import IconButton from "./IconButton";
 import { ReactComponent as Heart } from "../assets/heart.svg";
 import { useContext } from "react";
 import { MainContext } from "../contexts/MainContext";
+import { toastError, toastSuccess } from "../utils/toast";
 
 export default function TVCard({
   tv, 
@@ -37,6 +38,7 @@ export default function TVCard({
         onClick={e => {
           e.stopPropagation();
           favorited ? favoriteTVs.remove(tv) : favoriteTVs.add(tv);
+          favorited ? toastError(`${tv.name} removed from favorites`) : toastSuccess(`${tv.name} added to favorites`);
         }}
       />
     </div>
