@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import Collection from "../models/Collection";
+import Reviews from "../models/Reviews";
 
 export const MainContext = createContext({
   movieGenreList: [],
@@ -64,7 +65,7 @@ export function MainProvider({ children }) {
   const tvWatchlist = new Collection(tWatchlist, setTWatchlist);
   const [languages, setLanguages] = useState([]);
   const [reviews, setReviews] = useState([]);
-  const myReviews = new Collection(reviews, setReviews);
+  const myReviews = new Reviews(reviews, setReviews);
   const setCurrentMenu = (m) => {
     window.scrollTo(0, 0);
     setMenu(m);

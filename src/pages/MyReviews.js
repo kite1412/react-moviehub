@@ -11,7 +11,7 @@ import { large, small } from "../utils/screen";
 import IconButton from "../components/IconButton";
 import { useNavigate } from "react-router-dom";
 import { detailPath } from "../utils/paths";
-import { toastError } from "../utils/toast";
+import { toastError, toastSuccess } from "../utils/toast";
 
 export default function MyReviews() {
   const { myReviews } = useContext(MainContext);
@@ -38,6 +38,12 @@ export default function MyReviews() {
   const removeReview = review => {
     myReviews.remove(review);
     toastError("Review deleted");
+  };
+
+  const editContent = (review, newContent) => {
+    myReviews.editContent(review, newContent);
+    clearEdit();
+    toastSuccess("Review updated");
   };
 
   const empty = <div style={{
@@ -113,7 +119,7 @@ export default function MyReviews() {
                 marginLeft: edit.id === e.id && i % 2 === 1 & l && !animateOut ? "-50%" : !l && edit.id === e.id && !animateOut ? "2%" : "",
                 minHeight: edit.id === e.id && !animateOut ? "200%" : "0%",
                 maxWidth: edit.id === e.id && !l && !animateOut ? "95%" : "100%",
-                transition: "min-width 0.3s ease, min-height 0.3s ease, max-width 0.1s linear, margin-left 0.2s ease-out",
+                transition: "min-width 0.2s ease, min-height 0.2s ease, max-width 0.1s linear, margin-left 0.2s ease-out",
                 gap: "8px"
               }} ref={e => gridRef.current[i] = e}>
                 <div style={{
@@ -202,16 +208,17 @@ export default function MyReviews() {
                 }}>
                   <IconButton 
                     icon={edit.id !== e.id ? <Pencil /> : <Check style={{ color: "#32CD32" }} />}
-                    onClick={() => {
-                      setEdit(e);
-                      setContent(e.content);
-                      setTimeout(() => {
-                        if (gridRef.current[i]) gridRef.current[i].scrollIntoView({
-                          behavior: "smooth",
-                          block: "nearest"
-                        });
-                      }, 300);
-                    }}
+                    onClick={edit.id !== e.id ? () => {
+                        setEdit(e);
+                        setContent(e.content);
+                        setTimeout(() => {
+                          if (gridRef.current[i]) gridRef.current[i].scrollIntoView({
+                            behavior: "smooth",
+                            block: "nearest"
+                          });
+                        }, 300);
+                      } : () => editContent(e, content)
+                    }
                   />
                   <div style={{
                     display: "flex",

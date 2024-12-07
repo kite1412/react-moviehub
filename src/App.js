@@ -10,7 +10,7 @@ import { toastError } from './utils/toast';
 import Login from './pages/Login';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const logout = () => {
     setIsLoggedIn(false);
     setTimeout(() => toastError("Logged out"), 100);
