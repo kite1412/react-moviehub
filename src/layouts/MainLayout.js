@@ -123,14 +123,6 @@ export default function MainLayout({
           </div>
         </div> : <></>
       }
-      <div id="main-content" style={{
-        paddingLeft: applyMargin ? !s ? !m ? "18%" : navigationRailWidth : "" : "",
-        paddingTop: applyMargin ? "65px" : "",
-        boxSizing: "border-box"
-      }}>
-        {children}
-        <Toast />
-      </div>
       <div id="header" style={{
         backgroundImage: translucentHeader ? "none" : "",
         marginLeft: applyHeaderMargin ? navigationRailWidth : "",
@@ -190,6 +182,14 @@ export default function MainLayout({
           { menus(false) }
         </div> : <></>
       }
+      <div id="main-content" style={{
+        paddingLeft: applyMargin ? !s ? !m ? "18%" : navigationRailWidth : "" : "",
+        paddingTop: applyMargin ? "65px" : "",
+        boxSizing: "border-box"
+      }}>
+        {children}
+      </div>
+      <Toast />
       <div style={{
         position: "absolute",
         opacity: logoutWarning && !animateOut ? 1 : 0,

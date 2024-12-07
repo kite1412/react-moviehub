@@ -39,5 +39,6 @@ export function Toast() {
     draggable
     pauseOnHover
     theme="colored"
+    style={{ zIndex: Number.MAX_SAFE_INTEGER + 1 }}
   />
 }

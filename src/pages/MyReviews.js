@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { MainContext } from "../contexts/MainContext";
 import { reformatDate } from "../utils/functions";
 import { ReactComponent as PencilSlash } from "../assets/pencil-slash.svg";
@@ -19,6 +19,7 @@ export default function MyReviews() {
   const [animateOut, setAnimateOut] = useState(false);
   const maxIndex = Number.MAX_SAFE_INTEGER;
   const navigate = useNavigate();
+  const gridRef = useRef([]);
   const empty = <div style={{
     display: "flex",
     flexDirection: "column",
@@ -40,18 +41,18 @@ export default function MyReviews() {
 
   return <div className="main-content" style={{
     alignItems: "start",
-    position: "relative",
+    position: "relative"
   }}>
     <div 
       style={{
-        height: "100%",
-        width: "100%",
+        height: "100vh",
+        width: "100vw",
         position: "fixed",
         zIndex: edit.id || animateOut ? maxIndex - 1 : 0,
         backgroundColor: "rgba(255, 255, 255, 0.01)",
         backdropFilter: "blur(5px)",
-        marginLeft: l ? "-32px" : s ? "-16px" : "-24px",
-        marginTop: `-32px`,
+        marginLeft: l ? "-20%" : s ? "-16px" : "-104px",
+        marginTop: `-97px`,
         opacity: edit.id && !animateOut ? 1 : 0,
         transition: "opacity 0.3s ease-in-out"
       }}
@@ -80,25 +81,28 @@ export default function MyReviews() {
           display: "grid",
           gridTemplateColumns: `repeat(${l ? 2 : 1}, 1fr)`,
           gap: "16px",
-          width: "100%"
+          width: "100%",
+          height: "100%"
         }}>
           {
             myReviews.list.map((e, i) => {
               return <div style={{
                 display: "flex",
                 color: "white",
-                backgroundImage: `linear-gradient(90deg, rgb(20, 20, 20), #180C24)`,
+                backgroundImage: `linear-gradient(90deg, #2E0854, #4C0013)`,
                 borderRadius: "10px",
                 padding: "16px",
+                paddingRight: s ? "8px" : "16px",
                 boxSizing: "border-box",
                 minWidth: edit.id === e.id && l && !animateOut ? "150%" : "0%",
                 justifyContent: "space-between",
                 zIndex: edit.id === e.id ? maxIndex : i + 1,
-                marginLeft: edit.id === e.id && i % 2 === 1 & l && !animateOut ? "-50%" : "",
+                marginLeft: edit.id === e.id && i % 2 === 1 & l && !animateOut ? "-50%" : !l && edit.id === e.id && !animateOut ? "2%" : "",
                 minHeight: edit.id === e.id && !animateOut ? "200%" : "0%",
-                transition: "min-width 0.2s ease, min-height 0.2s ease, margin-left 0.2s ease-out",
-                gap: "4px"
-              }}>
+                maxWidth: edit.id === e.id && !l && !animateOut ? "95%" : "100%",
+                transition: "min-width 0.3s ease, min-height 0.3s ease, max-width 0.1s linear, margin-left 0.2s ease-out",
+                gap: "8px"
+              }} ref={e => gridRef.current[i] = e}>
                 <div style={{
                   display: "flex",
                   flexDirection: "column",
@@ -188,6 +192,12 @@ export default function MyReviews() {
                     onClick={() => {
                       setEdit(e);
                       setContent(e.content);
+                      setTimeout(() => {
+                        if (gridRef.current[i]) gridRef.current[i].scrollIntoView({
+                          behavior: "smooth",
+                          block: "nearest"
+                        });
+                      }, 300);
                     }}
                   />
                   <IconButton 
