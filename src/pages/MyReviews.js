@@ -4,11 +4,14 @@ import { reformatDate } from "../utils/functions";
 import { ReactComponent as PencilSlash } from "../assets/pencil-slash.svg";
 import { ReactComponent as Pencil } from "../assets/pencil.svg";
 import { ReactComponent as TrashBin } from "../assets/trash-bin.svg";
+import { ReactComponent as Cancel } from "../assets/cancel.svg";
+import { ReactComponent as Check } from "../assets/check.svg";
 import { useMediaQuery } from "react-responsive";
 import { large, small } from "../utils/screen";
 import IconButton from "../components/IconButton";
 import { useNavigate } from "react-router-dom";
 import { detailPath } from "../utils/paths";
+import { toastError } from "../utils/toast";
 
 export default function MyReviews() {
   const { myReviews } = useContext(MainContext);
@@ -17,9 +20,26 @@ export default function MyReviews() {
   const [edit, setEdit] = useState({});
   const [content, setContent] = useState("");
   const [animateOut, setAnimateOut] = useState(false);
+  const [deleteWarning, setDeleteWarning] = useState("");
   const maxIndex = Number.MAX_SAFE_INTEGER;
   const navigate = useNavigate();
   const gridRef = useRef([]);
+
+  const clearEdit = () => {
+    setContent(edit.content);
+    setAnimateOut(true);
+    setDeleteWarning("");
+    setTimeout(() => {
+      setEdit({});
+      setAnimateOut(false);
+    }, 300);
+  };
+
+  const removeReview = review => {
+    myReviews.remove(review);
+    toastError("Review deleted");
+  };
+
   const empty = <div style={{
     display: "flex",
     flexDirection: "column",
@@ -48,7 +68,7 @@ export default function MyReviews() {
         height: "100vh",
         width: "100vw",
         position: "fixed",
-        zIndex: edit.id || animateOut ? maxIndex - 1 : 0,
+        zIndex: edit.id || animateOut ? maxIndex - 1 : -1,
         backgroundColor: "rgba(255, 255, 255, 0.01)",
         backdropFilter: "blur(5px)",
         marginLeft: l ? "-20%" : s ? "-16px" : "-104px",
@@ -56,14 +76,7 @@ export default function MyReviews() {
         opacity: edit.id && !animateOut ? 1 : 0,
         transition: "opacity 0.3s ease-in-out"
       }}
-      onClick={() => {
-        setContent(edit.content);
-        setAnimateOut(true);
-        setTimeout(() => {
-          setEdit({});
-          setAnimateOut(false);
-        }, 300)
-      }}
+      onClick={clearEdit}
     />
     {
       myReviews.list.length ? <div style={{
@@ -188,7 +201,7 @@ export default function MyReviews() {
                   gap: "8px"
                 }}>
                   <IconButton 
-                    icon={<Pencil />}
+                    icon={edit.id !== e.id ? <Pencil /> : <Check style={{ color: "#32CD32" }} />}
                     onClick={() => {
                       setEdit(e);
                       setContent(e.content);
@@ -200,14 +213,44 @@ export default function MyReviews() {
                       }, 300);
                     }}
                   />
-                  <IconButton 
-                    icon={
-                      <TrashBin style={{ fill: "red" }} />
-                    }
-                    style={{
-                      backgroundColor: "white"
-                    }} 
-                  />
+                  <div style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center"
+                  }}>
+                    <IconButton 
+                      icon={
+                        edit.id !== e.id ? <TrashBin style={{ 
+                          fill: deleteWarning === e.id ? "white" : "red",
+                          transition: "fill 0.2s ease" 
+                        }} /> : <Cancel style={{ color: "red" }} />
+                      }
+                      style={{
+                        backgroundColor: deleteWarning === e.id ? "red" : "white",
+                        color: "red",
+                        fontSize: "12px",
+                        transition: "background-color 0.2s linear"
+                      }}
+                      onClick={
+                        edit.id === e.id ? clearEdit 
+                        : deleteWarning !== e.id ? () => setDeleteWarning(e.id)  
+                        : () => removeReview(e)
+                      } 
+                    />
+                    <div className="pointer-hover" style={{
+                      height: deleteWarning === e.id ? "50px" : "0px",
+                      width: deleteWarning === e.id ? "50px" : "0px",
+                      borderRadius: "100px",
+                      backgroundColor: "white",
+                      marginTop: deleteWarning === e.id ? "4px" : "",
+                      color: "#6100C2",
+                      display: "flex",
+                      justifyContent: "center",
+                      transition: "height 0.2s ease, margin-top 0.2s linear, width 0.2s ease"
+                    }} onClick={() => setDeleteWarning("")}>
+                      <Cancel style={{ height: "100%" }} />
+                    </div>
+                  </div>
                 </div>
               </div>
             })

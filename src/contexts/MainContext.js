@@ -63,7 +63,7 @@ export function MainProvider({ children }) {
   const movieWatchlist = new Collection(mWatchlist, setMWatchlist);
   const tvWatchlist = new Collection(tWatchlist, setTWatchlist);
   const [languages, setLanguages] = useState([]);
-  const [reviews, setReviews] = useState(mockReviews());
+  const [reviews, setReviews] = useState([]);
   const myReviews = new Collection(reviews, setReviews);
   const setCurrentMenu = (m) => {
     window.scrollTo(0, 0);

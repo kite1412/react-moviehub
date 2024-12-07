@@ -534,3 +534,8 @@ input::placeholder {
   color: #6100C2;
   cursor: pointer;
 }
+
+.pointer-hover:hover {
+  cursor: pointer;
+  opacity: 0.9;
+}
