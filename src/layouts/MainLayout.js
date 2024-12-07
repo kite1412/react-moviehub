@@ -115,10 +115,10 @@ export default function MainLayout({
             !m ? <div style={{
               width: "100%",
               paddingTop: "22px",
-              paddingLeft: "32px"
+              paddingLeft: "10%"
             }}><TitleLogo /></div> : <></>
           }
-          <div id="menu">
+          <div id="menu" style={{ paddingLeft: "10%" }}>
             { menus(!m) }
           </div>
         </div> : <></>
