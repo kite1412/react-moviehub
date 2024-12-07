@@ -123,9 +123,18 @@ export default function MainLayout({
           </div>
         </div> : <></>
       }
+      <div id="main-content" style={{
+        paddingLeft: applyMargin ? !s ? !m ? "18%" : navigationRailWidth : "" : "",
+        paddingTop: applyMargin ? "65px" : "",
+        boxSizing: "border-box"
+      }}>
+        {children}
+        <Toast />
+      </div>
       <div id="header" style={{
         backgroundImage: translucentHeader ? "none" : "",
-        marginLeft: applyHeaderMargin ? navigationRailWidth : ""
+        marginLeft: applyHeaderMargin ? navigationRailWidth : "",
+        zIndex: Number.MAX_SAFE_INTEGER + 1
       }}>
         <div style={{
           display: "flex",
@@ -164,14 +173,6 @@ export default function MainLayout({
           {!s ? currentUser : ""}
         </div>
       </div>
-      <div id="main-content" style={{
-        paddingLeft: applyMargin ? !s ? !m ? "18%" : navigationRailWidth : "" : "",
-        paddingTop: applyMargin ? "65px" : "",
-        boxSizing: "border-box"
-      }}>
-        {children}
-        <Toast />
-      </div>
       {
         s ? <div style={{
           position: "fixed",
@@ -184,7 +185,7 @@ export default function MainLayout({
           boxSizing: "border-box",
           backgroundColor: "#6100C2",
           padding: "16px",
-          zIndex: 100
+          zIndex: Number.MAX_SAFE_INTEGER + 1
         }}>
           { menus(false) }
         </div> : <></>
