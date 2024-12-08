@@ -83,7 +83,7 @@ export default function Reviews({ media, isMovie }) {
             if (inputValue && !submitting) {
               setSubmitting(true);
               const review = {
-                id: crypto.randomUUID(),
+                id: Date.now().toString(36),
                 author: currentUser,
                 created_at: new Date(),
                 content: inputValue,

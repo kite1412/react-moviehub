@@ -5,6 +5,7 @@ import { ReactComponent as Calendar } from "../assets/calendar.svg";
 import { ReactComponent as Profile } from "../assets/profile-circle.svg";
 import { ReactComponent as Exit } from "../assets/exit.svg";
 import { ReactComponent as Bookmark } from "../assets/bookmark.svg";
+import { ReactComponent as Chevron } from "../assets/chevron-left.svg";
 import { useContext, useState } from "react";
 import { MainContext } from "../contexts/MainContext";
 import SearchBar from "../components/SearchBar";
@@ -14,6 +15,7 @@ import { medium, small } from "../utils/screen";
 import { useMediaQuery } from "react-responsive";
 import { bottomNavBarHeight, navigationRailWidth } from "../utils/const";
 import { ReactComponent as Write } from "../assets/write.svg";
+import IconButton from "../components/IconButton";
 
 export default function MainLayout({ 
   children, 
@@ -34,6 +36,7 @@ export default function MainLayout({
   const { currentUser } = useContext(AuthContext);
   const [logoutWarning, setLogoutWarning] = useState(false);
   const [animateOut, setAnimateOut] = useState(false);
+  const [expandMenu, setExpandMenu] = useState(false);
   const dismissLogout = (loggedOut = false) => {
     setAnimateOut(true);
     setTimeout(() => {
@@ -58,31 +61,31 @@ export default function MainLayout({
   };
   const menus = (showLabel) => [
     <button style={menuItemStyle("home")} onClick={function() {
-      setCurrentMenu("home")
+      setCurrentMenu("home");
     }}>
       <Film />
       { showLabel ? "Home" : "" }
     </button>,
     <button style={menuItemStyle("favorites")} onClick={function() {
-      setCurrentMenu("favorites")
+      setCurrentMenu("favorites");
     }}>
       <Heart />
       { showLabel ? "Favorites" : "" }
     </button>,
     <button style={menuItemStyle("upcoming")} onClick={function() {
-      setCurrentMenu("upcoming")
+      setCurrentMenu("upcoming");
     }}>
       <Calendar />
       { showLabel ? "Upcoming" : "" }
     </button>,
     <button style={menuItemStyle("watchlist")} onClick={function() {
-      setCurrentMenu("watchlist")
+      setCurrentMenu("watchlist");
     }}>
       <Bookmark />
       { showLabel ? "Watchlist" : "" }
     </button>,
     <button style={menuItemStyle("myreviews")} onClick={function() {
-      setCurrentMenu("myreviews")
+      setCurrentMenu("myreviews");
     }}>
       <Write style={{  }} />
       { showLabel ? "My Reviews" : "" }
@@ -175,11 +178,48 @@ export default function MainLayout({
           width: "100%",
           height: bottomNavBarHeight,
           boxSizing: "border-box",
-          backgroundColor: "#6100C2",
+          backgroundColor: "rgb(96, 48, 143)",
           padding: "16px",
           zIndex: Number.MAX_SAFE_INTEGER + 1
         }}>
-          { menus(false) }
+          { menus(false).slice(0, 4) }
+          <div style={{
+            display: "flex",
+            flexDirection: "column",
+            position: "relative",
+            alignItems: "center"
+          }}>
+            <div style={{
+              position: "absolute",
+              display: "flex",
+              flexDirection: "column",
+              bottom: "100%",
+              gap: "8px",
+              marginBottom: expandMenu ? "24px" : "-32px",
+              opacity: expandMenu ? 1 : 0,
+              transition: "opacity 0.2s linear, margin-bottom 0.2s ease-out",
+            }}>
+              { expandMenu ? menus(false).slice(4, 6).map(e => <IconButton 
+                icon={e}
+                style={{
+                  boxShadow: "-2px 2px 10px black",
+                  backgroundColor: "#6100C2",
+                  display: "flex"
+                }}
+              />) : <></> }
+            </div>
+            <button 
+              style={{ 
+                ...menuItemStyle("-"), 
+                opacity: 1,
+                transform: expandMenu ? "rotate(90deg)" : "",
+                transition: "transform 0.2s ease-out"
+              }}
+              onClick={() => setExpandMenu(!expandMenu)}
+            >
+              <Chevron  />
+            </button>
+          </div>
         </div> : <></>
       }
       <div id="main-content" style={{
@@ -200,7 +240,7 @@ export default function MainLayout({
         alignItems: "center",
         backgroundColor: "rgba(0, 0, 0, 0.5)",
         transition: "opacity 0.3s ease-in-out",
-        zIndex: logoutWarning ? 10 : -2,
+        zIndex: logoutWarning ? Number.MAX_SAFE_INTEGER : -2,
         backdropFilter: "blur(10px)",
         overflow: "hidden"
       }}>

@@ -119,7 +119,7 @@ export default function MyReviews() {
                 marginLeft: edit.id === e.id && i % 2 === 1 & l && !animateOut ? "-50%" : !l && edit.id === e.id && !animateOut ? "2%" : "",
                 minHeight: edit.id === e.id && !animateOut ? "200%" : "0%",
                 maxWidth: edit.id === e.id && !l && !animateOut ? "95%" : "100%",
-                transition: "min-width 0.2s ease, min-height 0.2s ease, max-width 0.1s linear, margin-left 0.2s ease-out",
+                transition: "min-width 0.3s ease, min-height 0.2s ease, max-width 0.1s linear, margin-left 0.2s ease-out",
                 gap: "8px"
               }} ref={e => gridRef.current[i] = e}>
                 <div style={{
@@ -181,7 +181,6 @@ export default function MyReviews() {
                           borderRadius: "8px"
                         }}>
                           <textarea
-                            wrap="hard"
                             value={content}
                             onChange={e => {
                               setContent(e.target.value);

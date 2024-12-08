@@ -371,7 +371,8 @@ export default function Detail() {
               currentMedia.recommendations && currentMedia.recommendations.results.length ? <div style={{
                 backgroundImage: "linear-gradient(120deg, rgba(30, 30, 30, 0.5), rgba(0, 0, 0, 0.4))",
                 borderRadius: "10px",
-                padding: "24px"
+                padding: "24px",
+                boxSizing: "border-box"
               }}>
                 <div style={{
                   textShadow: "2px 2px 0px #6100C2",
