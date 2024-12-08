@@ -32,7 +32,8 @@ export default function Detail() {
     languages,
     setLanguages,
     movieWatchlist,
-    tvWatchlist
+    tvWatchlist,
+    myReviews
   } = useContext(MainContext);
   const [currentMedia, setCurrentMedia] = useState(media);
   const [language, setLanguage] = useState("");
@@ -249,6 +250,13 @@ export default function Detail() {
           setShowTrailerButton(id ? 1 : -1);
         } else setShowTrailerButton(-1);
       } else setShowTrailerButton(-1);
+      const m = myReviews.list.filter(e => e.media.id === media.id && e.isMovie === isMovie).reverse();
+      if (m.length) setCurrentMedia({ 
+        ...(res || currentMedia), reviews: { 
+          ...(res.reviews || currentMedia.reviews || {}), results: 
+            [...m, ...(res || currentMedia || { reviews: { results: [] } }).reviews.results]  
+        } 
+      });
     };
     getDetails();
     ref.current.scrollTo(0, 0);

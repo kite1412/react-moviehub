@@ -199,13 +199,14 @@ export default function MainLayout({
               opacity: expandMenu ? 1 : 0,
               transition: "opacity 0.2s linear, margin-bottom 0.2s ease-out",
             }}>
-              { expandMenu ? menus(false).slice(4, 6).map(e => <IconButton 
+              { expandMenu ? menus(false).slice(4, 6).map((e, i) => <IconButton 
                 icon={e}
                 style={{
                   boxShadow: "-2px 2px 10px black",
-                  backgroundColor: "#6100C2",
+                  backgroundColor: i === 0 ? "#6100C2" : "",
                   display: "flex"
                 }}
+                onClick={() => i === 0 ? setCurrentMenu("myreviews") : setLogoutWarning(true)}
               />) : <></> }
             </div>
             <button 
