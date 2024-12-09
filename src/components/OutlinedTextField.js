@@ -22,7 +22,8 @@ export default function OutlinedTextField({
     height: "24px",
     width: "28px",
     position: "absolute",
-    transform: "translate(-130%, 50%)"
+    transform: "translate(-130%, 50%)",
+    userSelect: "none"
   };
   return (
     <div className="outlined-text-field" style={style}>
@@ -33,8 +34,8 @@ export default function OutlinedTextField({
         } value={input} onChange={handleChange}
         onKeyDown={onKeyDown}
       />
-      {isSensitive ? visible ? <EyeOff style={visibilityIconStyle} onClick={toggleVisibility} /> 
-      : <Eye style={visibilityIconStyle} onClick={toggleVisibility} /> : <></>}
+      {isSensitive ? visible ? <EyeOff className="pointer-hover" style={visibilityIconStyle} onClick={toggleVisibility} /> 
+      : <Eye className="pointer-hover" style={visibilityIconStyle} onClick={toggleVisibility} /> : <></>}
     </div>
   );
 }

@@ -76,7 +76,7 @@ export default function MyReviews() {
         position: "fixed",
         zIndex: edit.id || animateOut ? maxIndex - 1 : -1,
         backgroundColor: "rgba(255, 255, 255, 0.01)",
-        backdropFilter: "blur(5px)",
+        backdropFilter: "blur(10px)",
         marginLeft: l ? "-20%" : s ? "-16px" : "-104px",
         marginTop: `-97px`,
         opacity: edit.id && !animateOut ? 1 : 0,
